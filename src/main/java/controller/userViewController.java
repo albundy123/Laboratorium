@@ -24,7 +24,6 @@ import java.util.List;
 public class userViewController {
     public userViewController() {System.out.println("Siemanko jestem konstruktorem klasy userViewController.");}
 
-
     @FXML
     private TableView<userModel> userTableView;
     @FXML
@@ -46,7 +45,14 @@ public class userViewController {
 
     private List<userModel> userList;
     private ObservableList<userModel> userObservableList = FXCollections.observableArrayList();
+
     private userModel editedUserFromList;
+    private dialogUserViewController editedUserController;
+
+    public userModel getEditedUserFromList() {
+        return editedUserFromList;
+    }
+
     public void setEditedUserFromList(userModel editedUserFromList) {
         this.editedUserFromList = editedUserFromList;
     }
@@ -60,11 +66,15 @@ public class userViewController {
     @FXML
     private void addUser(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/newUserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/dialogUserView.fxml"));
+            VBox vBox = loader.load();
+            editedUserController = loader.getController();
+            if (editedUserController != null){
+                editedUserController.setMainUserController(this);
+            }
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle("Dodaj nowego użytkownika");
-            VBox vBox = loader.load();
             Scene scene = new Scene(vBox);
             window.setScene(scene);
             window.show();
@@ -76,15 +86,16 @@ public class userViewController {
     private void editUser(){
         if(editedUserFromList!=null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/editUserView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/dialogUserView.fxml"));
+                VBox vBox = loader.load();
+                editedUserController = loader.getController();
+                if (editedUserController != null){
+                    editedUserController.setMainUserController(this);
+                    loadEditDialogView(editedUserFromList);
+                }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
                 window.setTitle("Edytuj wybranego użytkownika");
-                VBox vBox = loader.load();
-                editUserViewController editedUserController = loader.getController();
-                editedUserController.setEditedUser(editedUserFromList);
-                System.out.println("User "+ editedUserFromList.getFirstName());
-                System.out.println("User "+  editedUserController.getEditedUser().getFirstName());
                 Scene scene = new Scene(vBox);
                 window.setScene(scene);
                 window.show();
@@ -93,7 +104,7 @@ public class userViewController {
             }
         }
     }
-    private void getUsers(){
+    public void getUsers(){
         try {
             userObservableList.clear();
             Dao<userModel, Integer> przyrzadDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
@@ -115,5 +126,14 @@ public class userViewController {
         permissionLevelColumn.setCellValueFactory(new PropertyValueFactory<>("persmissionLevel"));
         userTableView.setItems(userObservableList);
         userTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> setEditedUserFromList(newValue));
+    }
+    private void loadEditDialogView(userModel user){
+        editedUserController.setFirstNameTextField(user.getFirstName());
+        editedUserController.setLastNameTextField(user.getLastName());
+        editedUserController.setLoginTextField(user.getLogin());
+        editedUserController.setPasswordTextField(user.getPassword());
+        editedUserController.setPermissionComboBox(user.getPersmissionLevel());
+        editedUserController.setIdEditedUser(user.getIdUser());
+        editedUserController.setUserLabel("UŻYTKOWNIK");
     }
 }

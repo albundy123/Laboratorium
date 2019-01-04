@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import javafx.scene.control.Tab;
 import model.userModel;
 
 import java.io.IOException;
@@ -42,7 +43,8 @@ public class dbSqlite {
     public static void initDatabase(){
 
         try {
-            userModelDao = DaoManager.createDao(dbSqlite.getConnectionSource(), userModel.class);
+            //userModelDao = DaoManager.createDao(dbSqlite.getConnectionSource(), userModel.class);
+            TableUtils.dropTable(dbSqlite.getConnectionSource(),userModel.class,true);
             TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), userModel.class);
         } catch (SQLException e) {
             e.printStackTrace();

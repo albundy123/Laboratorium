@@ -8,11 +8,11 @@ public class userModel {
 //Konfiguracja kolumn tabeli
     @DatabaseField(generatedId = true)
     private Integer idUser;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, uniqueCombo = true)
     private String firstName;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false,uniqueCombo = true)
     private String lastName;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false,uniqueCombo = true)
     private String login;
     @DatabaseField(canBeNull = false)
     private String password;
