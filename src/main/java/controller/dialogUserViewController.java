@@ -38,17 +38,17 @@ public class dialogUserViewController {
     //Potrzebny do przekazania id miedzy oknami dla nowego usera bedzie tutaj null dla edytowanego bedzie idUser z tablicy USERS
     private Integer idEditedUser;
     private userViewController mainUserController;
+    //Settery
     public void setMainUserController(userViewController mainUserController) {
         this.mainUserController = mainUserController;
     }
-    //Setter i getter
     public void setIdEditedUser(Integer idEditedUser) {
         this.idEditedUser = idEditedUser;
     }
+    //Settery textField i comboBox
     public void setFirstNameTextField(String firstNameTextField) {
         this.firstNameTextField.setText(firstNameTextField);
     }
-    //Settery textField i comboBox
     public void setLastNameTextField(String lastNameTextField) {
         this.lastNameTextField.setText(lastNameTextField);
     }
@@ -90,7 +90,6 @@ public class dialogUserViewController {
         if(isValidUserData()){
             try {
                 Dao<userModel, Integer> userDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
-
                 userDao.create(getUser());
                 Stage window = (Stage) mainVBox.getScene().getWindow();
                 window.close();

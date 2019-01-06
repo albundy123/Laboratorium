@@ -62,11 +62,10 @@ public class userViewController {
         initializeTableView();
         getUsers();
     }
-
     @FXML
     private void addUser(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/dialogUserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/dialogUserView.fxml"));
             VBox vBox = loader.load();
             editedUserController = loader.getController();
             if (editedUserController != null){
@@ -86,7 +85,7 @@ public class userViewController {
     private void editUser(){
         if(editedUserFromList!=null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/dialogUserView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/dialogUserView.fxml"));
                 VBox vBox = loader.load();
                 editedUserController = loader.getController();
                 if (editedUserController != null){
@@ -107,8 +106,8 @@ public class userViewController {
     public void getUsers(){
         try {
             userObservableList.clear();
-            Dao<userModel, Integer> przyrzadDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
-            List<userModel> userList = przyrzadDao.queryForAll();
+            Dao<userModel, Integer> userDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
+            List<userModel> userList = userDao.queryForAll();
             userList.forEach(user ->{
                 userObservableList.add(user);
             });
