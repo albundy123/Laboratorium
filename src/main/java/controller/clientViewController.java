@@ -6,12 +6,12 @@ import controller.instrument.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -53,7 +53,18 @@ public class clientViewController {
     private TableColumn<clientModel, String> flatNumberColumn;
     @FXML
     private TableColumn<clientModel, String> statusColumn;
-
+    @FXML
+    private TextField shortNameTextField;
+    @FXML
+    private TextField fullNameTextField;
+    @FXML
+    private TextField cityTextField;
+    @FXML
+    private TextField streetTextField;
+    @FXML
+    private TextField fullNameSearchTextField;
+    @FXML
+    private CheckBox isActiveClientCheckBox;
     @FXML
     private Button addClientButton;
     @FXML
@@ -61,7 +72,7 @@ public class clientViewController {
 
     private List<clientModel> clientList;
     private ObservableList<clientModel> clientObservableList = FXCollections.observableArrayList();
-
+    FilteredList<clientModel> filteredClientObservableList = new FilteredList<>(clientObservableList, p -> true);
     private clientModel editedClientFromList;
 
     public void setEditedClientFromList(clientModel editedClientFromList) {
@@ -72,6 +83,8 @@ public class clientViewController {
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy clientViewController.");
+        addFilterByFullName();
+
         getClients();
         initializeTableView();
     }
@@ -103,6 +116,8 @@ public class clientViewController {
                 editedClientController = loader.getController();
                 if (editedClientController != null){
                     editedClientController.setMainClientController(this);
+                    editedClientController.setEditedClientShortName(editedClientFromList.getShortName());
+                    editedClientController.setEditedClientFullName(editedClientFromList.getFullName());
                     loadEditDialogView(editedClientFromList);
                 }
                 Stage window = new Stage();
@@ -120,6 +135,7 @@ public class clientViewController {
     private void choseClient(){
         if(editedClientFromList!=null) {
             newInstrumentMainController.setInstrumentClientComboBox(editedClientFromList.getShortName());
+            newInstrumentMainController.setClientInstrument(editedClientFromList);
             Stage window = (Stage) mainVBox.getScene().getWindow();
             window.close();
         }
@@ -149,8 +165,22 @@ public class clientViewController {
         houseNumberColumn.setCellValueFactory(new PropertyValueFactory<>("houseNumber"));
         flatNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flatNumber"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        clientTableView.setItems(clientObservableList);
-        clientTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> setEditedClientFromList(newValue));
+        clientTableView.setItems(filteredClientObservableList);
+        clientTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            setEditedClientFromList(newValue);
+            showInformation(newValue);
+        });
+    }
+    private void addFilterByFullName(){
+        fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
+            filteredClientObservableList.setPredicate(item -> {
+                if (item.getFullName().toUpperCase().contains(newValue.toUpperCase())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        } );
     }
     private void loadEditDialogView(clientModel client){
         editedClientController.setShortNameTextField(client.getShortName());
@@ -163,5 +193,18 @@ public class clientViewController {
         editedClientController.setStatusComboBox(client.getStatus());
         editedClientController.setIdEditedClient(client.getIdClient());
         editedClientController.setClientLabel("Klient");
+    }
+    private void showInformation(clientModel client){
+        if(client != null){
+            shortNameTextField.setText(client.getShortName());
+            fullNameTextField.setText(client.getFullName());
+            cityTextField.setText(client.getPostCode()+ " "+ client.getCity());
+            if(client.getFlatNumber().isEmpty()) {
+                streetTextField.setText(client.getStreet() + " " + client.getHouseNumber());
+            }else{
+                streetTextField.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
+            }
+        }
+
     }
 }

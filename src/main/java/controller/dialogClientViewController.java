@@ -2,6 +2,8 @@ package controller;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,11 +13,11 @@ import model.clientModel;
 import model.userModel;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class dialogClientViewController {
     public dialogClientViewController() {System.out.println("Siemanko jestem konstruktorem klasy dialogClientViewController.");}
-
 
 
     @FXML
@@ -46,6 +48,16 @@ public class dialogClientViewController {
 
     private Integer idEditedClient;
     private clientViewController mainClientController;
+    private String editedClientShortName;
+    private String editedClientFullName;
+
+    public void setEditedClientShortName(String editedClientShortName) {
+        this.editedClientShortName = editedClientShortName;
+    }
+
+    public void setEditedClientFullName(String editedClientFullName) {
+        this.editedClientFullName = editedClientFullName;
+    }
 
     public void setIdEditedClient(Integer idEditedClient) {
         this.idEditedClient = idEditedClient;
@@ -98,7 +110,7 @@ public class dialogClientViewController {
         }
     }
     private void addNewClient(){
-        if(isValidClientData()){
+        if(isValidClientData()&& isValidClientDataInDB()){
             try {
                 Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
                 clientDao.create(getClient());
@@ -111,15 +123,29 @@ public class dialogClientViewController {
         }
     }
     private void editClient(){
-        if(isValidClientData()){
-            try {
-                Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
-                clientDao.update(getClient());
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
-                mainClientController.getClients();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if(isSomethingChange(editedClientShortName,shortNameTextField.getText(),editedClientFullName,fullNameTextField.getText())){
+            if(isValidClientData()&& isValidClientDataInDB()){
+                try {
+                    Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
+                    clientDao.update(getClient());
+                    Stage window = (Stage) mainVBox.getScene().getWindow();
+                    window.close();
+                    mainClientController.getClients();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if(isValidClientData()){
+                try {
+                    Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
+                    clientDao.update(getClient());
+                    Stage window = (Stage) mainVBox.getScene().getWindow();
+                    window.close();
+                    mainClientController.getClients();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -156,6 +182,34 @@ public class dialogClientViewController {
             alert.setContentText(errorMessage);
             alert.showAndWait();
             return false;
+        }
+    }
+    private boolean isValidClientDataInDB(){
+        try {
+            Dao<clientModel, Integer> clientDao= DaoManager.createDao(dbSqlite.getConnectionSource(), clientModel.class);
+            QueryBuilder<clientModel, Integer> userQueryBuilder = clientDao.queryBuilder();
+            userQueryBuilder.where().eq("shortName",shortNameTextField.getText()).or().eq("fullName",fullNameTextField.getText());
+            PreparedQuery<clientModel> prepare = userQueryBuilder.prepare();
+            List<clientModel> result = clientDao.query(prepare);
+            if(result.isEmpty()) {
+                return true;
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Nieprawidłowe dane");
+                alert.setHeaderText("W bazie danych istnieje już klient o podanej nazwie");
+                alert.showAndWait();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean isSomethingChange(String shortNameFirst, String shortNameSecond, String fullNameFirst, String fullNameSecond){
+        if(shortNameFirst.equals(shortNameSecond)&& fullNameFirst.equals(fullNameSecond)){
+            return false;
+        }else{
+            return true;
         }
     }
     private clientModel getClient(){
