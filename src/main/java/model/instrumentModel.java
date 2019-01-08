@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "INSTRUMENTS")
 public class instrumentModel {
     @DatabaseField(generatedId = true)
-    private Integer idIntrument;
+    private Integer idInstrument;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private instrumentNameModel instrumentName;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
@@ -26,7 +26,7 @@ public class instrumentModel {
     }
 
     public instrumentModel(Integer idIntrument, instrumentNameModel instrumentName, instrumentTypeModel instrumentType, instrumentProducerModel instrumentProducer, String serialNumber, String identificationNumber, instrumentRangeModel instrumentRange, clientModel client) {
-        this.idIntrument = idIntrument;
+        this.idInstrument = idIntrument;
         this.instrumentName = instrumentName;
         this.instrumentType = instrumentType;
         this.instrumentProducer = instrumentProducer;
@@ -36,12 +36,12 @@ public class instrumentModel {
         this.client = client;
     }
 
-    public Integer getIdIntrument() {
-        return idIntrument;
+    public Integer getIdInstrument() {
+        return idInstrument;
     }
 
-    public void setIdIntrument(Integer idIntrument) {
-        this.idIntrument = idIntrument;
+    public void setIdInstrument(Integer idIntrument) {
+        this.idInstrument = idIntrument;
     }
 
     public instrumentNameModel getInstrumentName() {

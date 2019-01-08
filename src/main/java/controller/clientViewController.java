@@ -22,6 +22,7 @@ import model.userModel;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class clientViewController {
@@ -70,7 +71,6 @@ public class clientViewController {
     @FXML
     private Button editClientButton;
 
-    private List<clientModel> clientList;
     private ObservableList<clientModel> clientObservableList = FXCollections.observableArrayList();
     FilteredList<clientModel> filteredClientObservableList = new FilteredList<>(clientObservableList, p -> true);
     private clientModel editedClientFromList;
@@ -80,6 +80,7 @@ public class clientViewController {
     }
 
     private dialogClientViewController editedClientController;
+
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy clientViewController.");

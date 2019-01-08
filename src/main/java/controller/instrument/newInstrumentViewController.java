@@ -48,36 +48,80 @@ public class newInstrumentViewController {
     private List<instrumentTypeModel> instrumentTypeList;
     private List<instrumentProducerModel> instrumentProducerList;
     private List<instrumentRangeModel> instrumentRangeList;
+
+    private instrumentViewController editedInstrumentMainController;
+
+    public void setEditedInstrumentMainController(instrumentViewController editedInstrumentMainController) {
+        this.editedInstrumentMainController = editedInstrumentMainController;
+    }
+
+    private instrumentModel editedInstrument;
+
+    public void setEditedInstrument(instrumentModel editedInstrument) {
+        this.editedInstrument = editedInstrument;
+    }
+
     //Obiekty które stworzą nowy przyrząd
     private clientModel clientInstrument;
-
     public void setClientInstrument(clientModel clientInstrument) {
         this.clientInstrument = clientInstrument;
     }
+
+
+
     //Wstrzyknięcia elementów z FXMLA
     @FXML
     private ComboBox<String> instrumentNameComboBox;
     @FXML
-    private Button addNewInstrumentNameButton;
-    @FXML
     private ComboBox<String> instrumentTypeComboBox;
-    @FXML
-    private Button addNewInstrumentTypeButton;
     @FXML
     private ComboBox<String> instrumentProducerComboBox;
     @FXML
-    private Button addNewInstrumentProducerButton;
-    @FXML
     private ComboBox<String> instrumentRangeComboBox;
-    @FXML
-    private Button addNewInstrumentRangeButton;
     @FXML
     private ComboBox<String> instrumentClientComboBox;
     @FXML
     private TextField serialNumberTextField;
     @FXML
-    private TextField identyficationNumberTextField;
+    private TextField identificationNumberTextField;
 
+    public void setInstrumentNameComboBox(String instrumentNameComboBox) {
+        this.instrumentNameComboBox.setValue(instrumentNameComboBox);
+    }
+
+    public void setInstrumentTypeComboBox(String instrumentTypeComboBox) {
+        this.instrumentTypeComboBox.setValue(instrumentTypeComboBox);
+    }
+
+    public void setInstrumentProducerComboBox(String instrumentProducerComboBox) {
+        this.instrumentProducerComboBox.setValue(instrumentProducerComboBox);
+    }
+
+    public void setInstrumentRangeComboBox(String instrumentRangeComboBox) {
+        this.instrumentRangeComboBox.setValue(instrumentRangeComboBox);
+    }
+
+    public void setInstrumentClientComboBox2(String instrumentClientComboBox) {
+        this.instrumentClientComboBox.setValue(instrumentClientComboBox);
+    }
+
+    public void setSerialNumberTextField(String serialNumberTextField) {
+        this.serialNumberTextField.setText(serialNumberTextField);
+    }
+
+    public void setIdentificationNumberTextField(String identificationNumberTextField) {
+        this.identificationNumberTextField.setText(identificationNumberTextField);
+    }
+
+
+    @FXML
+    private Button addNewInstrumentNameButton;
+    @FXML
+    private Button addNewInstrumentTypeButton;
+    @FXML
+    private Button addNewInstrumentRangeButton;
+    @FXML
+    private Button addNewInstrumentProducerButton;
     public void setInstrumentClientComboBox(String instrumentClientComboBox) {
         this.instrumentClientComboBox.setValue(instrumentClientComboBox);
     }
@@ -255,7 +299,6 @@ public class newInstrumentViewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
     public void getInstrumentRangeList() {
         try {
@@ -270,70 +313,35 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
     }
-
     public void addNewInstrument(){
         if(isValidInstrumentData()){
-
-        }
-
-    }
-    private boolean isValidInstrumentData() {
-        String errorMessage = "";
-        if (instrumentNameComboBox.getValue() == null) {
-            errorMessage += "Nie wybrałeś nazwy urządzenia ! \n";
-        }
-        if (instrumentTypeComboBox.getValue() == null) {
-            errorMessage += "Nie wybrałeś typu urządzenia ! \n";
-        }
-        if (instrumentProducerComboBox.getValue() == null) {
-            errorMessage += "Nie wybrałeś producenta urządzenia ! \n";
-        }
-        if ((serialNumberTextField.getText() == null || serialNumberTextField.getText().length() == 0)&&(identyficationNumberTextField.getText() == null || identyficationNumberTextField.getText().length() == 0)) {
-            errorMessage += "Przyrząd musi posiadać numer fabryczny lub numer identyfikacyjny ! \n";
-        }
-        if (instrumentRangeComboBox.getValue() == null) {
-            errorMessage += "Nie wybrałeś zakresu urządzenia ! \n";
-        }
-        if (instrumentClientComboBox.getValue() == null ) {
-            errorMessage += "Nie wybrałeś zleceniodawcy ! \n";
-        }
-        if (errorMessage.length() == 0) {
-            return true;
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            //alert.initOwner(dialogStage);
-            alert.setTitle("Nieprawidłowe dane");
-            alert.setHeaderText("Proszę wprowadzić prawidłowe dane dla podanych niżej pól");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
-            return false;
+            setAddNewInstrumentName();
         }
     }
+
     private void setAddNewInstrumentName(){
+        instrumentModel instrument = null;
         try {
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
             QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
-            if(!serialNumberTextField.getText().isEmpty() && !identyficationNumberTextField.getText().isEmpty()) {
-                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).or().eq("identyficationNumber", identyficationNumberTextField.getText());
-            }else if(!serialNumberTextField.getText().isEmpty() && identyficationNumberTextField.getText().isEmpty()){
+            if(!serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()) {
+                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).or().eq("identificationNumber", identificationNumberTextField.getText());
+            }else if(!serialNumberTextField.getText().isEmpty() && identificationNumberTextField.getText().isEmpty()){
                 instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText());
-            }else if(serialNumberTextField.getText().isEmpty() && !identyficationNumberTextField.getText().isEmpty()){
-                instrumentQueryBuilder.where().eq("identyficationNumber", identyficationNumberTextField.getText());
+            }else if(serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()){
+                instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
             }
+            instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()),serialNumberTextField.getText(), identificationNumberTextField.getText(),getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
             if(result.isEmpty()) {
-                return true;
+                instrumentDao.create(instrument);
+
             }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Nieprawidłowe dane");
-                alert.setHeaderText("W bazie danych istnieje już klient o podanej nazwie");
-                alert.showAndWait();
-                return false;
+                System.out.println("Już jest taki przyrząd ćwoku");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
     private void initComboBox(ComboBox<String> comboBox, FilteredList<String> filteredList){
@@ -353,14 +361,35 @@ public class newInstrumentViewController {
         });
         comboBox.setItems(filteredList);
     }
-    private instrumentModel getInstrument(){
-        instrumentModel instrument;
-        if (!serialNumberTextField.getText().isEmpty() && !identyficationNumberTextField.getText().isEmpty()) {
-            instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()),serialNumberTextField.getText(), identyficationNumberTextField.getText(),getRange(instrumentRangeComboBox.getValue()), clientInstrument);
-
-        }else{
-            client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(), cityTextField.getText(),streetTextField.getText(),houseNumberTextField.getText(),flatNumberTextField.getText(), statusComboBox.getValue(),null);
+    private boolean isValidInstrumentData() {
+        String errorMessage = "";
+        if (instrumentNameComboBox.getValue() == null) {
+            errorMessage += "Nie wybrałeś nazwy urządzenia ! \n";
         }
-        return client;
+        if (instrumentTypeComboBox.getValue() == null) {
+            errorMessage += "Nie wybrałeś typu urządzenia ! \n";
+        }
+        if (instrumentProducerComboBox.getValue() == null) {
+            errorMessage += "Nie wybrałeś producenta urządzenia ! \n";
+        }
+        if ((serialNumberTextField.getText().isEmpty())&&(identificationNumberTextField.getText().isEmpty())) {
+            errorMessage += "Przyrząd musi posiadać numer fabryczny lub numer identyfikacyjny ! \n";
+        }
+        if (instrumentRangeComboBox.getValue() == null) {
+            errorMessage += "Nie wybrałeś zakresu urządzenia ! \n";
+        }
+        if (instrumentClientComboBox.getValue() == null ) {
+            errorMessage += "Nie wybrałeś zleceniodawcy ! \n";
+        }
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Nieprawidłowe dane");
+            alert.setHeaderText("Proszę wprowadzić prawidłowe dane dla podanych niżej pól");
+            alert.setContentText(errorMessage);
+            alert.showAndWait();
+            return false;
+        }
     }
 }

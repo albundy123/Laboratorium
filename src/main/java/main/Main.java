@@ -12,15 +12,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-       // dbSqlite.initDatabase();
+        //dbSqlite.initDatabase();
 
-     /*   FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/users/userView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/InstrumentView.fxml"));
         VBox vBox = loader.load();
         Scene scene = new Scene(vBox);
-*/
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
+
+       /* FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
         AnchorPane anchorPane = loader.load();
-        Scene scene = new Scene(anchorPane);
+        Scene scene = new Scene(anchorPane);*/
         primaryStage.setScene(scene);
         primaryStage.setTitle("Logowanie");
         primaryStage.show();
