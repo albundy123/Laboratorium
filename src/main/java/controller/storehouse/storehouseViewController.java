@@ -2,6 +2,8 @@ package controller.storehouse;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import controller.instrument.editInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
@@ -18,6 +20,7 @@ import javafx.util.StringConverter;
 import model.fxModel.instrumentFxModel;
 import model.fxModel.storehouseFxModel;
 import model.instrumentModel;
+import model.registerModel;
 import model.storehouseModel;
 
 import java.io.IOException;
@@ -225,6 +228,38 @@ public class storehouseViewController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+    }
+    @FXML
+    public void calibrateInstrument(){
+        if(editedStorehouseElementFromList!=null) {
+            try {
+                Dao<registerModel, Integer> registerDao= DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
+                registerModel calibrateInstrument = new registerModel(0,0,storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getIdStorehouse(),
+                        "",storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getCalibrationDate(),
+                        storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"");
+                registerDao.create(calibrateInstrument);
+                Dao<registerModel, Integer> registerDao2= DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
+                QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao2.queryBuilder();
+                registerQueryBuilder.where().eq("idRegister", calibrateInstrument.getIdRegister()-1);
+                PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
+                List<registerModel> result = registerDao2.query(prepare);
+                if(result.isEmpty()){ //znaczy się ze pierwszy wpis :)
+                    calibrateInstrument.setIdRegisterByYear(1);
+                    calibrateInstrument.setCardNumber("1-2018");
+                    registerDao.update(calibrateInstrument);
+                }else{ //nie jest to pierwszy wpis
+                    calibrateInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear()+1);
+                    calibrateInstrument.setCardNumber(result.get(0).getIdRegisterByYear()+1+"2018");
+                    registerDao.update(calibrateInstrument);
+                }
+
+                System.out.println();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
     public void showDate(){

@@ -14,6 +14,7 @@ public class Main extends Application {
 
         //dbSqlite.initDatabase();
 
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/storehouseView.fxml"));
         VBox vBox = loader.load();
         Scene scene = new Scene(vBox);
