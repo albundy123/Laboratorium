@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.instrumentProducerModel;
-import model.instrumentTypeModel;
 import util.ConfirmBox;
 
 import java.sql.SQLException;
@@ -26,6 +26,13 @@ public class newInstrumentProducerViewController {
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
+
+    private editInstrumentViewController editInstrumentMainController;
+
+    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
+        this.editInstrumentMainController = editInstrumentMainController;
+    }
+
     @FXML
     private VBox mainVBox;
     @FXML
@@ -52,7 +59,8 @@ public class newInstrumentProducerViewController {
                 if (result.isEmpty()) {
                     instrumentProducerDao.create(new instrumentProducerModel(0, newInstrumentProducerTextField.getText()));
                     newInstrumentProducerTextField.clear();
-                    newInstrumentMainController.getInstrumentProducerList();
+                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentProducerList();}
+                    if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentProducerList();}
                     Stage window = (Stage) mainVBox.getScene().getWindow();
                     window.close();
                 } else {

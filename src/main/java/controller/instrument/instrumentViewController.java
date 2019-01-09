@@ -28,10 +28,11 @@ import java.util.List;
 
 public class instrumentViewController {
     public instrumentViewController() {System.out.println("Siemanko jestem konstruktorem klasy instrumentViewController.");}
-    private newInstrumentViewController newInstrumentMainController;
 
-    public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
-        this.newInstrumentMainController = newInstrumentMainController;
+    private clientModel client;
+
+    public void setClient(clientModel client) {
+        this.client = client;
     }
 
     //Tabela z danymi
@@ -87,7 +88,7 @@ public class instrumentViewController {
         this.editedInstrumentFromList = editedInstrumentFromList;
     }
 
-    private newInstrumentViewController editedInstrumentController;
+    private editInstrumentViewController editedInstrumentController;
 
     @FXML
     private void initialize(){
@@ -107,14 +108,15 @@ public class instrumentViewController {
             instrumentFxObservableList.clear();
             Dao<instrumentModel, Integer> instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(),instrumentModel.class);
             instrumentModelList = instrumentDao.queryForAll();
-            Integer index =0;
-            instrumentModelList.forEach(instrument ->{
-                instrumentFxObservableList.add(new instrumentFxModel(index, instrument.getIdInstrument(),
+            Integer indeks = 0;
+            for (instrumentModel instrument : instrumentModelList) {
+                instrumentFxObservableList.add(new instrumentFxModel(indeks, instrument.getIdInstrument(),
                         instrument.getInstrumentName().getInstrumentName(), instrument.getInstrumentType().getInstrumentType(),
                         instrument.getInstrumentProducer().getInstrumentProducer(), instrument.getSerialNumber(),
-                        instrument.getIdentificationNumber(),instrument.getInstrumentRange().getInstrumentRange(),
+                        instrument.getIdentificationNumber(), instrument.getInstrumentRange().getInstrumentRange(),
                         instrument.getClient().getShortName()));
-            });
+                indeks++;
+            }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,18 +142,18 @@ public class instrumentViewController {
     private void editInstrument(){
         if(editedInstrumentFromList!=null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/editInstrumentView.fxml"));
                 VBox vBox = loader.load();
                 editedInstrumentController = loader.getController();
                 if (editedInstrumentController != null){
                     editedInstrumentController.setEditedInstrumentMainController(this);
                     editedInstrumentController.setEditedInstrument(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()));
+                    editedInstrumentController.setClientInstrument(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient());
                     setEditedInstrumentValues();
-
                 }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
-                window.setTitle("Edytuj wybranego klienta");
+                window.setTitle("Edytuj wybrany przyrząd");
                 Scene scene = new Scene(vBox);
                 window.setScene(scene);
                 window.show();

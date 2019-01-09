@@ -1,9 +1,12 @@
 package model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
+
+import static com.j256.ormlite.field.DataType.*;
 
 @DatabaseTable (tableName = "STOREHOUSE")
 public class storehouseModel {
@@ -13,18 +16,21 @@ public class storehouseModel {
     @DatabaseField(foreign = true,foreignAutoRefresh = true)
     private instrumentModel instrument;
     @DatabaseField
-    private Date addDate;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private userModel user;
+    private String addDate;
+    @DatabaseField
+    private String calibrationDate;
+    @DatabaseField
+    private String leftDate;
 
     public storehouseModel() {
     }
 
-    public storehouseModel(Integer idStorehouse, instrumentModel instrument, Date addDate, userModel user) {
+    public storehouseModel(Integer idStorehouse, instrumentModel instrument, String addDate, String calibrationDate, String leftDate) {
         this.idStorehouse = idStorehouse;
         this.instrument = instrument;
         this.addDate = addDate;
-        this.user = user;
+        this.calibrationDate = calibrationDate;
+        this.leftDate = leftDate;
     }
 
     public Integer getIdStorehouse() {
@@ -43,19 +49,27 @@ public class storehouseModel {
         this.instrument = instrument;
     }
 
-    public Date getAddDate() {
+    public String getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(Date addDate) {
+    public void setAddDate(String addDate) {
         this.addDate = addDate;
     }
 
-    public userModel getUser() {
-        return user;
+    public String getCalibrationDate() {
+        return calibrationDate;
     }
 
-    public void setUser(userModel user) {
-        this.user = user;
+    public void setCalibrationDate(String calibrationDate) {
+        this.calibrationDate = calibrationDate;
+    }
+
+    public String getLeftDate() {
+        return leftDate;
+    }
+
+    public void setLeftDate(String leftDate) {
+        this.leftDate = leftDate;
     }
 }

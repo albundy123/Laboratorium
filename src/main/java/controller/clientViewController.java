@@ -2,12 +2,12 @@ package controller;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import controller.instrument.newInstrumentViewController;
+import controller.instrument.editInstrumentViewController;
+import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,21 +17,27 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.clientModel;
-import model.userModel;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class clientViewController {
     public clientViewController() {System.out.println("Siemanko jestem konstruktorem klasy clientViewController.");}
+
+
     private newInstrumentViewController newInstrumentMainController;
 
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
+    private editInstrumentViewController editInstrumentMainController;
+
+    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
+        this.editInstrumentMainController = editInstrumentMainController;
+    }
+
     @FXML
     private VBox mainVBox;
     @FXML
@@ -135,8 +141,13 @@ public class clientViewController {
     @FXML
     private void choseClient(){
         if(editedClientFromList!=null) {
+            if(editInstrumentMainController!=null){
+                editInstrumentMainController.setInstrumentClientComboBox(editedClientFromList.getShortName());
+                editInstrumentMainController.setClientInstrument(editedClientFromList);}
+            if(newInstrumentMainController!=null){
             newInstrumentMainController.setInstrumentClientComboBox(editedClientFromList.getShortName());
-            newInstrumentMainController.setClientInstrument(editedClientFromList);
+            newInstrumentMainController.setClientInstrument(editedClientFromList);}
+
             Stage window = (Stage) mainVBox.getScene().getWindow();
             window.close();
         }

@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,11 @@ public class newInstrumentRangeViewController {
     private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
+    }
+    private editInstrumentViewController editInstrumentMainController;
+
+    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
+        this.editInstrumentMainController = editInstrumentMainController;
     }
 
     private ObservableList<String> unitObservableList = FXCollections.observableArrayList();
@@ -65,7 +71,8 @@ public class newInstrumentRangeViewController {
                     newInstrumentRangeTextField1.clear();
                     newInstrumentRangeTextField2.clear();
                     newInstrumentRangeUnitComboBox.valueProperty().set(null);
-                    newInstrumentMainController.getInstrumentRangeList();
+                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentRangeList();}
+                    if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentRangeList();}
                     Stage window = (Stage) mainVBox.getScene().getWindow();
                     window.close();
                 } else {

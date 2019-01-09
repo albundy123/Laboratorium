@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,6 +26,13 @@ public class newInstrumentTypeViewController {
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
+
+    private editInstrumentViewController editInstrumentMainController;
+
+    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
+        this.editInstrumentMainController = editInstrumentMainController;
+    }
+
     @FXML
     private VBox mainVBox;
     @FXML
@@ -51,7 +59,8 @@ public class newInstrumentTypeViewController {
                 if (result.isEmpty()) {
                     instrumentTypeDao.create(new instrumentTypeModel(0, newInstrumentTypeTextField.getText()));
                     newInstrumentTypeTextField.clear();
-                    newInstrumentMainController.getInstrumentTypeList();
+                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentTypeList();}
+                    if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentTypeList();}
                     Stage window = (Stage) mainVBox.getScene().getWindow();
                     window.close();
                 } else {

@@ -25,8 +25,8 @@ public class instrumentModel {
     public instrumentModel() {
     }
 
-    public instrumentModel(Integer idIntrument, instrumentNameModel instrumentName, instrumentTypeModel instrumentType, instrumentProducerModel instrumentProducer, String serialNumber, String identificationNumber, instrumentRangeModel instrumentRange, clientModel client) {
-        this.idInstrument = idIntrument;
+    public instrumentModel(Integer idInstrument, instrumentNameModel instrumentName, instrumentTypeModel instrumentType, instrumentProducerModel instrumentProducer, String serialNumber, String identificationNumber, instrumentRangeModel instrumentRange, clientModel client) {
+        this.idInstrument = idInstrument;
         this.instrumentName = instrumentName;
         this.instrumentType = instrumentType;
         this.instrumentProducer = instrumentProducer;
@@ -40,8 +40,8 @@ public class instrumentModel {
         return idInstrument;
     }
 
-    public void setIdInstrument(Integer idIntrument) {
-        this.idInstrument = idIntrument;
+    public void setIdInstrument(Integer idInstrument) {
+        this.idInstrument = idInstrument;
     }
 
     public instrumentNameModel getInstrumentName() {
@@ -98,5 +98,19 @@ public class instrumentModel {
 
     public void setClient(clientModel client) {
         this.client = client;
+    }
+
+    @Override
+    public String toString() {
+        return "instrumentModel{" +
+                "idInstrument=" + idInstrument +
+                ", instrumentName=" + instrumentName +
+                ", instrumentType=" + instrumentType +
+                ", instrumentProducer=" + instrumentProducer +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", identificationNumber='" + identificationNumber + '\'' +
+                ", instrumentRange=" + instrumentRange +
+                ", client=" + client +
+                '}';
     }
 }

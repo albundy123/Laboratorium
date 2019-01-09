@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import controller.clientViewController;
+import controller.storehouse.storehouseViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,8 +25,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class newInstrumentViewController {
-    public newInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy newInstrumentViewController");
+public class editInstrumentViewController {
+    public editInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy editInstrumentViewController");
     }
 
     private newInstrumentNameViewController newInstrumentName;
@@ -54,7 +55,11 @@ public class newInstrumentViewController {
     public void setEditedInstrumentMainController(instrumentViewController editedInstrumentMainController) {
         this.editedInstrumentMainController = editedInstrumentMainController;
     }
+    private storehouseViewController storehouseMainController;
 
+    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
+        this.storehouseMainController = storehouseMainController;
+    }
     private instrumentModel editedInstrument;
 
     public void setEditedInstrument(instrumentModel editedInstrument) {
@@ -128,7 +133,7 @@ public class newInstrumentViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy newInstrumentViewController");
+        System.out.println("Halo świry jestem funkcją initialize klasy editInstrumentViewController");
         getInstrumentNameList();
         initComboBox(instrumentNameComboBox,filteredNames);
         getInstrumentTypeList();
@@ -145,7 +150,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             newInstrumentName=loader.getController();
             if (newInstrumentName != null){
-                newInstrumentName.setNewInstrumentMainController(this);
+                newInstrumentName.setEditInstrumentMainController(this);
             }
             Stage window = new Stage();
             window.setTitle("Nazwa");
@@ -163,7 +168,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             newInstrumentType=loader.getController();
             if (newInstrumentType != null){
-                newInstrumentType.setNewInstrumentMainController(this);
+                newInstrumentType.setEditInstrumentMainController(this);
             }
             Stage window = new Stage();
             window.setTitle("Typ");
@@ -181,7 +186,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             newInstrumentProducer=loader.getController();
             if (newInstrumentProducer != null){
-                newInstrumentProducer.setNewInstrumentMainController(this);
+                newInstrumentProducer.setEditInstrumentMainController(this);
             }
             Stage window = new Stage();
             window.setTitle("Typ");
@@ -199,7 +204,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             newInstrumentRange=loader.getController();
             if (newInstrumentRange != null){
-                newInstrumentRange.setNewInstrumentMainController(this);
+                newInstrumentRange.setEditInstrumentMainController(this);
             }
             Stage window = new Stage();
             window.setTitle("Typ");
@@ -217,7 +222,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             clientMainController=loader.getController();
             if (clientMainController != null){
-                clientMainController.setNewInstrumentMainController(this);
+                clientMainController.setEditInstrumentMainController(this);
             }
             Stage window = new Stage();
             window.setTitle("Zleceniodawcy");
@@ -313,14 +318,13 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
     }
-    public void addNewInstrument(){
+    public void editInstrument(){
         if(isValidInstrumentData()){
-            setAddNewInstrumentName();
+            saveEditInstrument();
         }
     }
 
-    private void setAddNewInstrumentName(){
-        instrumentModel instrument = null;
+    private void saveEditInstrument(){
         try {
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
             QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
@@ -331,14 +335,18 @@ public class newInstrumentViewController {
             }else if(serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()){
                 instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
             }
-            instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()),serialNumberTextField.getText(), identificationNumberTextField.getText(),getRange(instrumentRangeComboBox.getValue()), clientInstrument);
+            instrumentModel instrument = new instrumentModel(editedInstrument.getIdInstrument(), getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
-            if(result.isEmpty()) {
-                instrumentDao.create(instrument);
-
-            }else{
-                System.out.println("Już jest taki przyrząd ćwoku");
+            if(result.size()==1 && result.get(0).getIdInstrument()!=editedInstrument.getIdInstrument()) {
+                    System.out.println("Ale bieda nie możesz dodaćtakie przyrządu !!");
+            } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument())
+            {   System.out.println("Brawo kasztanie możesz edytować");
+            instrumentDao.update(instrument);
+            }
+            else if(result.size()==0){
+                System.out.println("Brawo kasztanie edytowałeś");
+                instrumentDao.update(instrument);
             }
         } catch (SQLException e) {
             e.printStackTrace();
