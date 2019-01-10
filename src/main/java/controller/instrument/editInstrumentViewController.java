@@ -76,6 +76,9 @@ public class editInstrumentViewController {
 
     //Wstrzyknięcia elementów z FXMLA
     @FXML
+    private VBox mainVBox;
+
+    @FXML
     private ComboBox<String> instrumentNameComboBox;
     @FXML
     private ComboBox<String> instrumentTypeComboBox;
@@ -223,6 +226,7 @@ public class editInstrumentViewController {
             clientMainController=loader.getController();
             if (clientMainController != null){
                 clientMainController.setEditInstrumentMainController(this);
+                clientMainController.setChoseButtonDisable();
             }
             Stage window = new Stage();
             window.setTitle("Zleceniodawcy");
@@ -368,6 +372,12 @@ public class editInstrumentViewController {
             }
         });
         comboBox.setItems(filteredList);
+    }
+
+    @FXML
+    private void cancelSaveInstrument(){
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
     }
     private boolean isValidInstrumentData() {
         String errorMessage = "";

@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.instrument.instrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -48,6 +49,12 @@ public class dialogClientViewController {
 
     private Integer idEditedClient;
     private clientViewController mainClientController;
+    private instrumentViewController editedInstrumentMainController; //Potrzebne od odświeżenia okna :)
+
+    public void setEditedInstrumentMainController(instrumentViewController editedInstrumentMainController) {
+        this.editedInstrumentMainController = editedInstrumentMainController;
+    }
+
     private String editedClientShortName;
     private String editedClientFullName;
 
@@ -130,7 +137,10 @@ public class dialogClientViewController {
                     clientDao.update(getClient());
                     Stage window = (Stage) mainVBox.getScene().getWindow();
                     window.close();
-                    mainClientController.getClients();
+                    if(mainClientController!= null){
+                        mainClientController.getClients();}
+                    if(editedInstrumentMainController!=null){
+                        editedInstrumentMainController.getInstruments();}
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -142,7 +152,10 @@ public class dialogClientViewController {
                     clientDao.update(getClient());
                     Stage window = (Stage) mainVBox.getScene().getWindow();
                     window.close();
-                    mainClientController.getClients();
+                    if(mainClientController!= null){
+                    mainClientController.getClients();}
+                    if(editedInstrumentMainController!=null){
+                        editedInstrumentMainController.getInstruments();}
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

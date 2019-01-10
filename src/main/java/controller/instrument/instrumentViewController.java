@@ -2,7 +2,9 @@ package controller.instrument;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import controller.dialogClientViewController;
 import dbUtil.dbSqlite;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -20,7 +22,6 @@ import javafx.stage.Stage;
 import model.clientModel;
 import model.fxModel.instrumentFxModel;
 import model.instrumentModel;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,13 +30,8 @@ import java.util.List;
 public class instrumentViewController {
     public instrumentViewController() {System.out.println("Siemanko jestem konstruktorem klasy instrumentViewController.");}
 
-    private clientModel client;
 
-    public void setClient(clientModel client) {
-        this.client = client;
-    }
-
-    //Tabela z danymi
+    //Tabela z danymi wszystkie kolumny muszą być wstrzyknięte żeby potem można było z nich korzystać
     @FXML
     private TableView<instrumentFxModel> instrumentTableView;
     @FXML
@@ -55,11 +51,10 @@ public class instrumentViewController {
     @FXML
     private TableColumn<instrumentFxModel, String> instrumentClientColumn;
 
-
     @FXML
     private VBox mainVBox;
 
-    //Wyświetlanie zleceniodawcy
+    //Wyświetlanie zleceniodawcy na dolnym TabPane
     @FXML
     private TextField cityTextField;
     @FXML
@@ -69,18 +64,18 @@ public class instrumentViewController {
     @FXML
     private TextField streetTextField;
 
-
+    //Tu będzie jeszcze wyświetlanie wzorcowań i przygód w magazynie
 
     @FXML
     private TextField fullNameSearchTextField;
     @FXML
     private Button editClientButton;
     @FXML
-
-
-    private List<instrumentModel> instrumentModelList = new ArrayList<instrumentModel>();
-    private ObservableList<instrumentFxModel> instrumentFxObservableList = FXCollections.observableArrayList();
-    FilteredList<instrumentFxModel> filteredInstrumentFxObservableList = new FilteredList<>(instrumentFxObservableList, p -> true);
+    private Button editInstrumentButton;
+    //Różne listy służądo obsługi TableView itd
+    private List<instrumentModel> instrumentModelList = new ArrayList<instrumentModel>(); //Lista instrumentModel z elementami z bazy danych
+    private ObservableList<instrumentFxModel> instrumentFxObservableList = FXCollections.observableArrayList(); //Przerzucenie do listy obserwowalnej wykorzystywanej do wyświetlania
+    FilteredList<instrumentFxModel> filteredInstrumentFxObservableList = new FilteredList<>(instrumentFxObservableList, p -> true); //Lista filtrowana służy do szukania
 
     private instrumentFxModel editedInstrumentFromList;
 
@@ -88,21 +83,22 @@ public class instrumentViewController {
         this.editedInstrumentFromList = editedInstrumentFromList;
     }
 
-    private editInstrumentViewController editedInstrumentController;
+    private dialogClientViewController editedClientController;  //Potrzebny, żebym mógł edytować klienta z dolnego tabPane
+
+    private editInstrumentViewController editedInstrumentController;  //Kontroler z nowego okna, które służy do edycji danych przyrządu. Potrzebne do przesyłania danych między oknami
 
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy instrumentViewController.");
         getInstruments();
         initializeTableView();
+        editClientButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
+        editInstrumentButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
+        addFilter();
 
     }
 
-    public void editClient(){
-
-    }
-
-
+     //Metoda służy do pobierania rekordów z tabeli bazy danych "INSTRUMENTS". Następnie wyniki przerzucane sądo listy elementów, które będą wyświetlane
     public void getInstruments(){
         try {
             instrumentFxObservableList.clear();
@@ -122,6 +118,7 @@ public class instrumentViewController {
             e.printStackTrace();
         }
     }
+    //Metoda służy do łaczenia kolumn TableView z elementami listy. Następnie wybierana jest konkretne lista obserwowalna.
     private void initializeTableView(){
         idInstrumentColumn.setCellValueFactory(new PropertyValueFactory<>("idInstrument"));
         instrumentNameColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentName"));
@@ -131,13 +128,12 @@ public class instrumentViewController {
         instrumentIdentificationNumberColumn.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
         instrumentRangeColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentRange"));
         instrumentClientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
-        instrumentTableView.setItems(instrumentFxObservableList);
-        instrumentTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setEditedInstrumentFromList(newValue);
-        //    showInformation(newValue);
+        instrumentTableView.setItems(filteredInstrumentFxObservableList); //Wiązanie z listą obserwowalną.
+        instrumentTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> { //Dodawanie listenera
+            setEditedInstrumentFromList(newValue); //Setowanie przyrządu, każde przyciśnięcie
+            showInformation(instrumentModelList.get(newValue.getIndexOfInstrumentModelList()).getClient());
         });
     }
-
     @FXML
     private void editInstrument(){
         if(editedInstrumentFromList!=null) {
@@ -182,6 +178,59 @@ public class instrumentViewController {
                 streetTextField.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
             }
         }
-
     }
+
+    @FXML
+    private void editClient(){
+        if(editedInstrumentFromList!=null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/dialogClientView.fxml"));
+                VBox vBox = loader.load();
+                editedClientController = loader.getController();
+                if (editedClientController != null){
+                    editedClientController.setEditedInstrumentMainController(this);
+                    editedClientController.setIdEditedClient(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient().getIdClient());
+                    editedClientController.setEditedClientShortName(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient().getShortName());
+                    editedClientController.setEditedClientFullName(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient().getFullName());
+                    loadEditDialogView(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient());
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Edytuj wybranego klienta");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadEditDialogView(clientModel client){
+        editedClientController.setShortNameTextField(client.getShortName());
+        editedClientController.setFullNameTextField(client.getFullName());
+        editedClientController.setPostCodeTextField(client.getPostCode());
+        editedClientController.setCityTextField(client.getCity());
+        editedClientController.setStreetTextField(client.getStreet());
+        editedClientController.setHouseNumberTextField(client.getHouseNumber());
+        editedClientController.setFlatNumberTextField(client.getFlatNumber());
+        editedClientController.setStatusComboBox(client.getStatus());
+        editedClientController.setIdEditedClient(client.getIdClient());
+        editedClientController.setClientLabel("Klient");
+    }
+    private void addFilter(){
+        fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
+            filteredInstrumentFxObservableList.setPredicate(item -> {
+                if (item.getInstrumentName().toUpperCase().contains(newValue.toUpperCase())||item.getInstrumentType().toUpperCase().contains(newValue.toUpperCase())||
+                        item.getInstrumentProducer().toUpperCase().contains(newValue.toUpperCase())||item.getSerialNumber().toUpperCase().contains(newValue.toUpperCase())||
+                        item.getIdentificationNumber().toUpperCase().contains(newValue.toUpperCase())||item.getInstrumentRange().toUpperCase().contains(newValue.toUpperCase())||
+                        item.getClient().toUpperCase().contains(newValue.toUpperCase())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        } );
+    }
+
 }

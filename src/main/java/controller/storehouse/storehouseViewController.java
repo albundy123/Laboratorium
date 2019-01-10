@@ -122,6 +122,8 @@ public class storehouseViewController {
     }
 
     private newInstrumentViewController newInstrumentController;
+    private calibratedInstrumentViewController calibratedInstrumentController;
+    private leftInstrumentViewController leftInstrumentController;
 
     private List<storehouseModel> storehouseModelList = new ArrayList<storehouseModel>();
     private ObservableList<storehouseFxModel> storehouseFxObservableList = FXCollections.observableArrayList();
@@ -209,6 +211,24 @@ public class storehouseViewController {
         editedInstrumentController.setInstrumentRangeComboBox(editedStorehouseElementFromList.getInstrumentRange());
         editedInstrumentController.setInstrumentClientComboBox2(editedStorehouseElementFromList.getClient());
     }
+    private void setEditedInstrumentLabels(){
+        calibratedInstrumentController.setInstrumentNameLabel(editedStorehouseElementFromList.getInstrumentName());
+        calibratedInstrumentController.setInstrumentTypeLabel(editedStorehouseElementFromList.getInstrumentType());
+        calibratedInstrumentController.setInstrumentProducerLabel(editedStorehouseElementFromList.getInstrumentProducer());
+        calibratedInstrumentController.setSerialNumberLabel(editedStorehouseElementFromList.getSerialNumber());
+        calibratedInstrumentController.setIdentificationNumberLabel(editedStorehouseElementFromList.getIdentificationNumber());
+        calibratedInstrumentController.setInstrumentRangeLabel(editedStorehouseElementFromList.getInstrumentRange());
+        calibratedInstrumentController.setClientLabel(editedStorehouseElementFromList.getClient());
+    }
+    private void setLeftInstrumentLabels(){
+        leftInstrumentController.setInstrumentNameLabel(editedStorehouseElementFromList.getInstrumentName());
+        leftInstrumentController.setInstrumentTypeLabel(editedStorehouseElementFromList.getInstrumentType());
+        leftInstrumentController.setInstrumentProducerLabel(editedStorehouseElementFromList.getInstrumentProducer());
+        leftInstrumentController.setSerialNumberLabel(editedStorehouseElementFromList.getSerialNumber());
+        leftInstrumentController.setIdentificationNumberLabel(editedStorehouseElementFromList.getIdentificationNumber());
+        leftInstrumentController.setInstrumentRangeLabel(editedStorehouseElementFromList.getInstrumentRange());
+        leftInstrumentController.setClientLabel(editedStorehouseElementFromList.getClient());
+    }
     @FXML
     private void addNewInstrument(){
             try {
@@ -234,29 +254,51 @@ public class storehouseViewController {
     public void calibrateInstrument(){
         if(editedStorehouseElementFromList!=null) {
             try {
-                Dao<registerModel, Integer> registerDao= DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
                 registerModel calibrateInstrument = new registerModel(0,0,storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getIdStorehouse(),
                         "",storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getCalibrationDate(),
                         storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"");
-                registerDao.create(calibrateInstrument);
-                Dao<registerModel, Integer> registerDao2= DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
-                QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao2.queryBuilder();
-                registerQueryBuilder.where().eq("idRegister", calibrateInstrument.getIdRegister()-1);
-                PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
-                List<registerModel> result = registerDao2.query(prepare);
-                if(result.isEmpty()){ //znaczy się ze pierwszy wpis :)
-                    calibrateInstrument.setIdRegisterByYear(1);
-                    calibrateInstrument.setCardNumber("1-2018");
-                    registerDao.update(calibrateInstrument);
-                }else{ //nie jest to pierwszy wpis
-                    calibrateInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear()+1);
-                    calibrateInstrument.setCardNumber(result.get(0).getIdRegisterByYear()+1+"2018");
-                    registerDao.update(calibrateInstrument);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/calibratedInstrumentView.fxml"));
+                VBox vBox = loader.load();
+                calibratedInstrumentController = loader.getController();
+                if (calibratedInstrumentController != null){
+                    calibratedInstrumentController.setStorehouseMainController(this);
+                    calibratedInstrumentController.setCalibratedInstrument(calibrateInstrument);
+                    setEditedInstrumentLabels();
+                    //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
                 }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Dodaj przyrząd do wzorcowania");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-                System.out.println();
-
-            } catch (SQLException e) {
+    }
+    @FXML
+    public void leftInstrument(){
+        if(editedStorehouseElementFromList!=null) {
+            try {
+                storehouseModel leftInstrument = storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/leftInstrumentView.fxml"));
+                VBox vBox = loader.load();
+                leftInstrumentController = loader.getController();
+                if (leftInstrumentController != null){
+                    leftInstrumentController.setStorehouseMainController(this);
+                    leftInstrumentController.setLeftInstrument(leftInstrument);
+                    setLeftInstrumentLabels();
+                    //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Dodaj przyrząd do wzorcowania");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

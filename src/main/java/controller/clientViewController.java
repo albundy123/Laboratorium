@@ -5,6 +5,8 @@ import com.j256.ormlite.dao.DaoManager;
 import controller.instrument.editInstrumentViewController;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -26,17 +28,6 @@ import java.util.List;
 public class clientViewController {
     public clientViewController() {System.out.println("Siemanko jestem konstruktorem klasy clientViewController.");}
 
-
-    private newInstrumentViewController newInstrumentMainController;
-
-    public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
-        this.newInstrumentMainController = newInstrumentMainController;
-    }
-    private editInstrumentViewController editInstrumentMainController;
-
-    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
-        this.editInstrumentMainController = editInstrumentMainController;
-    }
 
     @FXML
     private VBox mainVBox;
@@ -76,9 +67,26 @@ public class clientViewController {
     private Button addClientButton;
     @FXML
     private Button editClientButton;
+    @FXML
+    private Button choseClientButton;
+    public void setChoseButtonDisable(){
+        choseClientButton.setDisable(false);
+    }
 
     private ObservableList<clientModel> clientObservableList = FXCollections.observableArrayList();
     FilteredList<clientModel> filteredClientObservableList = new FilteredList<>(clientObservableList, p -> true);
+
+    private newInstrumentViewController newInstrumentMainController;
+
+    public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
+        this.newInstrumentMainController = newInstrumentMainController;
+    }
+    private editInstrumentViewController editInstrumentMainController;
+
+    public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
+        this.editInstrumentMainController = editInstrumentMainController;
+    }
+
     private clientModel editedClientFromList;
 
     public void setEditedClientFromList(clientModel editedClientFromList) {
@@ -90,10 +98,11 @@ public class clientViewController {
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy clientViewController.");
-        addFilterByFullName();
-
+        addFilter();
         getClients();
         initializeTableView();
+        editClientButton.disableProperty().bind(Bindings.isEmpty(clientTableView.getSelectionModel().getSelectedItems()));
+        choseClientButton.setDisable(true);
     }
     @FXML
     private void addClient(){
@@ -183,10 +192,10 @@ public class clientViewController {
             showInformation(newValue);
         });
     }
-    private void addFilterByFullName(){
+    private void addFilter(){
         fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredClientObservableList.setPredicate(item -> {
-                if (item.getFullName().toUpperCase().contains(newValue.toUpperCase())) {
+                if (item.getShortName().toUpperCase().contains(newValue.toUpperCase())||item.getFullName().toUpperCase().contains(newValue.toUpperCase())||item.getCity().toUpperCase().contains(newValue.toUpperCase())) {
                     return true;
                 } else {
                     return false;
