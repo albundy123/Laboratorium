@@ -9,19 +9,22 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.util.StringConverter;
 import model.registerModel;
+import util.Converter;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class calibratedInstrumentViewController {
     public calibratedInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy calibratedInstrumentViewController");
     }
-
-
     @FXML
     private void initialize(){
         System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
+        calibrationDateDatePicker.setConverter(Converter.getConverter());
 
     }
     private storehouseViewController storehouseMainController;

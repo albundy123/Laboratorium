@@ -34,9 +34,6 @@ import java.util.List;
 public class storehouseViewController {
     public  storehouseViewController() {System.out.println("Siemanko jestem konstruktorem klasy  storehouseViewController.");}
 
-
-
-
     @FXML
     private Button addNewInstrumentButton;
     @FXML
@@ -81,38 +78,11 @@ public class storehouseViewController {
     private Button editInstrumentButton;
     @FXML
     private TextField streetTextField;
-
-    @FXML
-    private DatePicker datePicker;
-    // Converter
-    StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
-        DateTimeFormatter dateFormatter =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        @Override
-        public String toString(LocalDate date) {
-            if (date != null) {
-                return dateFormatter.format(date);
-            } else {
-                return "";
-            }
-        }
-        @Override
-        public LocalDate fromString(String string) {
-            if (string != null && !string.isEmpty()) {
-                return LocalDate.parse(string, dateFormatter);
-            } else {
-                return null;
-            }
-        }
-    };
-
-
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy storehouseViewController.");
         getStorehouseList();
-        initializeTableView();
-        datePicker.setConverter(converter);
+       initializeTableView();
     }
 
     private storehouseFxModel editedStorehouseElementFromList;
@@ -129,18 +99,6 @@ public class storehouseViewController {
     private ObservableList<storehouseFxModel> storehouseFxObservableList = FXCollections.observableArrayList();
     private editInstrumentViewController editedInstrumentController;
 
-
-    public void addInstrumentToStorehouse(String dataczegos){
-        try {
-            Date dNow = new Date();
-            Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
-            storehouseModel magazynek = new storehouseModel(0,new instrumentModel(),dataczegos, dataczegos,dataczegos);
-            magazynek.getInstrument().setIdInstrument(1);
-            storehouseDao.create(magazynek);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void getStorehouseList(){
         try {
@@ -248,7 +206,6 @@ public class storehouseViewController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
     }
     @FXML
     public void calibrateInstrument(){
@@ -276,7 +233,6 @@ public class storehouseViewController {
                 e.printStackTrace();
             }
         }
-
     }
     @FXML
     public void leftInstrument(){
@@ -303,12 +259,5 @@ public class storehouseViewController {
             }
         }
 
-    }
-    public void showDate(){
-        System.out.println(datePicker.getValue());
-        String dataczegostam=datePicker.getValue().toString();
-
-        addInstrumentToStorehouse(dataczegostam);
-        getStorehouseList();
     }
 }

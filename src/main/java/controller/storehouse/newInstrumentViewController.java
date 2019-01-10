@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.*;
+import util.Converter;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -142,28 +143,8 @@ public class newInstrumentViewController {
         initComboBox(instrumentProducerComboBox,filteredProducers);
         getInstrumentRangeList();
         initComboBox(instrumentRangeComboBox,filteredRange);
+        addDateDatePicker.setConverter(Converter.getConverter());
     }
-
-    StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
-        DateTimeFormatter dateFormatter =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        @Override
-        public String toString(LocalDate date) {
-            if (date != null) {
-                return dateFormatter.format(date);
-            } else {
-                return "";
-            }
-        }
-        @Override
-        public LocalDate fromString(String string) {
-            if (string != null && !string.isEmpty()) {
-                return LocalDate.parse(string, dateFormatter);
-            } else {
-                return null;
-            }
-        }
-    };
     @FXML
     private void addNewInstrumentName(){
         try {
@@ -360,18 +341,19 @@ public class newInstrumentViewController {
             instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
-            storehouseModel storehouse = new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),"","");
+            storehouseModel storehouse = new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText());
             Dao<storehouseModel, Integer> storehouseDao= DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
             if(result.isEmpty()) {
                 instrumentDao.create(instrument);
-                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),"",""));
+                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText()));
                 System.out.println("Nowy tu i tu!!");
 
             }else{
                 instrument=result.get(0);
                 System.out.println("Już jest taki przyrząd ćwoku");
-                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),"",""));
+                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText()));
             }
+            storehouseMainController.getStorehouseList();
         } catch (SQLException e) {
             e.printStackTrace();
         }
