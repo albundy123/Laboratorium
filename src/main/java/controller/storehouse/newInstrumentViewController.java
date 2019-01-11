@@ -30,6 +30,7 @@ public class newInstrumentViewController {
     public newInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy newInstrumentViewController");
     }
 
+    //Obiekty klas kontrolerów okien, z którymi wymagana jest komunikacja
     private newInstrumentNameViewController newInstrumentName;
     private newInstrumentTypeViewController newInstrumentType;
     private newInstrumentProducerViewController newInstrumentProducer;
@@ -51,6 +52,7 @@ public class newInstrumentViewController {
     private List<instrumentProducerModel> instrumentProducerList;
     private List<instrumentRangeModel> instrumentRangeList;
 
+    //Obiekt potrzebny, żeby można było się odwoływać do metod obiektu nadrzędnego dla tego kontrolera czyli do storehouseViewController np. odświeżenie listy w magazynie
     private storehouseViewController storehouseMainController;
 
     public void setStorehouseMainController(storehouseViewController storehouseMainController) {
@@ -72,6 +74,8 @@ public class newInstrumentViewController {
 
 
     //Wstrzyknięcia elementów z FXMLA
+    @FXML
+    VBox mainVBox;
     @FXML
     private ComboBox<String> instrumentNameComboBox;
     @FXML
@@ -128,6 +132,14 @@ public class newInstrumentViewController {
     private Button addNewInstrumentRangeButton;
     @FXML
     private Button addNewInstrumentProducerButton;
+
+    @FXML
+    private Button addNewInstrumentButton;
+    @FXML
+    private Button cancelAddNewInstrumentButton;
+
+
+
     public void setInstrumentClientComboBox(String instrumentClientComboBox) {
         this.instrumentClientComboBox.setValue(instrumentClientComboBox);
     }
@@ -236,6 +248,7 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
     }
+    //Metody, które pobierają listy z konkretnych tabel bazy danych, które przechowują dane do ComboBoxów
     public void getInstrumentNameList() {
         try {
             instrumentNameObservableList.clear();
@@ -249,38 +262,6 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
     }
-    public instrumentNameModel getName(String instrumentName){
-        for (instrumentNameModel name : instrumentNameList) {
-            if (name.getInstrumentName().equals(instrumentName)) {
-                return name;
-            }
-        }
-        return null;
-    }
-    public instrumentTypeModel getType(String instrumentType){
-        for (instrumentTypeModel type : instrumentTypeList) {
-            if (type.getInstrumentType().equals(instrumentType)) {
-                return type;
-            }
-        }
-        return null;
-    }
-    public instrumentProducerModel getProducer(String instrumentProducer){
-        for (instrumentProducerModel producer : instrumentProducerList) {
-            if (producer.getInstrumentProducer().equals(instrumentProducer)) {
-                return producer;
-            }
-        }
-        return null;
-    }
-    public instrumentRangeModel getRange(String instrumentRange){
-        for (instrumentRangeModel range : instrumentRangeList) {
-            if (range.getInstrumentRange().equals(instrumentRange)) {
-                return range;
-            }
-        }
-        return null;
-    }
     public void getInstrumentTypeList(){
         try {
             instrumentTypeObservableList.clear();
@@ -293,7 +274,6 @@ public class newInstrumentViewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
     public void getInstrumentProducerList(){
         try {
@@ -321,6 +301,41 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
     }
+    public instrumentNameModel getName(String instrumentName){
+        for (instrumentNameModel name : instrumentNameList) {
+            if (name.getInstrumentName().equals(instrumentName)) {
+                return name;
+            }
+        }
+        return null;
+    }
+    //Zwracają cały obiekt znając tylko wartość pola String
+    public instrumentTypeModel getType(String instrumentType){
+        for (instrumentTypeModel type : instrumentTypeList) {
+            if (type.getInstrumentType().equals(instrumentType)) {
+                return type;
+            }
+        }
+        return null;
+    }
+    public instrumentProducerModel getProducer(String instrumentProducer){
+        for (instrumentProducerModel producer : instrumentProducerList) {
+            if (producer.getInstrumentProducer().equals(instrumentProducer)) {
+                return producer;
+            }
+        }
+        return null;
+    }
+    public instrumentRangeModel getRange(String instrumentRange){
+        for (instrumentRangeModel range : instrumentRangeList) {
+            if (range.getInstrumentRange().equals(instrumentRange)) {
+                return range;
+            }
+        }
+        return null;
+    }
+
+    //Dodawania nowego przyrządu
     public void addNewInstrument(){
         if(isValidInstrumentData()){
             setAddNewInstrumentName();
@@ -346,45 +361,32 @@ public class newInstrumentViewController {
             if(result.isEmpty()) {
                 instrumentDao.create(instrument);
                 storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText()));
-                System.out.println("Nowy tu i tu!!");
+                System.out.println("Dodajemy przyrząd do tabeli przyrządy i potem do storehouse");
 
             }else{
                 instrument=result.get(0);
-                System.out.println("Już jest taki przyrząd ćwoku");
-                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText()));
+                System.out.println("Przyrząd był juzw tabeli przryządy");
+                QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
+                storehouseQueryBuilder.where().eq("instrument_id", instrument.getIdInstrument()).and().eq("leftDate","");
+                PreparedQuery<storehouseModel> storehousePrepare = storehouseQueryBuilder.prepare();
+                List<storehouseModel> storehouseResult=storehouseDao.query(storehousePrepare);
+                if(!storehouseResult.isEmpty()){ //Blokuje możliwość dodania do magazynu przyrządu który nie został wydany, tzn. ciagle jest na stanie
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Przyrząd już jest na stanie w magazynie");
+                    alert.setHeaderText("Proszę zweryfikować dane lub uzupełnić wpis dotyczący przyrządu");
+                    alert.showAndWait();
+                }else {
+                    storehouseDao.create(new storehouseModel(0, instrument, addDateDatePicker.getValue().toString(), null, "", null, "", null, newInstrumentTextArea.getText()));
+                }
             }
+            Stage window = (Stage) mainVBox.getScene().getWindow();
+            window.close();
             storehouseMainController.getStorehouseList();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    private void editInstrument(){
-        try {
-            Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
-            QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
-            if(!serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()) {
-                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).or().eq("identificationNumber", identificationNumberTextField.getText());
-            }else if(!serialNumberTextField.getText().isEmpty() && identificationNumberTextField.getText().isEmpty()){
-                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText());
-            }else if(serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()){
-                instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
-            }
-            instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
-            PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
-            List<instrumentModel> result = instrumentDao.query(prepare);
-            if(result.size()>1) {
-                instrumentDao.create(instrument);
-                if (instrument.getClient()==null){
-                    System.out.println("Ale bieda !!");
-                }
-
-            }else{
-                System.out.println("Już jest taki przyrząd ćwoku");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    //Metoda służy do konfiguracji ComboBoxów, żeby można było filtrować w nich wartości
     private void initComboBox(ComboBox<String> comboBox, FilteredList<String> filteredList){
         comboBox.setEditable(true);
         comboBox.getEditor().textProperty().addListener((v, oldValue, newValue) -> {
@@ -402,6 +404,7 @@ public class newInstrumentViewController {
         });
         comboBox.setItems(filteredList);
     }
+    //Metoda do sprawdzania poprawności danych tak sobie prosta wyświetla alert
     private boolean isValidInstrumentData() {
         String errorMessage = "";
         if (instrumentNameComboBox.getValue() == null) {
@@ -432,5 +435,10 @@ public class newInstrumentViewController {
             alert.showAndWait();
             return false;
         }
+    }
+    @FXML
+    private void cancelAddNewInstrument(){
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
     }
 }

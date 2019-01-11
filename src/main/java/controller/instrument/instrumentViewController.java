@@ -11,10 +11,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -67,11 +64,12 @@ public class instrumentViewController {
     //Tu będzie jeszcze wyświetlanie wzorcowań i przygód w magazynie
 
     @FXML
-    private TextField fullNameSearchTextField;
+    private TextField searchTextField;
     @FXML
     private Button editClientButton;
     @FXML
     private Button editInstrumentButton;
+
     //Różne listy służądo obsługi TableView itd
     private List<instrumentModel> instrumentModelList = new ArrayList<instrumentModel>(); //Lista instrumentModel z elementami z bazy danych
     private ObservableList<instrumentFxModel> instrumentFxObservableList = FXCollections.observableArrayList(); //Przerzucenie do listy obserwowalnej wykorzystywanej do wyświetlania
@@ -219,7 +217,7 @@ public class instrumentViewController {
         editedClientController.setClientLabel("Klient");
     }
     private void addFilter(){
-        fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
+        searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredInstrumentFxObservableList.setPredicate(item -> {
                 if (item.getInstrumentName().toUpperCase().contains(newValue.toUpperCase())||item.getInstrumentType().toUpperCase().contains(newValue.toUpperCase())||
                         item.getInstrumentProducer().toUpperCase().contains(newValue.toUpperCase())||item.getSerialNumber().toUpperCase().contains(newValue.toUpperCase())||

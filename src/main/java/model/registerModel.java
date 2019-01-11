@@ -88,4 +88,17 @@ public class registerModel {
     public void setCertificateNumber(String certificateNumber) {
         this.certificateNumber = certificateNumber;
     }
+
+    @Override
+    public String toString() {
+        return "registerModel{" +
+                "idRegister=" + idRegister +
+                ", idRegisterByYear=" + idRegisterByYear +
+                ", idStorehouse=" + idStorehouse +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", calibrationDate='" + calibrationDate + '\'' +
+                ", instrument=" + instrument +
+                ", certificateNumber='" + certificateNumber + '\'' +
+                '}';
+    }
 }

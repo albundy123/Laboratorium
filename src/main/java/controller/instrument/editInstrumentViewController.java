@@ -13,10 +13,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
@@ -92,6 +89,8 @@ public class editInstrumentViewController {
     private TextField serialNumberTextField;
     @FXML
     private TextField identificationNumberTextField;
+    @FXML
+    private Label informationLabel;
 
     public void setInstrumentNameComboBox(String instrumentNameComboBox) {
         this.instrumentNameComboBox.setValue(instrumentNameComboBox);
@@ -342,11 +341,11 @@ public class editInstrumentViewController {
             instrumentModel instrument = new instrumentModel(editedInstrument.getIdInstrument(), getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
-            if(result.size()==1 && result.get(0).getIdInstrument()!=editedInstrument.getIdInstrument()) {
-                    System.out.println("Ale bieda nie możesz dodaćtakie przyrządu !!");
+            if(result.size()>=1 ) {
+                    informationLabel.setText("Nie możesz dodać drugiego takiego samego przyrządu !");
             } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument())
             {   System.out.println("Brawo kasztanie możesz edytować");
-            instrumentDao.update(instrument);
+                instrumentDao.update(instrument);
             }
             else if(result.size()==0){
                 System.out.println("Brawo kasztanie edytowałeś");

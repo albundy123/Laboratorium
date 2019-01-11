@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -59,12 +60,15 @@ public class registerViewController {
     private Button editInstrumentButton;
     @FXML
     private TextField streetTextField;
+    @FXML
+    private TextField searchTextField;
 
 
 
 
     private List<registerModel> registerModelList = new ArrayList<registerModel>();
     private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
+    FilteredList<registerFxModel> filteredRegisterFxObservableList = new FilteredList<>(registerFxObservableList, p -> true); //Lista filtrowana służy do szukania
 
 private registerFxModel editedRegisterElementFromList;
 
@@ -75,18 +79,21 @@ private registerFxModel editedRegisterElementFromList;
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
-    getStorehouseList();
+    getRegisterList();
     initializeTableView();
+    addFilter();
 
     }
 
-    public void getStorehouseList(){
+    public void getRegisterList(){
         try {
             registerFxObservableList.clear();
             Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
             registerModelList = registerDao.queryForAll();
+
             Integer indeks = 0;
             for (registerModel registerElement : registerModelList) {
+                System.out.println(registerElement.toString());
                 registerFxObservableList.add(new registerFxModel(indeks, registerElement.getIdRegisterByYear(),registerElement.getCardNumber(),
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
@@ -105,16 +112,24 @@ private registerFxModel editedRegisterElementFromList;
         instrumentNameColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentName"));
         instrumentSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         instrumentIdentificationNumberColumn.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
-
         instrumentClientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
-
-
-
-       registerTableView.setItems(registerFxObservableList);
+        registerTableView.setItems(filteredRegisterFxObservableList);
         registerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setEditedRegisterElementFromList(newValue);
             //    showInformation(newValue);
         });
+    }
+    private void addFilter(){
+        searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
+            filteredRegisterFxObservableList.setPredicate(item -> {
+                if (item.getInstrumentName().toUpperCase().contains(newValue.toUpperCase())|| item.getSerialNumber().toUpperCase().contains(newValue.toUpperCase())||
+                        item.getIdentificationNumber().toUpperCase().contains(newValue.toUpperCase())||item.getClient().toUpperCase().contains(newValue.toUpperCase())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        } );
     }
 
 }

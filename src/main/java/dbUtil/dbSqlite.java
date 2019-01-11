@@ -45,8 +45,9 @@ public class dbSqlite {
         try {
             //userModelDao = DaoManager.createDao(dbSqlite.getConnectionSource(), userModel.class);
             //TableUtils.dropTable(dbSqlite.getConnectionSource(), clientModel.class,true);
-        //    TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), instrumentRangeModel.class);
+            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), instrumentModel.class);
             TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), storehouseModel.class);
+            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), registerModel.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }

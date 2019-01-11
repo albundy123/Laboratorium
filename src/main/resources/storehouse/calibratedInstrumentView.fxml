@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.storehouse.calibratedInstrumentViewController">
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.storehouse.calibratedInstrumentViewController">
     <children>
         <HBox prefHeight="31.0" prefWidth="500.0">
             <children>
@@ -112,11 +112,11 @@
         </GridPane>
         <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0">
             <children>
-                <Button fx:id="addNewInstrumentButton" mnemonicParsing="false" onAction="#calibrateInstrument" prefWidth="100.0" text="Dodaj">
+                <Button fx:id="addCalibrateInstrumentButton" mnemonicParsing="false" onAction="#calibrateInstrument" prefWidth="100.0" text="Dodaj">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Button>
-                <Button fx:id="cancelAddNewInstrumentButton" mnemonicParsing="false" prefWidth="100.0" text="Anuluj">
+                <Button fx:id="cancelAddCalibrateInstrumentButton" mnemonicParsing="false" onAction="#cancelAddCalibrateInstrument" prefWidth="100.0" text="Anuluj">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Button>

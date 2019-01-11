@@ -33,7 +33,7 @@
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Label>
-                <TextField fx:id="fullNameSearchTextField" prefHeight="25.0" prefWidth="372.0">
+                <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="372.0">
                     <HBox.margin>
                         <Insets bottom="5.0" left="2.0" right="5.0" top="5.0" />
                     </HBox.margin>

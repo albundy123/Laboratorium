@@ -12,11 +12,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        dbSqlite.initDatabase();
+        //dbSqlite.initDatabase();
 
-       // FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
+       //FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/storehouseView.fxml"));
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/instrumentView.fxml"));
+       //FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/instrumentView.fxml"));
        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/clientView.fxml"));
         VBox vBox = loader.load();
         Scene scene = new Scene(vBox);

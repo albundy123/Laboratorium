@@ -9,10 +9,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.registerModel;
 import model.storehouseModel;
+import util.Converter;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class leftInstrumentViewController {
@@ -23,6 +27,7 @@ public class leftInstrumentViewController {
     @FXML
     private void initialize(){
         System.out.println("Halo świry jestem funkcją initialize klasy leftInstrumentViewController");
+        leftDateDatePicker.setConverter(Converter.getConverter());
 
     }
     private storehouseModel leftInstrument;
@@ -37,14 +42,9 @@ public class leftInstrumentViewController {
         this.storehouseMainController = storehouseMainController;
     }
 
-    private registerModel calibratedInstrument;
-
-    public void setCalibratedInstrument(registerModel calibratedInstrument) {
-        this.calibratedInstrument = calibratedInstrument;
-    }
-
     @FXML
-    private Button cancelAddNewInstrumentButton;
+    VBox mainVBox;
+
     @FXML
     private Label instrumentNameLabel;
     @FXML
@@ -62,7 +62,9 @@ public class leftInstrumentViewController {
     @FXML
     private Label instrumentTypeLabel;
     @FXML
-    private Button addNewInstrumentButton;
+    private Button leftInstrumentButton;
+    @FXML
+    private Button cancelLeftInstrumentButton;
 
     @FXML
     private Label informationLabel;
@@ -99,18 +101,47 @@ public class leftInstrumentViewController {
     public void leftInstrument(){
         if(leftInstrument!=null) {
             if (leftDateDatePicker.getValue() != null) {
-                try {
-                    Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
-                    leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
-                    storehouseDao.update(leftInstrument);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                if(leftInstrument.getCalibrationDate().equals("")){ // Bez wzorcowania
+                    if(!leftDateDatePicker.getValue().isAfter(LocalDate.parse(leftInstrument.getAddDate()))){
+                        informationLabel.setText("Data wydanie jest wcześniejsza niż przyjęcia !");
+                    }else{
+                        try {
+                            Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
+                            leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
+                            storehouseDao.update(leftInstrument);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        Stage window = (Stage) mainVBox.getScene().getWindow();
+                        window.close();
+                        storehouseMainController.getStorehouseList();
+                    }
+                }else{
+                    if(!leftDateDatePicker.getValue().isAfter(LocalDate.parse(leftInstrument.getCalibrationDate()))){
+                        informationLabel.setText("Data wydanie jest wcześniejsza niż wzorcowania !");
+                    }else{
+                        try {
+                            Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
+                            leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
+                            storehouseDao.update(leftInstrument);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        Stage window = (Stage) mainVBox.getScene().getWindow();
+                        window.close();
+                        storehouseMainController.getStorehouseList();
+                    }
                 }
+
             }
             else{
                 informationLabel.setText("Wybierz datę wydania");
             }
         }
     }
-
+    @FXML
+    private void cancelLeftInstrument(){
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
+    }
 }

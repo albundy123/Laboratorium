@@ -87,4 +87,18 @@ public class registerFxModel {
     public void setClient(String client) {
         this.client = client;
     }
+
+    @Override
+    public String toString() {
+        return "registerFxModel{" +
+                "indexOfRegisterModelList=" + indexOfRegisterModelList +
+                ", idRegisterByYear=" + idRegisterByYear +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", calibrationDate='" + calibrationDate + '\'' +
+                ", instrumentName='" + instrumentName + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", identificationNumber='" + identificationNumber + '\'' +
+                ", client='" + client + '\'' +
+                '}';
+    }
 }
