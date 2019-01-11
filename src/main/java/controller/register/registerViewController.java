@@ -2,21 +2,21 @@ package controller.register;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.fxModel.registerFxModel;
 import model.fxModel.storehouseFxModel;
 import model.registerModel;
 import model.storehouseModel;
+import model.yearModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,43 +25,59 @@ import java.util.List;
 public class registerViewController {
     public  registerViewController() {System.out.println("Siemanko jestem konstruktorem klasy  registerViewController.");}
 
-
-    @FXML
-    private TableColumn<registerFxModel, String> calibrationDateColumn;
-    @FXML
-    private TextField fullNameSearchTextField;
-    @FXML
-    private TableColumn<registerFxModel, String> instrumentIdentificationNumberColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> userColumn;
-    @FXML
-    private TextField shortNameTextField;
-    @FXML
-    private VBox mainVBox;
-    @FXML
-    private TableColumn<registerFxModel, String> instrumentSerialNumberColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> cardNumberColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> instrumentClientColumn;
-    @FXML
-    private TextField cityTextField;
+//Najpierw tabela z kolumnami do wyswietlania
     @FXML
     private TableView<registerFxModel> registerTableView;
     @FXML
     private TableColumn<registerFxModel, Integer> idRegisterByYearColumn;
     @FXML
-    private TextField fullNameTextField;
+    private TableColumn<registerFxModel, String> cardNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> calibrationDateColumn;
     @FXML
     private TableColumn<registerFxModel, String> instrumentNameColumn;
     @FXML
-    private TableColumn<registerFxModel, String> certificateNumberColumn;
+    private TableColumn<registerFxModel, String> instrumentSerialNumberColumn;
     @FXML
-    private Button editInstrumentButton;
+    private TableColumn<registerFxModel, String> instrumentIdentificationNumberColumn;
     @FXML
-    private TextField streetTextField;
+    private TableColumn<registerFxModel, String> instrumentClientColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> calibratePersonColumn;
+    @FXML
+    private TableColumn<registerFxModel,String> certificateNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel,String> stateColumn;
+    //Labele do wyświetlania szczegułów może dam to do innego fxmla jak mi się będzie chciało kiedyś
+    @FXML
+    private Label shortNameLabel;
+    @FXML
+    private Label fullNameLabel;
+    @FXML
+    private Label cityLabel;
+    @FXML
+    private Label streetLabel;
+    @FXML
+    private Label addDateLabel;
+    @FXML
+    private Label addPersonLabel;
+    @FXML
+    private Label calibrationDateLabel;
+    @FXML
+    private Label calibrationPersonLabel;
+    @FXML
+    private Label leftDateLabel;
+    @FXML
+    private Label leftPersonLabel;
     @FXML
     private TextField searchTextField;
+    //Elementy do ładowania danych z tabeli REGISTER
+    @FXML
+    private ComboBox<String> yearComboBox;
+    @FXML
+    private ComboBox<String> isStateOkComboBox; //Czy wszystkie czy tylko te co mamy na stanie
+    @FXML
+    private Button loadRegisterDataButton;          //Uruchamia ładowanie
 
 
 
@@ -79,9 +95,14 @@ private registerFxModel editedRegisterElementFromList;
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
-    getRegisterList();
-    initializeTableView();
-    addFilter();
+
+        isStateOkComboBox.getItems().addAll("Wszystkie","ON","OFF");
+        isStateOkComboBox.setValue("Wszystkie");
+        yearComboBox.setItems(getYearsList());
+        yearComboBox.setValue("2019"); //Domyślnie będzie rok bieżący :)
+        getRegisterList();
+        initializeTableView();
+        addFilter();
 
     }
 
@@ -89,15 +110,33 @@ private registerFxModel editedRegisterElementFromList;
         try {
             registerFxObservableList.clear();
             Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
+            QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao.queryBuilder();
+            if(isStateOkComboBox.getValue().equals(yearComboBox.getValue())) {     //Tylko kiedy obydwa mają tę samą wartość całkiem przypadkowo :)
+                registerModelList = registerDao.queryForAll();
+                System.out.println("Wszystkie");
+            }else{
+                if(!isStateOkComboBox.getValue().equals("Wszystkie")&& yearComboBox.getValue().equals("Wszystkie")){
+                    registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue());
+                    System.out.println("W magazynie");
+                }else if(isStateOkComboBox.getValue().equals("Wszystkie")&& !yearComboBox.getValue().equals("Wszystkie")){
+                    registerQueryBuilder.where().like("calibrationDate","%"+yearComboBox.getValue()+"%");
+                    System.out.println("Wszystkie z danego roku");
+                }else{
+                    registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue()).and().like("calibrationDate","%"+yearComboBox.getValue()+"%");
+                    System.out.println("Wybrane z danego roku");
+                }
+                PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
+                registerModelList=registerDao.query(prepare);
+            }
             registerModelList = registerDao.queryForAll();
-
             Integer indeks = 0;
             for (registerModel registerElement : registerModelList) {
                 System.out.println(registerElement.toString());
-                registerFxObservableList.add(new registerFxModel(indeks, registerElement.getIdRegisterByYear(),registerElement.getCardNumber(),
+                registerFxObservableList.add(new registerFxModel(indeks,registerElement.getIdRegisterByYear(),registerElement.getCardNumber(),
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
-                        registerElement.getInstrument().getClient().getShortName()));
+                        registerElement.getInstrument().getClient().getShortName(),registerElement.getCalibratePerson(),
+                        registerElement.getCertificateNumber(),registerElement.getState()));
                 indeks++;
             }
             dbSqlite.closeConnection();
@@ -132,4 +171,19 @@ private registerFxModel editedRegisterElementFromList;
         } );
     }
 
+    public ObservableList<String> getYearsList() {
+        ObservableList<String> yearObservableList = FXCollections.observableArrayList();
+        try {
+            Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(), yearModel.class);
+            List<yearModel> yearList = yearDao.queryForAll();
+            yearObservableList.add("Wszystkie");
+            yearList.forEach(year -> {
+                yearObservableList.add(year.getYear());
+            });
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return yearObservableList;
+    }
 }

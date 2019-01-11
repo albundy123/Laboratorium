@@ -9,11 +9,14 @@ public class registerFxModel {
     private String serialNumber;
     private String identificationNumber;
     private String client;
+    private String calibratePerson;
+    private String certificateNumber;
+    private String state;
 
     public registerFxModel() {
     }
 
-    public registerFxModel(Integer indexOfRegisterModelList, Integer idRegisterByYear, String cardNumber, String calibrationDate, String instrumentName, String serialNumber, String identificationNumber, String client) {
+    public registerFxModel(Integer indexOfRegisterModelList, Integer idRegisterByYear, String cardNumber, String calibrationDate, String instrumentName, String serialNumber, String identificationNumber, String client, String calibratePerson, String certificateNumber, String state) {
         this.indexOfRegisterModelList = indexOfRegisterModelList;
         this.idRegisterByYear = idRegisterByYear;
         this.cardNumber = cardNumber;
@@ -22,6 +25,9 @@ public class registerFxModel {
         this.serialNumber = serialNumber;
         this.identificationNumber = identificationNumber;
         this.client = client;
+        this.calibratePerson = calibratePerson;
+        this.certificateNumber = certificateNumber;
+        this.state = state;
     }
 
     public Integer getIndexOfRegisterModelList() {
@@ -88,17 +94,27 @@ public class registerFxModel {
         this.client = client;
     }
 
-    @Override
-    public String toString() {
-        return "registerFxModel{" +
-                "indexOfRegisterModelList=" + indexOfRegisterModelList +
-                ", idRegisterByYear=" + idRegisterByYear +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", calibrationDate='" + calibrationDate + '\'' +
-                ", instrumentName='" + instrumentName + '\'' +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", identificationNumber='" + identificationNumber + '\'' +
-                ", client='" + client + '\'' +
-                '}';
+    public String getCalibratePerson() {
+        return calibratePerson;
+    }
+
+    public void setCalibratePerson(String calibratePerson) {
+        this.calibratePerson = calibratePerson;
+    }
+
+    public String getCertificateNumber() {
+        return certificateNumber;
+    }
+
+    public void setCertificateNumber(String certificateNumber) {
+        this.certificateNumber = certificateNumber;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

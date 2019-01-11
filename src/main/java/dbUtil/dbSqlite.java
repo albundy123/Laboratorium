@@ -48,6 +48,8 @@ public class dbSqlite {
             TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), instrumentModel.class);
             TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), storehouseModel.class);
             TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), registerModel.class);
+            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), yearModel.class);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

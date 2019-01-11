@@ -18,19 +18,24 @@ public class registerModel {
     @DatabaseField(foreign = true,foreignAutoRefresh = true)
     private instrumentModel instrument;
     @DatabaseField
+    private String calibratePerson;
+    @DatabaseField
     private String certificateNumber;
-
+    @DatabaseField
+    private String state;
     public registerModel() {
     }
 
-    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, String certificateNumber) {
+    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, String calibratePerson, String certificateNumber, String state) {
         this.idRegister = idRegister;
         this.idRegisterByYear = idRegisterByYear;
         this.idStorehouse = idStorehouse;
         this.cardNumber = cardNumber;
         this.calibrationDate = calibrationDate;
         this.instrument = instrument;
+        this.calibratePerson = calibratePerson;
         this.certificateNumber = certificateNumber;
+        this.state = state;
     }
 
     public Integer getIdRegister() {
@@ -81,6 +86,14 @@ public class registerModel {
         this.instrument = instrument;
     }
 
+    public String getCalibratePerson() {
+        return calibratePerson;
+    }
+
+    public void setCalibratePerson(String calibratePerson) {
+        this.calibratePerson = calibratePerson;
+    }
+
     public String getCertificateNumber() {
         return certificateNumber;
     }
@@ -89,16 +102,11 @@ public class registerModel {
         this.certificateNumber = certificateNumber;
     }
 
-    @Override
-    public String toString() {
-        return "registerModel{" +
-                "idRegister=" + idRegister +
-                ", idRegisterByYear=" + idRegisterByYear +
-                ", idStorehouse=" + idStorehouse +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", calibrationDate='" + calibrationDate + '\'' +
-                ", instrument=" + instrument +
-                ", certificateNumber='" + certificateNumber + '\'' +
-                '}';
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

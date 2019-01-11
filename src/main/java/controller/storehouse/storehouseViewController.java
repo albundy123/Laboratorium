@@ -18,12 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import model.clientModel;
+import model.*;
 import model.fxModel.instrumentFxModel;
 import model.fxModel.storehouseFxModel;
-import model.instrumentModel;
-import model.registerModel;
-import model.storehouseModel;
 import util.ConfirmBox;
 
 import java.io.IOException;
@@ -36,11 +33,7 @@ import java.util.List;
 
 public class storehouseViewController {
     public  storehouseViewController() {System.out.println("Siemanko jestem konstruktorem klasy  storehouseViewController.");}
-
-    @FXML
-    private Button addNewInstrumentButton;
-    @FXML
-    private TextField searchTextField;
+//Wstrzyknięcie TableView i poszczególnych kolumn, musi być ze względu na wyświetlanie
     @FXML
     private TableView<storehouseFxModel> storehouseTableView;
     @FXML
@@ -65,56 +58,56 @@ public class storehouseViewController {
     private TableColumn<storehouseFxModel, Date> calibrationDateColumn;
     @FXML
     private TableColumn<storehouseFxModel, Date> leftDateColumn;
+    //Labele do wyświetlania szczegułów może dam to do innego fxmla jak mi się będzie chciało kiedyś
     @FXML
-    private Label calibrationPersonLabel;
+    private Label shortNameLabel;
     @FXML
-    private Label leftDateLabel;
+    private Label fullNameLabel;
+    @FXML
+    private Label cityLabel;
+    @FXML
+    private Label streetLabel;
     @FXML
     private Label addDateLabel;
-    @FXML
-    private Label leftPersonLabel;
     @FXML
     private Label addPersonLabel;
     @FXML
     private Label calibrationDateLabel;
     @FXML
-    private Label shortNameLabel;
+    private Label calibrationPersonLabel;
+    @FXML
+    private Label leftDateLabel;
+    @FXML
+    private Label leftPersonLabel;
+    //Pole tekstowe do filtrowania listy
+    @FXML
+    private TextField searchTextField;
+    //Elementy do ładowania danych z tabeli STOREHOUSE
+    @FXML
+    private ComboBox<String> yearComboBox;
+    @FXML
+    private ComboBox<String> isInStorehouseComboBox; //Czy wszystkie czy tylko te co mamy na stanie
+    @FXML
+    private Button loadStorehouseDataButton;          //Uruchamia ładowanie
+//Póki co nie wiem czy jest potrzebne chyba nie :D
     @FXML
     private VBox mainVBox;
+//Przyciski do edycji
     @FXML
-    private Label cityLabel;
-    @FXML
-    private Label fullNameLabel;
+    private Button addNewInstrumentButton;
     @FXML
     private Button leftInstrumentButton;
     @FXML
     private Button calibrateInstrumentButton;
     @FXML
     private Button editInstrumentButton;
-    @FXML
-    private Label streetLabel;
-    @FXML
-    private ComboBox<String> isInStorehouseComboBox;
-    @FXML
-    private Button loadStorehouseDataButton;
-    @FXML
-    private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy storehouseViewController.");
-        isInStorehouseComboBox.getItems().addAll("Wszystkie","W magazynie");
-        isInStorehouseComboBox.setValue("Wszystkie");
+//Deklaracja różnych zmiennych potrzebnych mniej lub bardziej
 
-
-        initializeTableView();
-        addFilter();
-    }
-
-    //Element observable list
+    //Element observable list. Zaznaczenie na TableView powoduje ustawienie zmiennej
     private storehouseFxModel editedStorehouseElementFromList;
-
     public void setEditedStorehouseElementFromList(storehouseFxModel editedStorehouseElementFromList) {
         this.editedStorehouseElementFromList = editedStorehouseElementFromList;
     }
-
     //Obiekty klas kontrolerów tych okien które coś robią
     private newInstrumentViewController newInstrumentController;                    //Kontroler widoku okna dodawania nowego przyrządu
     private calibratedInstrumentViewController calibratedInstrumentController;      //Kontroler widoku okna dodawania przyrządu do wzorcowania
@@ -125,26 +118,46 @@ public class storehouseViewController {
     private List<storehouseModel> storehouseModelList = new ArrayList<storehouseModel>();
     //Lista obiektów klasy storehouseFxModel zawiera przetworzoną listę storehouseModelList, zbindowana do storehouseTableView służy do wyświetlania
     private ObservableList<storehouseFxModel> storehouseFxObservableList = FXCollections.observableArrayList();
-    FilteredList<storehouseFxModel> filteredStorehouseFxObservableList = new FilteredList<>(storehouseFxObservableList, p -> true); //Lista filtrowana służy do szukania
+    private FilteredList<storehouseFxModel> filteredStorehouseFxObservableList = new FilteredList<>(storehouseFxObservableList, p -> true); //Lista filtrowana służy do szukania
 
+
+
+//Funkcja initialize wykonuje się konstruktorze, róże rzeczy tu można robić zwłaszcza że mamy już załadowane kontroli opisane wyżej
+    @FXML
+    private void initialize(){
+        System.out.println("Siemanko jestem funkcją initialize klasy storehouseViewController.");
+        isInStorehouseComboBox.getItems().addAll("Wszystkie","W magazynie");
+        isInStorehouseComboBox.setValue("Wszystkie");
+        yearComboBox.setItems(getYearsList());
+        yearComboBox.setValue("2019"); //Domyślnie będzie rok bieżący :)
+        initializeTableView();
+        addFilter();
+    }
     //Pobiera listę obiektów storehouseModel z tabeli "STOREHOUSE" wypełnia jednocześnie listę obiektów storehouseFxObservableList
+    //Oczywiscie możemy wybrać co chcemy pobrać z super wielkiej tabeli tak przyszłościowo :)
     public void getStorehouseList(){
         try {
             storehouseFxObservableList.clear();
             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
-
-            if(isInStorehouseComboBox.getValue().equals("Wszystkie")) {
+            QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
+            if(isInStorehouseComboBox.getValue().equals(yearComboBox.getValue())) {     //Tylko kiedy obydwa mają tę samą wartość całkiem przypadkowo :)
                 storehouseModelList = storehouseDao.queryForAll();
                 System.out.println("Wszystkie");
-            }
-            else{
-                QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
-                storehouseQueryBuilder.where().eq("leftDate","");
+            }else{
+                if(!isInStorehouseComboBox.getValue().equals("Wszystkie")&& yearComboBox.getValue().equals("Wszystkie")){
+                    storehouseQueryBuilder.where().eq("leftDate","");
+                    System.out.println("W magazynie");
+                }else if(isInStorehouseComboBox.getValue().equals("Wszystkie")&& !yearComboBox.getValue().equals("Wszystkie")){
+                    storehouseQueryBuilder.where().like("addDate","%"+yearComboBox.getValue()+"%").or().like("leftDate","%"+yearComboBox.getValue()+"%");
+                    System.out.println("Wszystkie z danego roku");
+                }else{
+                    storehouseQueryBuilder.where().eq("leftDate","").and().like("addDate","%"+yearComboBox.getValue()+"%");
+                    System.out.println("W magazynie z danego roku");
+                }
                 PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
                 storehouseModelList=storehouseDao.query(prepare);
-                System.out.println("W magazynie");
             }
-            Integer indeks = 0;
+            Integer indeks = 0;//Ta konstrukcja jest potrzebna do połączenie wyników z bazydanych z tymi wyswietlanymi
             for (storehouseModel storehouseElement : storehouseModelList) {
                 System.out.println(storehouseElement.toString());
                 storehouseFxObservableList.add(new storehouseFxModel(indeks, storehouseElement.getIdStorehouse(),
@@ -182,7 +195,6 @@ public class storehouseViewController {
            // showInformationAboutHistory(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
         });
     }
-
     @FXML   //Uruchamia okno edycji przyrządu
     private void editInstrument(){
         if(editedStorehouseElementFromList!=null) {
@@ -193,7 +205,6 @@ public class storehouseViewController {
                 if (editedInstrumentController != null){
                     editedInstrumentController.setStorehouseMainController(this);
                     editedInstrumentController.setEditedInstrument(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
-
                     setEditedInstrumentValues();
                 }
                 Stage window = new Stage();
@@ -270,7 +281,7 @@ public class storehouseViewController {
         try {
             registerModel calibrateInstrument = new registerModel(0,0,storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getIdStorehouse(),
                     "",storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getCalibrationDate(),
-                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"");
+                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"","","ON");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/calibratedInstrumentView.fxml"));
             VBox vBox = loader.load();
             calibratedInstrumentController = loader.getController();
@@ -302,7 +313,6 @@ public class storehouseViewController {
                 leftInstrumentAfterCheckConditions();
             }
         }
-
     }
     public void leftInstrumentAfterCheckConditions(){
         try {
@@ -371,7 +381,21 @@ public class storehouseViewController {
             if(storehouse.getUserWhoLeft()!=null) {
                 leftPersonLabel.setText(storehouse.getUserWhoLeft().getLogin());
             }
-
         }
+    }
+    public ObservableList<String> getYearsList() {
+        ObservableList<String> yearObservableList = FXCollections.observableArrayList();
+        try {
+            Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(), yearModel.class);
+            List<yearModel> yearList = yearDao.queryForAll();
+            yearObservableList.add("Wszystkie");
+            yearList.forEach(year -> {
+                yearObservableList.add(year.getYear());
+            });
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return yearObservableList;
     }
 }
