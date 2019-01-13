@@ -13,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        dbSqlite.initDatabase();
+      //  dbSqlite.initDatabase();
 
        FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/storehouseView.fxml"));

@@ -41,7 +41,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </ComboBox>
-            <Button fx:id="loadRegisterDataButton" mnemonicParsing="false" prefWidth="125.0" text="Wczytaj">
+            <Button fx:id="loadRegisterDataButton" mnemonicParsing="false" onAction="#loadRegister" prefWidth="125.0" text="Wczytaj">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
@@ -58,8 +58,12 @@
                 <TableColumn fx:id="instrumentIdentificationNumberColumn" prefWidth="75.0" text="Nr identyfikacyjny" />
                 <TableColumn fx:id="instrumentClientColumn" prefWidth="75.0" text="Zleceniodawca" />
                 <TableColumn fx:id="userColumn" prefWidth="75.0" text="Wzorcujący" />
-                <TableColumn fx:id="certificateNumberColumn" prefWidth="178.0" text="Nr Świadectwa" />
-            <TableColumn fx:id="isOkColumn" prefWidth="31.0" text="Stan" />
+                <TableColumn prefWidth="178.0" text="Świadectwo wzorcowania">
+               <columns>
+                  <TableColumn fx:id="certificateNumberColumn" prefWidth="138.0" text="Nr Świadectwa" />
+                  <TableColumn fx:id="documentKindColumn" prefWidth="51.0" text="ŚW/PO" />
+               </columns></TableColumn>
+            <TableColumn fx:id="stateColumn" prefWidth="31.0" text="Stan" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -158,12 +162,12 @@
                     <children>
                         <VBox alignment="CENTER" layoutY="-16.0" prefHeight="140.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Button fx:id="editAddDateButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę przyjęcia">
+                                <Button fx:id="editCertificateNameButton" mnemonicParsing="false" onAction="#editCertificateNumber" prefHeight="50.0" prefWidth="150.0" text="Edytuj Nr Świadectwa">
                                     <VBox.margin>
                                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button fx:id="editLeftDateButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę wydania">
+                                <Button fx:id="cancelCalibration" mnemonicParsing="false" onAction="#cancelCalibration" prefHeight="50.0" prefWidth="150.0" text="Anuluj wzorcowanie">
                                     <VBox.margin>
                                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                     </VBox.margin>

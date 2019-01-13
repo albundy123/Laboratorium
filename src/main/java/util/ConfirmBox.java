@@ -4,6 +4,7 @@ package util;
         import javafx.scene.Scene;
         import javafx.scene.control.Button;
         import javafx.scene.control.Label;
+        import javafx.scene.layout.HBox;
         import javafx.scene.layout.VBox;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
@@ -20,6 +21,7 @@ public class ConfirmBox {
         label.setText(message);
         Button yesButton = new Button("Tak");
         Button noButton = new Button("Nie");
+
         yesButton.setOnAction(e -> {
             answer=true;
             window.close();
@@ -29,7 +31,10 @@ public class ConfirmBox {
             window.close();
         });
         VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(label,yesButton,noButton);
+        HBox hBox = new HBox(10);
+
+        hBox.getChildren().addAll(yesButton,noButton);
+        vBox.getChildren().addAll(label,hBox);
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox);
         window.setScene(scene);

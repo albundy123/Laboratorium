@@ -281,7 +281,7 @@ public class storehouseViewController {
         try {
             registerModel calibrateInstrument = new registerModel(0,0,storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getIdStorehouse(),
                     "",storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getCalibrationDate(),
-                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"","","ON");
+                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"","","","ON");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/calibratedInstrumentView.fxml"));
             VBox vBox = loader.load();
             calibratedInstrumentController = loader.getController();

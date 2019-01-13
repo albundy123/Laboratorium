@@ -11,12 +11,13 @@ public class registerFxModel {
     private String client;
     private String calibratePerson;
     private String certificateNumber;
+    private String documentKind;
     private String state;
 
     public registerFxModel() {
     }
 
-    public registerFxModel(Integer indexOfRegisterModelList, Integer idRegisterByYear, String cardNumber, String calibrationDate, String instrumentName, String serialNumber, String identificationNumber, String client, String calibratePerson, String certificateNumber, String state) {
+    public registerFxModel(Integer indexOfRegisterModelList, Integer idRegisterByYear, String cardNumber, String calibrationDate, String instrumentName, String serialNumber, String identificationNumber, String client, String calibratePerson, String certificateNumber, String documentKind, String state) {
         this.indexOfRegisterModelList = indexOfRegisterModelList;
         this.idRegisterByYear = idRegisterByYear;
         this.cardNumber = cardNumber;
@@ -27,6 +28,7 @@ public class registerFxModel {
         this.client = client;
         this.calibratePerson = calibratePerson;
         this.certificateNumber = certificateNumber;
+        this.documentKind = documentKind;
         this.state = state;
     }
 
@@ -108,6 +110,14 @@ public class registerFxModel {
 
     public void setCertificateNumber(String certificateNumber) {
         this.certificateNumber = certificateNumber;
+    }
+
+    public String getDocumentKind() {
+        return documentKind;
+    }
+
+    public void setDocumentKind(String documentKind) {
+        this.documentKind = documentKind;
     }
 
     public String getState() {

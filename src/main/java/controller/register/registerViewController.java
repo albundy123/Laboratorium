@@ -9,15 +9,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.fxModel.registerFxModel;
 import model.fxModel.storehouseFxModel;
 import model.registerModel;
 import model.storehouseModel;
 import model.yearModel;
+import util.ConfirmBox;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +51,11 @@ public class registerViewController {
     @FXML
     private TableColumn<registerFxModel, String> calibratePersonColumn;
     @FXML
-    private TableColumn<registerFxModel,String> certificateNumberColumn;
+    private TableColumn<registerFxModel, String> certificateNumberColumn;
     @FXML
-    private TableColumn<registerFxModel,String> stateColumn;
+    private TableColumn<registerFxModel, String> documentKindColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> stateColumn;
     //Labele do wyświetlania szczegułów może dam to do innego fxmla jak mi się będzie chciało kiedyś
     @FXML
     private Label shortNameLabel;
@@ -91,6 +99,7 @@ private registerFxModel editedRegisterElementFromList;
     public void setEditedRegisterElementFromList(registerFxModel editedRegisterElementFromList) {
         this.editedRegisterElementFromList = editedRegisterElementFromList;
     }
+    private editCertificateNumberViewController editCertificateNumberMainController;
 
     @FXML
     private void initialize(){
@@ -100,7 +109,7 @@ private registerFxModel editedRegisterElementFromList;
         isStateOkComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
         yearComboBox.setValue("2019"); //Domyślnie będzie rok bieżący :)
-        getRegisterList();
+       // getRegisterList();
         initializeTableView();
         addFilter();
 
@@ -136,7 +145,7 @@ private registerFxModel editedRegisterElementFromList;
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
                         registerElement.getInstrument().getClient().getShortName(),registerElement.getCalibratePerson(),
-                        registerElement.getCertificateNumber(),registerElement.getState()));
+                        registerElement.getCertificateNumber(),registerElement.getDocumentKind(),registerElement.getState()));
                 indeks++;
             }
             dbSqlite.closeConnection();
@@ -152,6 +161,9 @@ private registerFxModel editedRegisterElementFromList;
         instrumentSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         instrumentIdentificationNumberColumn.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
         instrumentClientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
+        certificateNumberColumn.setCellValueFactory(new PropertyValueFactory<>("certificateNumber"));
+        documentKindColumn.setCellValueFactory(new PropertyValueFactory<>("documentKind"));
+        stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
         registerTableView.setItems(filteredRegisterFxObservableList);
         registerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setEditedRegisterElementFromList(newValue);
@@ -185,5 +197,46 @@ private registerFxModel editedRegisterElementFromList;
             e.printStackTrace();
         }
         return yearObservableList;
+    }
+    @FXML
+    public void editCertificateNumber(){
+        if(editedRegisterElementFromList!=null && editedRegisterElementFromList.getState().equals("ON")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/editCertificateNumberView.fxml"));
+                VBox vBox = loader.load();
+                editCertificateNumberMainController = loader.getController();
+                if (editCertificateNumberMainController != null){
+                    editCertificateNumberMainController.setRegisterMainController(this);
+                    editCertificateNumberMainController.setEditedRegisterElement(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()));
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Edytuj wybrany przyrząd");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    public void cancelCalibration(){
+        if(editedRegisterElementFromList!=null && editedRegisterElementFromList.getState().equals("ON")) {
+            if(ConfirmBox.display("Czy chcesz anulować wzorcowanie ?","Nie da się przywrócić anulowanej pozycji")){
+                try {
+                    registerModel editedRegisterElement=registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList());
+                    editedRegisterElement.setState("OFF");
+                    Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
+                    registerDao.update(editedRegisterElement);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    @FXML
+    public void loadRegister(){
+        getRegisterList();
     }
 }
