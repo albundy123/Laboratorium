@@ -116,4 +116,19 @@ public class storehouseModel {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+
+    @Override
+    public String toString() {
+        return "storehouseModel{" +
+                "idStorehouse=" + idStorehouse +
+                ", instrument=" + instrument +
+                ", addDate='" + addDate + '\'' +
+                ", userWhoAdd=" + userWhoAdd +
+                ", calibrationDate='" + calibrationDate + '\'' +
+                ", userWhoCalibrate=" + userWhoCalibrate +
+                ", leftDate='" + leftDate + '\'' +
+                ", userWhoLeft=" + userWhoLeft +
+                ", remarks='" + remarks + '\'' +
+                '}';
+    }
 }

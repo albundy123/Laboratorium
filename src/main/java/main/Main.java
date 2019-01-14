@@ -13,16 +13,16 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-      //  dbSqlite.initDatabase();
+        //dbSqlite.initDatabase();
 
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
+      // FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/storehouseView.fxml"));
        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/instrumentView.fxml"));
        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/clientView.fxml"));
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));
-        VBox vBox = loader.load();
-       // SplitPane splitPane = loader.load();
-        Scene scene = new Scene(vBox);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));
+        //VBox vBox = loader.load();
+        SplitPane splitPane = loader.load();
+        Scene scene = new Scene(splitPane);
 
        /* FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
         AnchorPane anchorPane = loader.load();

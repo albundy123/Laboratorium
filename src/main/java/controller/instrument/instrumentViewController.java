@@ -203,7 +203,10 @@ public class instrumentViewController {
             }
         }
     }
-
+    @FXML
+    private void getInstrumentList(){
+        getInstruments();
+    }
     private void loadEditDialogView(clientModel client){
         editedClientController.setShortNameTextField(client.getShortName());
         editedClientController.setFullNameTextField(client.getFullName());

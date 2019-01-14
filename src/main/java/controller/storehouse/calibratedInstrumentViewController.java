@@ -109,33 +109,48 @@ public class calibratedInstrumentViewController {
         if(calibratedInstrument!=null) {
             if (calibrationDateDatePicker.getValue() != null) {
                 if (!calibrationDateDatePicker.getValue().isBefore(LocalDate.parse(calibratedInstrumentStorehouse.getAddDate()))){
+                    Dao<registerModel, Integer> registerDao=null;
+                    QueryBuilder<registerModel, Integer> registerQueryBuilder=null;
+                    PreparedQuery<registerModel> prepare;
+                    List<registerModel> result=null;
                     try {
-                        Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
-                        registerDao.create(calibratedInstrument);
-                        Dao<registerModel, Integer> registerDao2 = DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
-                        QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao2.queryBuilder();
-                        registerQueryBuilder.where().eq("idRegister", calibratedInstrument.getIdRegister() - 1);
-                        PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
-                        List<registerModel> result = registerDao2.query(prepare);
-                        calibratedInstrument.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
-                        if (result.isEmpty()) { //znaczy się ze pierwszy wpis :)
-                            calibratedInstrument.setIdRegisterByYear(1);
-                            calibratedInstrument.setCardNumber("1-2019");
-                            registerDao.update(calibratedInstrument);
-                        } else { //nie jest to pierwszy wpis
-                            calibratedInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear() + 1);
-                            calibratedInstrument.setCardNumber(result.get(0).getIdRegisterByYear() + 1 + "-2019");
-                            registerDao.update(calibratedInstrument);
-                        }
-                        Dao<storehouseModel,Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
-                        calibratedInstrumentStorehouse.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
-                        storehouseDao.update(calibratedInstrumentStorehouse);
-                        storehouseMainController.getStorehouseList();
-                        Stage window = (Stage) mainVBox.getScene().getWindow();
-                        window.close();
-
+                        registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
+                        registerQueryBuilder = registerDao.queryBuilder();
+                        registerQueryBuilder.where().gt("calibrationDate", calibrationDateDatePicker.getValue());
+                        prepare = registerQueryBuilder.prepare();
+                        result = registerDao.query(prepare);
                     } catch (SQLException e) {
                         e.printStackTrace();
+                    }
+                    if(result.isEmpty()){
+                        try {
+                           // registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
+                            registerDao.create(calibratedInstrument);
+                            registerQueryBuilder.where().eq("idRegister", calibratedInstrument.getIdRegister() - 1);
+                            prepare = registerQueryBuilder.prepare();
+                            result = registerDao.query(prepare);
+                            calibratedInstrument.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
+                            if (result.isEmpty()) { //znaczy się ze pierwszy wpis :)
+                                calibratedInstrument.setIdRegisterByYear(1);
+                                calibratedInstrument.setCardNumber("1-2019");
+                                registerDao.update(calibratedInstrument);
+                            } else { //nie jest to pierwszy wpis
+                                calibratedInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear() + 1);
+                                calibratedInstrument.setCardNumber(result.get(0).getIdRegisterByYear() + 1 + "-2019");
+                                registerDao.update(calibratedInstrument);
+                            }
+                            Dao<storehouseModel,Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
+                            calibratedInstrumentStorehouse.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
+                            storehouseDao.update(calibratedInstrumentStorehouse);
+                            storehouseMainController.getStorehouseList();
+                            Stage window = (Stage) mainVBox.getScene().getWindow();
+                            window.close();
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
                     }
                 }else{
                     informationLabel.setText("Data wzorcowania jest wcześniejsza niż data przyjęcia !");

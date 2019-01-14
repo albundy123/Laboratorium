@@ -184,12 +184,12 @@
                     <children>
                   <VBox alignment="CENTER" layoutY="-16.0" prefHeight="140.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button fx:id="editAddDateButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę przyjęcia">
+                        <Button fx:id="editAddDateButton" mnemonicParsing="false" onAction="#editAddDate" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę przyjęcia">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="editLeftDateButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę wydania">
+                        <Button fx:id="editLeftDateButton" mnemonicParsing="false" onAction="#editLeftDate" prefHeight="50.0" prefWidth="150.0" text="Edytuj datę wydania">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>

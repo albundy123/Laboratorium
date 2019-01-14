@@ -25,6 +25,7 @@ import util.ConfirmBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,7 @@ private registerFxModel editedRegisterElementFromList;
         this.editedRegisterElementFromList = editedRegisterElementFromList;
     }
     private editCertificateNumberViewController editCertificateNumberMainController;
-
+    private editCalibrationDateViewController editCalibrationDateMainController;
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
@@ -137,7 +138,6 @@ private registerFxModel editedRegisterElementFromList;
                 PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
                 registerModelList=registerDao.query(prepare);
             }
-            registerModelList = registerDao.queryForAll();
             Integer indeks = 0;
             for (registerModel registerElement : registerModelList) {
                 System.out.println(registerElement.toString());
@@ -234,6 +234,30 @@ private registerFxModel editedRegisterElementFromList;
                 }
             }
         }
+    }
+    @FXML
+    public void editCalibrationDate(){
+        if(editedRegisterElementFromList!=null && editedRegisterElementFromList.getState().equals("ON")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/editCalibrationDateView.fxml"));
+                VBox vBox = loader.load();
+                editCalibrationDateMainController = loader.getController();
+                if (editCalibrationDateMainController != null){
+                    editCalibrationDateMainController.setRegisterMainController(this);
+                    editCalibrationDateMainController.setEditedRegisterElement(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()));
+                    editCalibrationDateMainController.setCalibrationDateDatePicker(LocalDate.parse(editedRegisterElementFromList.getCalibrationDate()));
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Edytuj wybrany przyrząd");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     @FXML
     public void loadRegister(){

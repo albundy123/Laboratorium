@@ -117,7 +117,7 @@ public class leftInstrumentViewController {
                         storehouseMainController.getStorehouseList();
                     }
                 }else{
-                    if(!leftDateDatePicker.getValue().isAfter(LocalDate.parse(leftInstrument.getCalibrationDate()))){
+                    if(leftDateDatePicker.getValue().isBefore(LocalDate.parse(leftInstrument.getCalibrationDate()))){
                         informationLabel.setText("Data wydanie jest wcześniejsza niż wzorcowania !");
                     }else{
                         try {

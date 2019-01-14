@@ -113,6 +113,8 @@ public class storehouseViewController {
     private calibratedInstrumentViewController calibratedInstrumentController;      //Kontroler widoku okna dodawania przyrządu do wzorcowania
     private leftInstrumentViewController leftInstrumentController;                  //Kontroler widoku okna wydawania przyrządu z magazynu
     private editInstrumentViewController editedInstrumentController;                //Kontroler widoku okna edycji przyrządu
+    private editAddDateViewController editedAddDateController;
+    private editLeftDateViewController editedLeftDateController;
 
     //Lista obiektów klasy storehouseModel, pobierane wprost z bazy danych
     private List<storehouseModel> storehouseModelList = new ArrayList<storehouseModel>();
@@ -205,6 +207,7 @@ public class storehouseViewController {
                 if (editedInstrumentController != null){
                     editedInstrumentController.setStorehouseMainController(this);
                     editedInstrumentController.setEditedInstrument(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
+                    editedInstrumentController.setClientInstrument(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument().getClient());
                     setEditedInstrumentValues();
                 }
                 Stage window = new Stage();
@@ -269,7 +272,7 @@ public class storehouseViewController {
     public void calibrateInstrument(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
         if(editedStorehouseElementFromList!=null && editedStorehouseElementFromList.getLeftDate().equals("")) {
             if(!editedStorehouseElementFromList.getCalibrationDate().equals("")){
-                if(ConfirmBox.display("Przyrząd był już wzorcowany !", "Czy na pewno chcesz go wzorcować ponownie ?")){
+                if(ConfirmBox.display("Ponowne wzorcowanie!", "Czy chcesz wzorcować ten przyrząd ponownie ?")){
                     calibrateInstrumentAfterCheckConditions();
                 }
             }else{
@@ -350,6 +353,52 @@ public class storehouseViewController {
                 }
             });
         } );
+    }
+    @FXML
+    private void editAddDate(){
+        if(editedStorehouseElementFromList!=null){
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/editAddDateView.fxml"));
+                VBox vBox = loader.load();
+                editedAddDateController=loader.getController();
+                if(editedAddDateController!=null){
+                    editedAddDateController.setStorehouseMainController(this);
+                    editedAddDateController.setEditedStorehouseElement(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+                    editedAddDateController.setAddDateDatePicker(LocalDate.parse(editedStorehouseElementFromList.getAddDate()));
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Edytuj datę przyjęcia");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    private void editLeftDate(){
+        if(editedStorehouseElementFromList!=null && !editedStorehouseElementFromList.getLeftDate().equals("")){
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/editLeftDateView.fxml"));
+                VBox vBox = loader.load();
+                editedLeftDateController=loader.getController();
+                if(editedLeftDateController!=null){
+                    editedLeftDateController.setStorehouseMainController(this);
+                    editedLeftDateController.setEditedStorehouseElement(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+                    editedLeftDateController.setLeftDateDatePicker(LocalDate.parse(editedStorehouseElementFromList.getLeftDate()));
+                }
+                Stage window = new Stage();
+                window.initModality(Modality.APPLICATION_MODAL);
+                window.setTitle("Edytuj datę przyjęcia");
+                Scene scene = new Scene(vBox);
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     @FXML
     public void loadStorehouseData(){

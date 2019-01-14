@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.registerModel;
 
 import java.sql.SQLException;
@@ -60,13 +61,15 @@ public class editCertificateNumberViewController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
+            Stage window = (Stage) mainVBox.getScene().getWindow();
+            window.close();
         }else{
             certificateNumberInformationLabel.setText("Nieprawidłowy numer świadectwa/protokołu");
         }
     }
     @FXML
     public void cancelSaveCertificateNumber(){
-
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
     }
 }

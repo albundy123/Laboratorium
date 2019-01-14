@@ -12,17 +12,9 @@
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="1000.0">
             <children>
-                <Label text="PRZYRZĄDY">
-                    <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </HBox.margin>
-               <font>
-                  <Font name="Cambria" size="36.0" />
-               </font>
-                </Label>
-                <Button fx:id="editInstrumentButton" mnemonicParsing="false" onAction="#editInstrument" prefHeight="50.0" prefWidth="200.0" text="Edytuj przyrząd">
+                <Button fx:id="editInstrumentButton" mnemonicParsing="false" onAction="#editInstrument" prefHeight="25.0" prefWidth="125.0" text="Edytuj przyrząd">
                <HBox.margin>
-                  <Insets left="100.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </Button>
             </children>
@@ -38,6 +30,11 @@
                         <Insets bottom="5.0" left="2.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </TextField>
+            <Button fx:id="loadInstrumentListButton" mnemonicParsing="false" onAction="#getInstrumentList" prefWidth="125.0" text="Wczytaj listę">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
             </children>
         </HBox>
       <TableView fx:id="instrumentTableView" prefHeight="305.0" prefWidth="1196.0">

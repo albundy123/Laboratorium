@@ -341,15 +341,19 @@ public class editInstrumentViewController {
             instrumentModel instrument = new instrumentModel(editedInstrument.getIdInstrument(), getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
-            if(result.size()>=1 ) {
+            if(result.size()>1 ) {
                     informationLabel.setText("Nie możesz dodać drugiego takiego samego przyrządu !");
             } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument())
             {   System.out.println("Brawo kasztanie możesz edytować");
                 instrumentDao.update(instrument);
+                Stage window = (Stage) mainVBox.getScene().getWindow();
+                window.close();
             }
             else if(result.size()==0){
                 System.out.println("Brawo kasztanie edytowałeś");
                 instrumentDao.update(instrument);
+                Stage window = (Stage) mainVBox.getScene().getWindow();
+                window.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

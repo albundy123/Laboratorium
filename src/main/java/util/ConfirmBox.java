@@ -16,7 +16,7 @@ public class ConfirmBox {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(300);
-        window.setMinHeight(200);
+        window.setMinHeight(120);
         Label label = new Label();
         label.setText(message);
         Button yesButton = new Button("Tak");
@@ -34,6 +34,9 @@ public class ConfirmBox {
         HBox hBox = new HBox(10);
 
         hBox.getChildren().addAll(yesButton,noButton);
+        hBox.setAlignment(Pos.CENTER);
+        yesButton.setPrefWidth(80);
+        noButton.setPrefWidth(80);
         vBox.getChildren().addAll(label,hBox);
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox);
