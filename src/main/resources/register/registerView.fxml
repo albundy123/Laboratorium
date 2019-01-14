@@ -151,6 +151,14 @@
                                         </GridPane>
                                     </content>
                                 </Tab>
+                        <Tab text="Uwagi">
+                          <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                  <children>
+                                      <TextArea fx:id="remarksTextArea" layoutX="-16.0" layoutY="-74.0" prefHeight="107.0" prefWidth="702.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                  </children></AnchorPane>
+                          </content>
+                        </Tab>
                             </tabs>
                             <padding>
                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

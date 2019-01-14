@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.clientModel;
 import model.fxModel.registerFxModel;
 import model.fxModel.storehouseFxModel;
 import model.registerModel;
@@ -78,6 +79,8 @@ public class registerViewController {
     private Label leftDateLabel;
     @FXML
     private Label leftPersonLabel;
+    @FXML
+    private TextArea remarksTextArea;
     @FXML
     private TextField searchTextField;
     //Elementy do ładowania danych z tabeli REGISTER
@@ -167,6 +170,9 @@ private registerFxModel editedRegisterElementFromList;
         registerTableView.setItems(filteredRegisterFxObservableList);
         registerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setEditedRegisterElementFromList(newValue);
+            showInformationAboutClient(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getInstrument().getClient());
+            showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
+
             //    showInformation(newValue);
         });
     }
@@ -262,5 +268,56 @@ private registerFxModel editedRegisterElementFromList;
     @FXML
     public void loadRegister(){
         getRegisterList();
+    }
+    private void showInformationAboutClient(clientModel client){
+        if(client != null){
+            shortNameLabel.setText(client.getShortName());
+            fullNameLabel.setText(client.getFullName());
+            cityLabel.setText(client.getPostCode()+ " "+ client.getCity());
+            if(client.getFlatNumber().isEmpty()) {
+                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber());
+            }else{
+                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
+            }
+        }
+    }
+    private void showInformationAboutHistory(Integer idStorehouse){
+        Dao<storehouseModel, Integer> storehouseDao = null;
+        List<storehouseModel> result=null;
+        try {
+            storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
+            QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
+            storehouseQueryBuilder.where().eq("idStorehouse",idStorehouse);
+            PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
+            result=storehouseDao.query(prepare);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(!result.isEmpty()){
+            addDateLabel.setText(result.get(0).getAddDate());
+            calibrationDateLabel.setText(result.get(0).getCalibrationDate());
+            leftDateLabel.setText(result.get(0).getLeftDate());
+            if(result.get(0).getUserWhoAdd()!=null){
+                addPersonLabel.setText(result.get(0).getUserWhoAdd().getLogin());
+            }else{
+                addPersonLabel.setText("");
+            }
+            if(result.get(0).getUserWhoCalibrate()!=null) {
+                calibrationPersonLabel.setText(result.get(0).getUserWhoCalibrate().getLogin());
+            }else{
+                calibrationPersonLabel.setText("");
+            }
+            if(result.get(0).getUserWhoLeft()!=null) {
+                leftPersonLabel.setText(result.get(0).getUserWhoLeft().getLogin());
+            }else{
+                leftPersonLabel.setText("");
+            }
+            if(result.get(0).getRemarks()!=null){
+                remarksTextArea.setText(result.get(0).getRemarks());
+            }else{
+                remarksTextArea.setText("");
+            }
+        }
     }
 }

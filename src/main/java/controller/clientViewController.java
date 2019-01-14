@@ -52,13 +52,13 @@ public class clientViewController {
     @FXML
     private TableColumn<clientModel, String> statusColumn;
     @FXML
-    private TextField shortNameTextField;
+    private Label shortNameLabel;
     @FXML
-    private TextField fullNameTextField;
+    private Label fullNameLabel;
     @FXML
-    private TextField cityTextField;
+    private Label cityLabel;
     @FXML
-    private TextField streetTextField;
+    private Label streetLabel;
     @FXML
     private TextField fullNameSearchTextField;
     @FXML
@@ -99,7 +99,7 @@ public class clientViewController {
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy clientViewController.");
         addFilter();
-        getClients();
+       // getClients();
         initializeTableView();
         editClientButton.disableProperty().bind(Bindings.isEmpty(clientTableView.getSelectionModel().getSelectedItems()));
         choseClientButton.setDisable(true);
@@ -161,7 +161,10 @@ public class clientViewController {
             window.close();
         }
     }
-
+    @FXML
+    public void getClientList(){
+        getClients();
+    }
 
     public void getClients(){
         try {
@@ -217,13 +220,13 @@ public class clientViewController {
     }
     private void showInformation(clientModel client){
         if(client != null){
-            shortNameTextField.setText(client.getShortName());
-            fullNameTextField.setText(client.getFullName());
-            cityTextField.setText(client.getPostCode()+ " "+ client.getCity());
+            shortNameLabel.setText(client.getShortName());
+            fullNameLabel.setText(client.getFullName());
+            cityLabel.setText(client.getPostCode()+ " "+ client.getCity());
             if(client.getFlatNumber().isEmpty()) {
-                streetTextField.setText(client.getStreet() + " " + client.getHouseNumber());
+                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber());
             }else{
-                streetTextField.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
+                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
             }
         }
 

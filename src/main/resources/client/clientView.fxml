@@ -8,44 +8,41 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.clientViewController">
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.clientViewController">
     <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="1000.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="1000.0">
          <children>
-              <Label text="ZLECENIODAWCY">
-                  <font>
-                      <Font name="Cambria" size="36.0" />
-                  </font>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-              </Label>
-                <Button fx:id="addClientButton" mnemonicParsing="false" onAction="#addClient" prefHeight="50.0" prefWidth="100.0" text="Nowy">
+                <Button fx:id="addClientButton" mnemonicParsing="false" onAction="#addClient" prefHeight="25.0" prefWidth="150.0" text="Nowy zleceniodawca">
                     <HBox.margin>
-                        <Insets bottom="10.0" left="50.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="editClientButton" mnemonicParsing="false" onAction="#editClient" prefHeight="50.0" prefWidth="100.0" text="Edytuj">
+                <Button fx:id="editClientButton" mnemonicParsing="false" onAction="#editClient" prefHeight="25.0" prefWidth="150.0" text="Edytuj zleceniodawcę">
                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="800.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="800.0">
          <children>
             <Label alignment="CENTER" text="Szukaj:" textAlignment="CENTER">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin></Label>
-            <TextField fx:id="fullNameSearchTextField" prefHeight="25.0" prefWidth="372.0">
+            <TextField fx:id="fullNameSearchTextField" prefHeight="25.0" prefWidth="400.0">
                <HBox.margin>
                   <Insets bottom="5.0" left="2.0" right="5.0" top="5.0" />
                </HBox.margin>
             </TextField>
+            <Button fx:id="loadClientListButton" mnemonicParsing="false" onAction="#getClientList" prefWidth="125.0" text="Wczytaj listę">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
-        <TableView fx:id="clientTableView" prefHeight="345.0" prefWidth="800.0">
+        <TableView fx:id="clientTableView" prefHeight="420.0" prefWidth="800.0">
             <columns>
                 <TableColumn fx:id="idClientColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
                 <TableColumn fx:id="shortNameColumn" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Skrót" />
@@ -69,7 +66,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </Label>
-      <SplitPane dividerPositions="0.7104208416833667" prefHeight="160.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.7104208416833667" prefHeight="140.0" prefWidth="200.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -105,26 +102,14 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="shortNameTextField" maxWidth="500.0" GridPane.columnIndex="1">
+                        <Label fx:id="shortNameLabel" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="fullNameTextField" maxWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="cityTextField" maxWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="streetTextField" maxWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </TextField>
+                        </Label>
+                        <Label fx:id="fullNameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="cityLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="streetLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                </children>

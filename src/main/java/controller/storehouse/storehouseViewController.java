@@ -79,6 +79,8 @@ public class storehouseViewController {
     private Label leftDateLabel;
     @FXML
     private Label leftPersonLabel;
+    @FXML
+    private TextArea remarksTextArea;
     //Pole tekstowe do filtrowania listy
     @FXML
     private TextField searchTextField;
@@ -190,11 +192,9 @@ public class storehouseViewController {
         storehouseTableView.setItems(filteredStorehouseFxObservableList);
         storehouseTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setEditedStorehouseElementFromList(newValue);
-           // showInformationAboutClient(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument().getClient());
-            if(storehouseModelList.isEmpty()){
-                System.out.println("Tu cie mam");
-            }
-           // showInformationAboutHistory(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+            showInformationAboutClient(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument().getClient());
+            showInformationAboutHistory(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+
         });
     }
     @FXML   //Uruchamia okno edycji przyrządu
@@ -423,12 +423,23 @@ public class storehouseViewController {
             leftDateLabel.setText(storehouse.getLeftDate());
             if(storehouse.getUserWhoAdd()!=null){
                 addPersonLabel.setText(storehouse.getUserWhoAdd().getLogin());
+            }else{
+                addPersonLabel.setText("");
             }
             if(storehouse.getUserWhoCalibrate()!=null) {
                 calibrationPersonLabel.setText(storehouse.getUserWhoCalibrate().getLogin());
+            }else{
+                calibrationPersonLabel.setText("");
             }
             if(storehouse.getUserWhoLeft()!=null) {
                 leftPersonLabel.setText(storehouse.getUserWhoLeft().getLogin());
+            }else{
+                leftPersonLabel.setText("");
+            }
+            if(storehouse.getRemarks()!=null){
+                remarksTextArea.setText(storehouse.getRemarks());
+            }else{
+                remarksTextArea.setText("");
             }
         }
     }

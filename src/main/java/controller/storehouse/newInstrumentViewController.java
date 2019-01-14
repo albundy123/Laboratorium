@@ -238,6 +238,7 @@ public class newInstrumentViewController {
             if (clientMainController != null){
                 clientMainController.setNewInstrumentMainController(this);
                 clientMainController.setChoseButtonDisable();
+                clientMainController.getClients();
             }
             Stage window = new Stage();
             window.setTitle("Zleceniodawcy");

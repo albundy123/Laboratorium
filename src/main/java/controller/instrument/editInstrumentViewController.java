@@ -226,6 +226,7 @@ public class editInstrumentViewController {
             if (clientMainController != null){
                 clientMainController.setEditInstrumentMainController(this);
                 clientMainController.setChoseButtonDisable();
+                clientMainController.getClients();
             }
             Stage window = new Stage();
             window.setTitle("Zleceniodawcy");
