@@ -80,7 +80,7 @@ public class registerViewController {
     @FXML
     private Label leftPersonLabel;
     @FXML
-    private TextArea remarksTextArea;
+    private Label remarksLabel;
     @FXML
     private TextField searchTextField;
     //Elementy do ładowania danych z tabeli REGISTER
@@ -169,11 +169,11 @@ private registerFxModel editedRegisterElementFromList;
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
         registerTableView.setItems(filteredRegisterFxObservableList);
         registerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setEditedRegisterElementFromList(newValue);
-            showInformationAboutClient(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getInstrument().getClient());
-            showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
-
-            //    showInformation(newValue);
+            if(newValue!=null) {
+                setEditedRegisterElementFromList(newValue);
+                showInformationAboutClient(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getInstrument().getClient());
+                showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
+            }
         });
     }
     private void addFilter(){
@@ -188,7 +188,6 @@ private registerFxModel editedRegisterElementFromList;
             });
         } );
     }
-
     public ObservableList<String> getYearsList() {
         ObservableList<String> yearObservableList = FXCollections.observableArrayList();
         try {
@@ -314,9 +313,9 @@ private registerFxModel editedRegisterElementFromList;
                 leftPersonLabel.setText("");
             }
             if(result.get(0).getRemarks()!=null){
-                remarksTextArea.setText(result.get(0).getRemarks());
+                remarksLabel.setText(result.get(0).getRemarks());
             }else{
-                remarksTextArea.setText("");
+                remarksLabel.setText("");
             }
         }
     }

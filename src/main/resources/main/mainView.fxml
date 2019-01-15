@@ -9,99 +9,96 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.08020050125313283" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.08020050125313283" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainViewController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="80.0" prefWidth="160.0">
+      <HBox alignment="CENTER_RIGHT" maxHeight="61.0" minHeight="61.0" prefHeight="61.0" prefWidth="998.0">
          <children>
-            <HBox alignment="CENTER_RIGHT" layoutX="122.0" layoutY="-36.0" prefHeight="61.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane prefHeight="61.0" prefWidth="434.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="155.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="153.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="52.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="66.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <GridPane prefHeight="61.0" prefWidth="434.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="155.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="153.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="52.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="66.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Jesteś zalogowany jako:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="17.0" prefWidth="126.0" text="                               " GridPane.columnIndex="1">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <ImageView fitHeight="50.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                           <image>
-                              <Image url="@../images/user.jpg" />
-                           </image>
-                        </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Wyloguj" GridPane.columnIndex="3" />
-                     </children>
-                     <HBox.margin>
+                  <Label text="Jesteś zalogowany jako:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="userLoginLabel" prefHeight="17.0" prefWidth="126.0" text="                               " GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </GridPane>
+                     </GridPane.margin>
+                  </Label>
+                  <ImageView fitHeight="50.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                     <image>
+                        <Image url="@../images/user.jpg" />
+                     </image>
+                  </ImageView>
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Wyloguj" GridPane.columnIndex="3" />
                </children>
-            </HBox>
-         </children></AnchorPane>
-    <AnchorPane maxHeight="680.0" minHeight="0.0" minWidth="0.0" prefHeight="680.0">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </GridPane>
+         </children>
+      </HBox>
+    <AnchorPane prefHeight="680.0">
          <children>
             <TabPane prefHeight="680.0" prefWidth="998.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
-                <Tab text="Magazyn">
+                <Tab fx:id="storehouseTab" text="Magazyn">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <AnchorPane fx:id="storehouseAnchorPane">
                            <children>
-                              <VBox layoutX="28.0" layoutY="14.0" prefHeight="702.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <fx:include source="../storehouse/storehouseView.fxml" />
+                              <VBox fx:id="storehouseVBox" layoutX="28.0" layoutY="14.0" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Rejestr">
+                <Tab fx:id="registerAPTab" text="Rejestr AP131">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane fx:id="registerAPAnchorPane">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <fx:include source="../register/registerView.fxml" />
+                              <VBox fx:id="registerAPVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Przyrządy">
+                  <Tab text="Rejestr poza AP">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane />
+                    </content>
+                  </Tab>
+                  <Tab fx:id="instrumentTab" text="Przyrządy">
+                    <content>
+                      <AnchorPane fx:id="instrumentAnchorPane">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <fx:include source="../instrument/instrumentView.fxml" />
+                              <VBox fx:id="instrumentVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Zleceniodawcy">
+                  <Tab fx:id="clientTab" text="Zleceniodawcy">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane fx:id="clientAnchorPane">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <fx:include source="../client/clientView.fxml" />
+                              <VBox fx:id="clientVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Użytkownicy">
+                  <Tab fx:id="userTab" text="Użytkownicy">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane fx:id="userAnchorPane">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <fx:include source="../user/userView.fxml" />
+                              <VBox fx:id="userVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>

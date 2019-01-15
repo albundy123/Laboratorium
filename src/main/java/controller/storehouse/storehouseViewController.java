@@ -191,9 +191,11 @@ public class storehouseViewController {
         leftDateColumn.setCellValueFactory(new PropertyValueFactory<>("leftDate"));
         storehouseTableView.setItems(filteredStorehouseFxObservableList);
         storehouseTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setEditedStorehouseElementFromList(newValue);
-            showInformationAboutClient(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument().getClient());
-            showInformationAboutHistory(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+            if(newValue!=null) {
+                setEditedStorehouseElementFromList(newValue);
+                showInformationAboutClient(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument().getClient());
+                showInformationAboutHistory(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+            }
 
         });
     }

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.registerViewController">
+<VBox fx:id="mainVBox" maxHeight="1000.0" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.registerViewController">
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="800.0">
             <children>
@@ -76,7 +76,7 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="100.0">
                     <children>
-                        <TabPane prefHeight="140.0" prefWidth="706.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="0.0">
+                        <TabPane prefHeight="138.0" prefWidth="703.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <tabs>
                                 <Tab text="Zleceniodawca">
                                     <content>
@@ -102,7 +102,7 @@
                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </GridPane.margin>
                                                 </Label>
-                                                <Label minHeight="120.0" prefHeight="120.0" text="Miejscowość:" GridPane.rowIndex="2">
+                                                <Label minHeight="120.0" prefHeight="120.0" text="Miejscowość:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                                                     <GridPane.margin>
                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </GridPane.margin>
@@ -135,7 +135,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Data przyjęcia:" />
+                                                <Label text="Data przyjęcia:" GridPane.vgrow="ALWAYS" />
                                                 <Label text="Data wzorcowania:" GridPane.rowIndex="1" />
                                                 <Label text="Data wydania:" GridPane.rowIndex="2" />
                                                 <Label fx:id="addDateLabel" GridPane.columnIndex="1" />
@@ -154,9 +154,9 @@
                         <Tab text="Uwagi">
                           <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                  <children>
-                                      <TextArea fx:id="remarksTextArea" layoutX="-16.0" layoutY="-74.0" prefHeight="107.0" prefWidth="702.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                                  </children></AnchorPane>
+                                 <children>
+                                    <Label fx:id="remarksLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                 </children></AnchorPane>
                           </content>
                         </Tab>
                             </tabs>
@@ -168,7 +168,7 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="287.0">
                     <children>
-                        <VBox alignment="CENTER" layoutY="-16.0" prefHeight="140.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="CENTER" layoutY="-16.0" prefHeight="138.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <Button fx:id="editCertificateNameButton" mnemonicParsing="false" onAction="#editCertificateNumber" prefHeight="50.0" prefWidth="150.0" text="Edytuj Nr Świadectwa">
                                     <VBox.margin>

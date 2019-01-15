@@ -88,7 +88,6 @@ public class instrumentViewController {
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy instrumentViewController.");
-        //getInstruments();
         initializeTableView();
         editClientButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
         editInstrumentButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
@@ -128,10 +127,11 @@ public class instrumentViewController {
         instrumentClientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
         instrumentTableView.setItems(filteredInstrumentFxObservableList); //Wiązanie z listą obserwowalną.
         instrumentTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> { //Dodawanie listenera
-            setEditedInstrumentFromList(newValue); //Setowanie przyrządu, każde przyciśnięcie
-            showInformationAboutClient(instrumentModelList.get(newValue.getIndexOfInstrumentModelList()).getClient());
+            if(newValue!=null){
+                setEditedInstrumentFromList(newValue); //Setowanie przyrządu, każde przyciśnięcie
+                showInformationAboutClient(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient());
+            }
         });
-
     }
     @FXML
     private void editInstrument(){
@@ -167,18 +167,19 @@ public class instrumentViewController {
         editedInstrumentController.setInstrumentClientComboBox2(editedInstrumentFromList.getClient());
     }
     private void showInformationAboutClient(clientModel client){
-        if(client != null){
-            shortNameLabel.setText(client.getShortName());
-            fullNameLabel.setText(client.getFullName());
-            cityLabel.setText(client.getPostCode()+ " "+ client.getCity());
-            if(client.getFlatNumber().isEmpty()) {
-                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber());
-            }else{
-                streetLabel.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
+        if(editedInstrumentFromList!=null){
+            if(client != null){
+                shortNameLabel.setText(client.getShortName());
+                fullNameLabel.setText(client.getFullName());
+                cityLabel.setText(client.getPostCode()+ " "+ client.getCity());
+                if(client.getFlatNumber().isEmpty()) {
+                    streetLabel.setText(client.getStreet() + " " + client.getHouseNumber());
+                }else{
+                    streetLabel.setText(client.getStreet() + " " + client.getHouseNumber()+"/"+client.getFlatNumber());
+                }
             }
         }
     }
-
     @FXML
     private void editClient(){
         if(editedInstrumentFromList!=null) {
