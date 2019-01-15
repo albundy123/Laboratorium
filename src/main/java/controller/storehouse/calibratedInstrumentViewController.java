@@ -15,6 +15,7 @@ import javafx.util.StringConverter;
 import model.fxModel.storehouseFxModel;
 import model.registerModel;
 import model.storehouseModel;
+import model.userModel;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -41,7 +42,11 @@ public class calibratedInstrumentViewController {
         this.calibratedInstrumentStorehouse = calibratedInstrumentStorehouse;
     }
 
+    private userModel user;
 
+    public void setUser(userModel user) {
+        this.user = user;
+    }
 
 
     //Obiekt, który będzie wzorcowany
@@ -125,11 +130,13 @@ public class calibratedInstrumentViewController {
                     if(result.isEmpty()){
                         try {
                            // registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), registerModel.class);
+
                             registerDao.create(calibratedInstrument);
                             registerQueryBuilder.where().eq("idRegister", calibratedInstrument.getIdRegister() - 1);
                             prepare = registerQueryBuilder.prepare();
                             result = registerDao.query(prepare);
                             calibratedInstrument.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
+
                             if (result.isEmpty()) { //znaczy się ze pierwszy wpis :)
                                 calibratedInstrument.setIdRegisterByYear(1);
                                 calibratedInstrument.setCardNumber("1-2019");

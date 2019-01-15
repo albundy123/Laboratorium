@@ -17,8 +17,8 @@ public class registerModel {
     private String calibrationDate;
     @DatabaseField(foreign = true,foreignAutoRefresh = true)
     private instrumentModel instrument;
-    @DatabaseField
-    private String calibratePerson;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private userModel userWhoCalibrate;
     @DatabaseField
     private String certificateNumber;
     @DatabaseField
@@ -28,14 +28,14 @@ public class registerModel {
     public registerModel() {
     }
 
-    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, String calibratePerson, String certificateNumber, String documentKind, String state) {
+    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, userModel userWhoCalibrate, String certificateNumber, String documentKind, String state) {
         this.idRegister = idRegister;
         this.idRegisterByYear = idRegisterByYear;
         this.idStorehouse = idStorehouse;
         this.cardNumber = cardNumber;
         this.calibrationDate = calibrationDate;
         this.instrument = instrument;
-        this.calibratePerson = calibratePerson;
+        this.userWhoCalibrate = userWhoCalibrate;
         this.certificateNumber = certificateNumber;
         this.documentKind = documentKind;
         this.state = state;
@@ -89,12 +89,12 @@ public class registerModel {
         this.instrument = instrument;
     }
 
-    public String getCalibratePerson() {
-        return calibratePerson;
+    public userModel getUserWhoCalibrate() {
+        return userWhoCalibrate;
     }
 
-    public void setCalibratePerson(String calibratePerson) {
-        this.calibratePerson = calibratePerson;
+    public void setUserWhoCalibrate(userModel userWhoCalibrate) {
+        this.userWhoCalibrate = userWhoCalibrate;
     }
 
     public String getCertificateNumber() {

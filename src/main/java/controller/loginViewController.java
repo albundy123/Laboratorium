@@ -8,10 +8,7 @@ import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -41,6 +38,15 @@ public class loginViewController {
     private Label loginLabel;
     @FXML
     private AnchorPane mainAnchorPane;
+
+
+    private userModel user;
+
+    public userModel getUser() {
+        return user;
+    }
+
+    private mainViewController mainWindowController;
     @FXML
     private void initialize(){
         Image image = new Image("/images/user.jpg");
@@ -58,6 +64,7 @@ public class loginViewController {
                 loginLabel.setText("Podałeś nieprawidłowe dane");
             }else{
                 loginLabel.setText("Wow działa !");
+                user=new userModel(result.get(0).getIdUser(),result.get(0).getFirstName(),result.get(0).getLastName(), result.get(0).getLogin(), result.get(0).getPassword(),result.get(0).getPersmissionLevel());
                 Stage window = (Stage) mainAnchorPane.getScene().getWindow();
                 window.close();
                 loadUserView();
@@ -74,11 +81,20 @@ public class loginViewController {
     }
     private void loadUserView(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/UserView.fxml"));
-            VBox vBox = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));
+            SplitPane mainSplitPane = loader.load();
+            System.out.println("This "+this);
+            mainWindowController=loader.getController();
+            if(mainWindowController!=null){
+                mainWindowController.setLoginMainController(this);
+                mainWindowController.setUser(user);
+                System.out.println("This "+this);
+                mainWindowController.setUserLoginLabel(user.getLogin());
+                System.out.println("Skonczylem ladowanko");
+            }
             Stage window = new Stage();
             window.setTitle("Użytkownicy");
-            Scene scene = new Scene(vBox);
+            Scene scene = new Scene(mainSplitPane);
             window.setScene(scene);
             window.show();
         } catch (IOException e) {

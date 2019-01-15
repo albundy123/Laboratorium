@@ -19,14 +19,14 @@ public class Main extends Application {
        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/storehouseView.fxml"));
        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/instrumentView.fxml"));
        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/clientView.fxml"));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));
+       // FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));
         //VBox vBox = loader.load();
-        SplitPane splitPane = loader.load();
-        Scene scene = new Scene(splitPane);
+       // SplitPane splitPane = loader.load();
+       // Scene scene = new Scene(splitPane);
 
-       /* FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
         AnchorPane anchorPane = loader.load();
-        Scene scene = new Scene(anchorPane);*/
+        Scene scene = new Scene(anchorPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Logowanie");
         primaryStage.show();

@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.registerModel;
 import model.storehouseModel;
+import model.userModel;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -41,6 +42,12 @@ public class leftInstrumentViewController {
     public void setStorehouseMainController(storehouseViewController storehouseMainController) {
         this.storehouseMainController = storehouseMainController;
     }
+    private userModel user;
+
+    public void setUser(userModel user) {
+        this.user = user;
+    }
+
 
     @FXML
     VBox mainVBox;
@@ -108,6 +115,7 @@ public class leftInstrumentViewController {
                         try {
                             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
                             leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
+                            leftInstrument.setUserWhoLeft(user);
                             storehouseDao.update(leftInstrument);
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -123,6 +131,7 @@ public class leftInstrumentViewController {
                         try {
                             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
                             leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
+                            leftInstrument.setUserWhoLeft(user);
                             storehouseDao.update(leftInstrument);
                         } catch (SQLException e) {
                             e.printStackTrace();

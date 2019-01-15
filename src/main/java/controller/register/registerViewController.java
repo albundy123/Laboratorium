@@ -147,7 +147,7 @@ private registerFxModel editedRegisterElementFromList;
                 registerFxObservableList.add(new registerFxModel(indeks,registerElement.getIdRegisterByYear(),registerElement.getCardNumber(),
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
-                        registerElement.getInstrument().getClient().getShortName(),registerElement.getCalibratePerson(),
+                        registerElement.getInstrument().getClient().getShortName(),registerElement.getUserWhoCalibrate().getLogin(),
                         registerElement.getCertificateNumber(),registerElement.getDocumentKind(),registerElement.getState()));
                 indeks++;
             }

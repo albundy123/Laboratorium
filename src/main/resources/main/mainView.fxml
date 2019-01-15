@@ -54,7 +54,7 @@
          <children>
             <TabPane prefHeight="680.0" prefWidth="998.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
-                <Tab fx:id="storehouseTab" text="Magazyn">
+                <Tab fx:id="storehouseTab" text="       Magazyn       ">
                   <content>
                     <AnchorPane fx:id="storehouseAnchorPane">
                            <children>
@@ -63,7 +63,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab fx:id="registerAPTab" text="Rejestr AP131">
+                <Tab fx:id="registerAPTab" text="      Rejestr AP     ">
                   <content>
                     <AnchorPane fx:id="registerAPAnchorPane">
                            <children>
@@ -71,12 +71,12 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Rejestr poza AP">
+                  <Tab text="   Rejestr poza AP   ">
                     <content>
                       <AnchorPane />
                     </content>
                   </Tab>
-                  <Tab fx:id="instrumentTab" text="Przyrządy">
+                  <Tab fx:id="instrumentTab" text="      Przyrządy      ">
                     <content>
                       <AnchorPane fx:id="instrumentAnchorPane">
                            <children>
@@ -85,7 +85,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="clientTab" text="Zleceniodawcy">
+                  <Tab fx:id="clientTab" text="    Zleceniodawcy    ">
                     <content>
                       <AnchorPane fx:id="clientAnchorPane">
                            <children>
@@ -94,7 +94,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="userTab" text="Użytkownicy">
+                  <Tab fx:id="userTab" text="     Użytkownicy     ">
                     <content>
                       <AnchorPane fx:id="userAnchorPane">
                            <children>

@@ -24,8 +24,16 @@ public class mainViewController {
     @FXML
     private Label userLoginLabel;
 
+    public void setUserLoginLabel(String userLoginLabel) {
+        this.userLoginLabel.setText(userLoginLabel);
+    }
+
     public void setUser(userModel user) {
         this.user = user;
+    }
+
+    public userModel getUser() {
+        return user;
     }
 
     public void setYear(yearModel year) {
@@ -33,7 +41,7 @@ public class mainViewController {
     }
 
 
-
+//Deklaracje wszystkich potrzebnych elementów do załadowania wszystkich widoków
     @FXML
     private VBox storehouseVBox;
     @FXML
@@ -65,13 +73,11 @@ public class mainViewController {
     @FXML
     private AnchorPane userAnchorPane;
 
+    private loginViewController loginMainController;
 
-
-
-
-
-
-
+    public void setLoginMainController(loginViewController loginMainController) {
+        this.loginMainController = loginMainController;
+    }
 
     private storehouseViewController storehouseMainController;
     private registerViewController registerAPMainController;
@@ -82,6 +88,7 @@ public class mainViewController {
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy mainViewController.");
+//        System.out.println("User login w storehouse "+user.getLogin());
         loadStorehouseTab();
         loadRegisterAPTab();
         loadInstrumentTab();
@@ -94,6 +101,7 @@ public class mainViewController {
             storehouseVBox = loader.load();
             storehouseMainController=loader.getController();
             if(storehouseMainController!=null) {
+                storehouseMainController.setMainWindowController(this);
                 storehouseAnchorPane.getChildren().add(storehouseVBox);
                 storehouseTab.setContent(storehouseAnchorPane);
                 setAnchorPaneConstrains(storehouseVBox,0.0);
@@ -108,6 +116,7 @@ public class mainViewController {
             registerAPVBox = loader.load();
             registerAPMainController=loader.getController();
             if(registerAPMainController!=null) {
+
                 registerAPAnchorPane.getChildren().add(registerAPVBox);
                 registerAPTab.setContent(registerAPAnchorPane);
                 setAnchorPaneConstrains(registerAPVBox,0.0);

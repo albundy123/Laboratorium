@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import controller.instrument.editInstrumentViewController;
+import controller.mainViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +34,17 @@ import java.util.List;
 
 public class storehouseViewController {
     public  storehouseViewController() {System.out.println("Siemanko jestem konstruktorem klasy  storehouseViewController.");}
-//Wstrzyknięcie TableView i poszczególnych kolumn, musi być ze względu na wyświetlanie
+
+    private userModel user;
+    public void setUser(userModel user) {
+        this.user = user;
+    }
+
+    public userModel getUser() {
+        return user;
+    }
+
+    //Wstrzyknięcie TableView i poszczególnych kolumn, musi być ze względu na wyświetlanie
     @FXML
     private TableView<storehouseFxModel> storehouseTableView;
     @FXML
@@ -124,9 +135,13 @@ public class storehouseViewController {
     private ObservableList<storehouseFxModel> storehouseFxObservableList = FXCollections.observableArrayList();
     private FilteredList<storehouseFxModel> filteredStorehouseFxObservableList = new FilteredList<>(storehouseFxObservableList, p -> true); //Lista filtrowana służy do szukania
 
+    private mainViewController mainWindowController;
 
+    public void setMainWindowController(mainViewController mainWindowController) {
+        this.mainWindowController = mainWindowController;
+    }
 
-//Funkcja initialize wykonuje się konstruktorze, róże rzeczy tu można robić zwłaszcza że mamy już załadowane kontroli opisane wyżej
+    //Funkcja initialize wykonuje się konstruktorze, róże rzeczy tu można robić zwłaszcza że mamy już załadowane kontroli opisane wyżej
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy storehouseViewController.");
@@ -140,6 +155,7 @@ public class storehouseViewController {
     //Pobiera listę obiektów storehouseModel z tabeli "STOREHOUSE" wypełnia jednocześnie listę obiektów storehouseFxObservableList
     //Oczywiscie możemy wybrać co chcemy pobrać z super wielkiej tabeli tak przyszłościowo :)
     public void getStorehouseList(){
+
         try {
             storehouseFxObservableList.clear();
             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
@@ -253,11 +269,13 @@ public class storehouseViewController {
     @FXML
     private void addNewInstrument(){    //Uruchamia okno dodawania nowego przyrządu do magazynu
             try {
+                setUser(mainWindowController.getUser());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/newInstrumentView.fxml"));
                 VBox vBox = loader.load();
                 newInstrumentController = loader.getController();
                 if (newInstrumentController != null){
                     newInstrumentController.setStorehouseMainController(this);
+                    newInstrumentController.setUser(user);
                  //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
                 }
                 Stage window = new Stage();
@@ -284,9 +302,10 @@ public class storehouseViewController {
     }
     public void calibrateInstrumentAfterCheckConditions(){
         try {
+            setUser(mainWindowController.getUser());
             registerModel calibrateInstrument = new registerModel(0,0,storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getIdStorehouse(),
                     "",storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getCalibrationDate(),
-                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),"","","","ON");
+                    storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument(),user,"","","ON");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/calibratedInstrumentView.fxml"));
             VBox vBox = loader.load();
             calibratedInstrumentController = loader.getController();
@@ -294,6 +313,7 @@ public class storehouseViewController {
                 calibratedInstrumentController.setStorehouseMainController(this);
                 calibratedInstrumentController.setCalibratedInstrument(calibrateInstrument);
                 calibratedInstrumentController.setCalibratedInstrumentStorehouse(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+                calibratedInstrumentController.setUser(user);
                 setCalibratedInstrumentLabels();
                 //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
             }
@@ -321,6 +341,7 @@ public class storehouseViewController {
     }
     public void leftInstrumentAfterCheckConditions(){
         try {
+            setUser(mainWindowController.getUser());
             storehouseModel leftInstrument = storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/leftInstrumentView.fxml"));
             VBox vBox = loader.load();
@@ -329,6 +350,7 @@ public class storehouseViewController {
                 leftInstrumentController.setStorehouseMainController(this);
                 leftInstrumentController.setLeftInstrument(leftInstrument);
                 leftInstrumentController.setLeftInstrument(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
+                leftInstrumentController.setUser(user);
                 setLeftInstrumentLabels();
                 //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
             }

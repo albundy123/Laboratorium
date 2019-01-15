@@ -70,8 +70,11 @@ public class newInstrumentViewController {
     public void setClientInstrument(clientModel clientInstrument) {
         this.clientInstrument = clientInstrument;
     }
+    private userModel user;
 
-
+    public void setUser(userModel user) {
+        this.user = user;
+    }
 
     //Wstrzyknięcia elementów z FXMLA
     @FXML
@@ -345,6 +348,7 @@ public class newInstrumentViewController {
 
     private void setAddNewInstrumentName(){
         try {
+    setUser(storehouseMainController.getUser());
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
             QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
             if(!serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()) {
@@ -357,11 +361,11 @@ public class newInstrumentViewController {
             instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
-            storehouseModel storehouse = new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText());
+            storehouseModel storehouse = new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),user,"",null,"",null,newInstrumentTextArea.getText());
             Dao<storehouseModel, Integer> storehouseDao= DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
             if(result.isEmpty()) {
                 instrumentDao.create(instrument);
-                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),null,"",null,"",null,newInstrumentTextArea.getText()));
+                storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),user,"",null,"",null,newInstrumentTextArea.getText()));
                 System.out.println("Dodajemy przyrząd do tabeli przyrządy i potem do storehouse");
 
             }else{
