@@ -63,17 +63,20 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab fx:id="registerAPTab" text="      Rejestr AP     ">
+                <Tab fx:id="registerInAPTab" text="      Rejestr AP     ">
                   <content>
-                    <AnchorPane fx:id="registerAPAnchorPane">
+                    <AnchorPane fx:id="registerInAPAnchorPane">
                            <children>
-                              <VBox fx:id="registerAPVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="registerInAPVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="   Rejestr poza AP   ">
+                  <Tab fx:id="registerOutAPTab" text="   Rejestr poza AP   ">
                     <content>
-                      <AnchorPane />
+                      <AnchorPane fx:id="registerOutAPAnchorPane">
+                           <children>
+                              <VBox fx:id="registerOutAPVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="instrumentTab" text="      Przyrządy      ">

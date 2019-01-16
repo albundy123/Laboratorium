@@ -38,8 +38,6 @@ public class loginViewController {
     private Label loginLabel;
     @FXML
     private AnchorPane mainAnchorPane;
-
-
     private userModel user;
 
     public userModel getUser() {
@@ -93,7 +91,7 @@ public class loginViewController {
                 System.out.println("Skonczylem ladowanko");
             }
             Stage window = new Stage();
-            window.setTitle("Użytkownicy");
+            window.setTitle("LABORATORIUM METROLOGICZNE");
             Scene scene = new Scene(mainSplitPane);
             window.setScene(scene);
             window.show();

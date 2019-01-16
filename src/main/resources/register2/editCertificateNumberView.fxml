@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register2.editCertificateNumberViewController">
+    <children>
+        <Label text="Nr Świadectwa Wzorcowania / Protokołu odmowy">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="certificateNumberTextField" alignment="CENTER" promptText="wprowadź nr świadectwa / nr protokołu">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </TextField>
+        <Label text="Rodzaj dokumentu:">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </Label>
+        <ComboBox fx:id="documentKindComboBox" prefWidth="220.0">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </ComboBox>
+        <Label fx:id="certificateNumberInformationLabel" textFill="RED">
+            <VBox.margin>
+                <Insets left="5.0" />
+            </VBox.margin></Label>
+        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="290.0">
+            <children>
+                <Button fx:id="saveCertificateNumberButton" mnemonicParsing="false" onAction="#saveCertificateNumber" text="Zapisz" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="cancelSaveCertificateNumberButton" mnemonicParsing="false" onAction="#cancelSaveCertificateNumber" text="Anuluj" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+    </children>
+</VBox>

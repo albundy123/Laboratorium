@@ -2,6 +2,7 @@ package controller;
 
 import controller.instrument.instrumentViewController;
 import controller.register.registerViewController;
+import controller.register2.register2ViewController;
 import controller.storehouse.storehouseViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class mainViewController {
     public  mainViewController() {System.out.println("Siemanko jestem konstruktorem klasy  mainViewController.");}
 
     private userModel user;
-    private yearModel year;
+
 
     @FXML
     private Label userLoginLabel;
@@ -27,17 +28,11 @@ public class mainViewController {
     public void setUserLoginLabel(String userLoginLabel) {
         this.userLoginLabel.setText(userLoginLabel);
     }
-
     public void setUser(userModel user) {
         this.user = user;
     }
-
     public userModel getUser() {
         return user;
-    }
-
-    public void setYear(yearModel year) {
-        this.year = year;
     }
 
 
@@ -49,11 +44,17 @@ public class mainViewController {
     @FXML
     private AnchorPane storehouseAnchorPane;
     @FXML
-    private VBox registerAPVBox;
+    private VBox registerInAPVBox;
     @FXML
-    private Tab registerAPTab;
+    private Tab registerInAPTab;
     @FXML
-    private AnchorPane registerAPAnchorPane;
+    private AnchorPane registerInAPAnchorPane;
+    @FXML
+    private VBox registerOutAPVBox;
+    @FXML
+    private Tab registerOutAPTab;
+    @FXML
+    private AnchorPane registerOutAPAnchorPane;
     @FXML
     private VBox instrumentVBox;
     @FXML
@@ -80,7 +81,8 @@ public class mainViewController {
     }
 
     private storehouseViewController storehouseMainController;
-    private registerViewController registerAPMainController;
+    private registerViewController registerInAPMainController;
+    private register2ViewController registerOutAPMainController;
     private instrumentViewController instrumentMainController;
     private clientViewController clientMainController;
     private userViewController userMainController;
@@ -88,9 +90,9 @@ public class mainViewController {
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy mainViewController.");
-//        System.out.println("User login w storehouse "+user.getLogin());
         loadStorehouseTab();
-        loadRegisterAPTab();
+        loadRegisterInAPTab();
+        loadRegisterOutAPTab();
         loadInstrumentTab();
         loadClientTab();
         loadUserTab();
@@ -110,17 +112,33 @@ public class mainViewController {
             e.printStackTrace();
         }
     }
-    private void loadRegisterAPTab(){
+    private void loadRegisterInAPTab(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/register/registerView.fxml"));
         try {
-            registerAPVBox = loader.load();
-            registerAPMainController=loader.getController();
-            if(registerAPMainController!=null) {
+            registerInAPVBox = loader.load();
+            registerInAPMainController=loader.getController();
+            if(registerInAPMainController!=null) {
 
-                registerAPAnchorPane.getChildren().add(registerAPVBox);
-                registerAPTab.setContent(registerAPAnchorPane);
-                setAnchorPaneConstrains(registerAPVBox,0.0);
-                VBox.setVgrow(registerAPVBox, Priority.ALWAYS);
+                registerInAPAnchorPane.getChildren().add(registerInAPVBox);
+                registerInAPTab.setContent(registerInAPAnchorPane);
+                setAnchorPaneConstrains(registerInAPVBox,0.0);
+                VBox.setVgrow(registerInAPVBox, Priority.ALWAYS);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadRegisterOutAPTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/register2/register2View.fxml"));
+        try {
+            registerOutAPVBox = loader.load();
+            registerOutAPMainController=loader.getController();
+            if(registerOutAPMainController!=null) {
+
+                registerOutAPAnchorPane.getChildren().add(registerOutAPVBox);
+                registerOutAPTab.setContent(registerOutAPAnchorPane);
+                setAnchorPaneConstrains(registerOutAPVBox,0.0);
+                VBox.setVgrow(registerOutAPVBox, Priority.ALWAYS);
             }
         } catch (IOException e) {
             e.printStackTrace();

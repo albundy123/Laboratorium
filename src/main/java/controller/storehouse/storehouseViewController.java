@@ -39,10 +39,14 @@ public class storehouseViewController {
     public void setUser(userModel user) {
         this.user = user;
     }
-
     public userModel getUser() {
         return user;
     }
+    private yearModel year;
+    private void setYear(yearModel year) {
+        this.year = year;
+    }
+
 
     //Wstrzyknięcie TableView i poszczególnych kolumn, musi być ze względu na wyświetlanie
     @FXML
@@ -148,7 +152,7 @@ public class storehouseViewController {
         isInStorehouseComboBox.getItems().addAll("Wszystkie","W magazynie");
         isInStorehouseComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
-        yearComboBox.setValue("2019"); //Domyślnie będzie rok bieżący :)
+        yearComboBox.setValue(year.getYear()); //Domyślnie będzie rok bieżący :)
         initializeTableView();
         addFilter();
     }
@@ -314,6 +318,7 @@ public class storehouseViewController {
                 calibratedInstrumentController.setCalibratedInstrument(calibrateInstrument);
                 calibratedInstrumentController.setCalibratedInstrumentStorehouse(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()));
                 calibratedInstrumentController.setUser(user);
+                calibratedInstrumentController.setYear(year);
                 setCalibratedInstrumentLabels();
                 //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
             }
@@ -472,6 +477,7 @@ public class storehouseViewController {
         try {
             Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(), yearModel.class);
             List<yearModel> yearList = yearDao.queryForAll();
+            setYear(yearList.get(yearList.size()-1));
             yearObservableList.add("Wszystkie");
             yearList.forEach(year -> {
                 yearObservableList.add(year.getYear());
