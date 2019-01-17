@@ -358,7 +358,7 @@ public class newInstrumentViewController {
             }else if(serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()){
                 instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
             }
-            instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), serialNumberTextField.getText(), identificationNumberTextField.getText(), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
+            instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), (serialNumberTextField.getText().trim()).replaceAll("\\s+",""), (identificationNumberTextField.getText().trim()).replaceAll("\\s+",""), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
             List<instrumentModel> result = instrumentDao.query(prepare);
             storehouseModel storehouse = new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),user,"",null,"",null,newInstrumentTextArea.getText());

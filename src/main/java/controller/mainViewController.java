@@ -19,15 +19,13 @@ import java.io.IOException;
 public class mainViewController {
     public  mainViewController() {System.out.println("Siemanko jestem konstruktorem klasy  mainViewController.");}
 
-    private userModel user;
-
-
     @FXML
     private Label userLoginLabel;
-
     public void setUserLoginLabel(String userLoginLabel) {
         this.userLoginLabel.setText(userLoginLabel);
     }
+
+    private userModel user;
     public void setUser(userModel user) {
         this.user = user;
     }
@@ -74,6 +72,9 @@ public class mainViewController {
     @FXML
     private AnchorPane userAnchorPane;
 
+    public void userTabDisable(){
+        userTab.setDisable(true);
+    }
     private loginViewController loginMainController;
 
     public void setLoginMainController(loginViewController loginMainController) {
@@ -104,9 +105,7 @@ public class mainViewController {
             storehouseMainController=loader.getController();
             if(storehouseMainController!=null) {
                 storehouseMainController.setMainWindowController(this);
-                storehouseAnchorPane.getChildren().add(storehouseVBox);
-                storehouseTab.setContent(storehouseAnchorPane);
-                setAnchorPaneConstrains(storehouseVBox,0.0);
+                setTabContent(storehouseTab,storehouseAnchorPane,storehouseVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,11 +117,7 @@ public class mainViewController {
             registerInAPVBox = loader.load();
             registerInAPMainController=loader.getController();
             if(registerInAPMainController!=null) {
-
-                registerInAPAnchorPane.getChildren().add(registerInAPVBox);
-                registerInAPTab.setContent(registerInAPAnchorPane);
-                setAnchorPaneConstrains(registerInAPVBox,0.0);
-                VBox.setVgrow(registerInAPVBox, Priority.ALWAYS);
+                setTabContent(registerInAPTab,registerInAPAnchorPane,registerInAPVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -134,11 +129,7 @@ public class mainViewController {
             registerOutAPVBox = loader.load();
             registerOutAPMainController=loader.getController();
             if(registerOutAPMainController!=null) {
-
-                registerOutAPAnchorPane.getChildren().add(registerOutAPVBox);
-                registerOutAPTab.setContent(registerOutAPAnchorPane);
-                setAnchorPaneConstrains(registerOutAPVBox,0.0);
-                VBox.setVgrow(registerOutAPVBox, Priority.ALWAYS);
+                setTabContent(registerOutAPTab,registerOutAPAnchorPane,registerOutAPVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,9 +141,7 @@ public class mainViewController {
             instrumentVBox = loader.load();
             instrumentMainController=loader.getController();
             if(instrumentMainController!=null) {
-                instrumentAnchorPane.getChildren().add(instrumentVBox);
-                instrumentTab.setContent(instrumentAnchorPane);
-                setAnchorPaneConstrains(instrumentVBox,0.0);
+                setTabContent(instrumentTab,instrumentAnchorPane,instrumentVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,9 +153,7 @@ public class mainViewController {
             clientVBox = loader.load();
             clientMainController=loader.getController();
             if(clientMainController!=null) {
-                clientAnchorPane.getChildren().add(clientVBox);
-                clientTab.setContent(clientAnchorPane);
-                setAnchorPaneConstrains(clientVBox,0.0);
+                setTabContent(clientTab,clientAnchorPane,clientVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -178,13 +165,16 @@ public class mainViewController {
             userVBox = loader.load();
             userMainController=loader.getController();
             if(userMainController!=null) {
-                userAnchorPane.getChildren().add(userVBox);
-                userTab.setContent(userAnchorPane);
-                setAnchorPaneConstrains(userVBox,0.0);
+                setTabContent(userTab,userAnchorPane,userVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void setTabContent(Tab tab, AnchorPane anchorPane, VBox vBox){
+        anchorPane.getChildren().add(vBox);
+        tab.setContent(anchorPane);
+        setAnchorPaneConstrains(vBox,0.0);
     }
     private void setAnchorPaneConstrains (VBox node, double value){
         AnchorPane.setBottomAnchor(node,value);

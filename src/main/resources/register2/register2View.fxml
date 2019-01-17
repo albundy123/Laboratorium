@@ -57,7 +57,7 @@
                 <TableColumn fx:id="instrumentSerialNumberColumn" prefWidth="75.0" text="Nr fabryczny" />
                 <TableColumn fx:id="instrumentIdentificationNumberColumn" prefWidth="75.0" text="Nr identyfikacyjny" />
                 <TableColumn fx:id="instrumentClientColumn" prefWidth="75.0" text="Zleceniodawca" />
-                <TableColumn fx:id="userColumn" prefWidth="75.0" text="Wzorcujący" />
+                <TableColumn fx:id="userWhoCalibrateColumn" prefWidth="75.0" text="Wzorcujący" />
                 <TableColumn prefWidth="178.0" text="Świadectwo wzorcowania">
                     <columns>
                         <TableColumn fx:id="certificateNumberColumn" prefWidth="138.0" text="Nr Świadectwa" />

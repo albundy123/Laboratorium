@@ -42,7 +42,7 @@
                         <Image url="@../images/user.jpg" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Wyloguj" GridPane.columnIndex="3" />
+                  <Button fx:id="logOutButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Wyloguj" GridPane.columnIndex="3" />
                </children>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

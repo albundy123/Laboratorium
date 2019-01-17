@@ -48,7 +48,7 @@ public class register2ViewController {
     @FXML
     private TableColumn<registerFxModel, String> instrumentClientColumn;
     @FXML
-    private TableColumn<registerFxModel, String> calibratePersonColumn;
+    private TableColumn<registerFxModel, String> userWhoCalibrateColumn;
     @FXML
     private TableColumn<registerFxModel, String> certificateNumberColumn;
     @FXML
@@ -103,6 +103,11 @@ public class register2ViewController {
     }
     private editCertificateNumberViewController editCertificateNumberMainController;
     private editCalibrationDateViewController editCalibrationDateMainController;
+
+    private yearModel year;
+    private void setYear(yearModel year) {
+        this.year = year;
+    }
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
@@ -110,7 +115,7 @@ public class register2ViewController {
         isStateOkComboBox.getItems().addAll("Wszystkie","ON","OFF");
         isStateOkComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
-        yearComboBox.setValue("2019"); //Domyślnie będzie rok bieżący :)
+        yearComboBox.setValue(year.getYear()); //Domyślnie będzie rok bieżący :)
         // getRegisterList();
         initializeTableView();
         addFilter();
@@ -162,6 +167,7 @@ public class register2ViewController {
         instrumentSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         instrumentIdentificationNumberColumn.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
         instrumentClientColumn.setCellValueFactory(new PropertyValueFactory<>("client"));
+        userWhoCalibrateColumn.setCellValueFactory(new PropertyValueFactory<>("calibratePerson"));
         certificateNumberColumn.setCellValueFactory(new PropertyValueFactory<>("certificateNumber"));
         documentKindColumn.setCellValueFactory(new PropertyValueFactory<>("documentKind"));
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
@@ -191,6 +197,7 @@ public class register2ViewController {
         try {
             Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(), yearModel.class);
             List<yearModel> yearList = yearDao.queryForAll();
+            setYear(yearList.get(yearList.size()-1));
             yearObservableList.add("Wszystkie");
             yearList.forEach(year -> {
                 yearObservableList.add(year.getYear());

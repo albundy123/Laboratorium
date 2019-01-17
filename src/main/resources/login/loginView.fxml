@@ -47,12 +47,12 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="loginTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1">
+                        <TextField fx:id="loginTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="login" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <PasswordField fx:id="passwordField" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <PasswordField fx:id="passwordField" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="hasło" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -61,12 +61,12 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="73.0" prefWidth="265.0">
                      <children>
-                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loguj" prefHeight="30.0" prefWidth="100.0" text="Loguj">
+                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#logIn" prefHeight="30.0" prefWidth="100.0" text="Loguj">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="cancelLoginButton" mnemonicParsing="false" onAction="#anuluj" prefHeight="30.0" prefWidth="100.0" text="Anuluj">
+                        <Button fx:id="cancelLoginButton" mnemonicParsing="false" onAction="#cancelLogIn" prefHeight="30.0" prefWidth="100.0" text="Anuluj">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
