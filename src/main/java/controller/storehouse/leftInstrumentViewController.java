@@ -24,31 +24,6 @@ public class leftInstrumentViewController {
     public leftInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy leftInstrumentViewController");
     }
 
-
-    @FXML
-    private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy leftInstrumentViewController");
-        leftDateDatePicker.setConverter(Converter.getConverter());
-
-    }
-    private storehouseModel leftInstrument;
-
-    public void setLeftInstrument(storehouseModel leftInstrument) {
-        this.leftInstrument = leftInstrument;
-    }
-
-    private storehouseViewController storehouseMainController;
-
-    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
-        this.storehouseMainController = storehouseMainController;
-    }
-    private userModel user;
-
-    public void setUser(userModel user) {
-        this.user = user;
-    }
-
-
     @FXML
     VBox mainVBox;
 
@@ -69,39 +44,51 @@ public class leftInstrumentViewController {
     @FXML
     private Label instrumentTypeLabel;
     @FXML
-    private Button leftInstrumentButton;
-    @FXML
-    private Button cancelLeftInstrumentButton;
-
-    @FXML
     private Label informationLabel;
-
-    public void setInstrumentNameLabel(String instrumentNameLabel) {
-        this.instrumentNameLabel.setText(instrumentNameLabel);
+    //Potrzebne do ustawienia danych w nowo otwartym oknie
+    public void setInstrumentNameLabel(String instrumentName) {
+        this.instrumentNameLabel.setText(instrumentName);
+    }
+    public void setInstrumentProducerLabel(String instrumentProducer) {
+        this.instrumentProducerLabel.setText(instrumentProducer);
+    }
+    public void setInstrumentRangeLabel(String instrumentRange) {
+        this.instrumentRangeLabel.setText(instrumentRange);
+    }
+    public void setIdentificationNumberLabel(String identificationNumber) {
+        this.identificationNumberLabel.setText(identificationNumber);
+    }
+    public void setSerialNumberLabel(String serialNumber) {
+        this.serialNumberLabel.setText(serialNumber);
     }
 
-    public void setInstrumentProducerLabel(String instrumentProducerLabel) {
-        this.instrumentProducerLabel.setText(instrumentProducerLabel);
+    public void setClientLabel(String client) {
+        this.clientLabel.setText(client);
     }
 
-    public void setInstrumentRangeLabel(String instrumentRangeLabel) {
-        this.instrumentRangeLabel.setText(instrumentRangeLabel);
+    public void setInstrumentTypeLabel(String instrumentType) {
+        this.instrumentTypeLabel.setText(instrumentType);
     }
 
-    public void setIdentificationNumberLabel(String identificationNumberLabel) {
-        this.identificationNumberLabel.setText(identificationNumberLabel);
+    private storehouseModel leftInstrument;
+    public void setLeftInstrument(storehouseModel leftInstrument) {
+        this.leftInstrument = leftInstrument;
     }
 
-    public void setSerialNumberLabel(String serialNumberLabel) {
-        this.serialNumberLabel.setText(serialNumberLabel);
+    private storehouseViewController storehouseMainController;
+    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
+        this.storehouseMainController = storehouseMainController;
     }
 
-    public void setClientLabel(String clientLabel) {
-        this.clientLabel.setText(clientLabel);
+    private userModel user;
+    public void setUser(userModel user) {
+        this.user = user;
     }
 
-    public void setInstrumentTypeLabel(String instrumentTypeLabel) {
-        this.instrumentTypeLabel.setText(instrumentTypeLabel);
+    @FXML
+    private void initialize(){
+        System.out.println("Halo świry jestem funkcją initialize klasy leftInstrumentViewController");
+        leftDateDatePicker.setConverter(Converter.getConverter());
     }
 
     @FXML

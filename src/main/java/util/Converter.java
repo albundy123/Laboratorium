@@ -2,6 +2,8 @@ package util;
 
 
 import javafx.util.StringConverter;
+import model.fxModel.storehouseFxModel;
+import model.storehouseModel;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,5 +33,21 @@ public class Converter {
             }
         };
         return converter;
+    }
+    public static storehouseFxModel convertToStorehouseFx(storehouseModel model){
+        storehouseFxModel modelFx=new storehouseFxModel();
+        modelFx.setIndexOfStorehouseModelList(0);
+        modelFx.setIdInstrument(model.getIdStorehouse());
+        modelFx.setInstrumentName(model.getInstrument().getInstrumentName().getInstrumentName());
+        modelFx.setInstrumentType(model.getInstrument().getInstrumentType().getInstrumentType());
+        modelFx.setInstrumentProducer(model.getInstrument().getInstrumentProducer().getInstrumentProducer());
+        modelFx.setSerialNumber(model.getInstrument().getSerialNumber());
+        modelFx.setIdentificationNumber(model.getInstrument().getIdentificationNumber());
+        modelFx.setInstrumentRange(model.getInstrument().getInstrumentRange().getInstrumentRange());
+        modelFx.setClient(model.getInstrument().getClient().getShortName());
+        modelFx.setAddDate(model.getAddDate());
+        modelFx.setCalibrationDate(model.getCalibrationDate());
+        modelFx.setLeftDate(model.getLeftDate());
+        return modelFx;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class storehouseFxModel {
     private Integer indexOfStorehouseModelList;
-    private Integer idInstrument;
+    private Integer idInstrument; //To trzeba zmienić na idStorehouse ale poki co musi byc
     private String instrumentName;
     private String instrumentType;
     private String instrumentProducer;

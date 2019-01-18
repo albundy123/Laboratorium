@@ -12,63 +12,19 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.*;
-import model.fxModel.storehouseFxModel;
 import util.Converter;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class calibratedInstrumentViewController {
     public calibratedInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy calibratedInstrumentViewController");
     }
-    @FXML
-    private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
-        registerComboBox.getItems().addAll("W zakresie akredytacji","Poza zakresem akredytacji");
-        registerComboBox.setValue("W zakresie akredytacji");
-        calibrationDateDatePicker.setConverter(Converter.getConverter());
-    }
-
-
-
-    //Połączenie do głównego kontrolera
-    private storehouseViewController storehouseMainController;
-    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
-        this.storehouseMainController = storehouseMainController;
-    }
-    private storehouseModel calibratedInstrumentStorehouse;
-    public void setCalibratedInstrumentStorehouse(storehouseModel calibratedInstrumentStorehouse) {
-        this.calibratedInstrumentStorehouse = calibratedInstrumentStorehouse;
-    }
-
-    private userModel user;
-
-    public void setUser(userModel user) {
-        this.user = user;
-    }
-    private yearModel year;
-    public void setYear(yearModel year) {
-        this.year = year;
-    }
-
-    //Obiekt, który będzie wzorcowany
-    private registerModel calibratedInstrument;
-    public void setCalibratedInstrument(registerModel calibratedInstrument) {
-        this.calibratedInstrument = calibratedInstrument;
-    }
-    private register2Model calibratedInstrument2;
-
-    public void setCalibratedInstrument2(register2Model calibratedInstrument2) {
-        this.calibratedInstrument2 = calibratedInstrument2;
-    }
 
     @FXML
     VBox mainVBox;
-
     @FXML
     private Label instrumentNameLabel;
     @FXML
@@ -93,33 +49,72 @@ public class calibratedInstrumentViewController {
     private ComboBox<String> registerComboBox;
     @FXML
     private Label informationLabel;
-
-    public void setInstrumentNameLabel(String instrumentNameLabel) {
-        this.instrumentNameLabel.setText(instrumentNameLabel);
+    //Do ładowania danych o przyrzadzie do wzorcowania
+    public void setInstrumentNameLabel(String instrumentName) {
+        this.instrumentNameLabel.setText(instrumentName);
     }
 
-    public void setInstrumentProducerLabel(String instrumentProducerLabel) {
-        this.instrumentProducerLabel.setText(instrumentProducerLabel);
+    public void setInstrumentProducerLabel(String instrumentProducer) {
+        this.instrumentProducerLabel.setText(instrumentProducer);
     }
 
-    public void setInstrumentRangeLabel(String instrumentRangeLabel) {
-        this.instrumentRangeLabel.setText(instrumentRangeLabel);
+    public void setInstrumentRangeLabel(String instrumentRange) {
+        this.instrumentRangeLabel.setText(instrumentRange);
     }
 
-    public void setIdentificationNumberLabel(String identificationNumberLabel) {
-        this.identificationNumberLabel.setText(identificationNumberLabel);
+    public void setIdentificationNumberLabel(String identificationNumber) {
+        this.identificationNumberLabel.setText(identificationNumber);
     }
 
-    public void setSerialNumberLabel(String serialNumberLabel) {
-        this.serialNumberLabel.setText(serialNumberLabel);
+    public void setSerialNumberLabel(String serialNumber) {
+        this.serialNumberLabel.setText(serialNumber);
     }
 
-    public void setClientLabel(String clientLabel) {
-        this.clientLabel.setText(clientLabel);
+    public void setClientLabel(String client) {
+        this.clientLabel.setText(client);
     }
 
-    public void setInstrumentTypeLabel(String instrumentTypeLabel) {
-        this.instrumentTypeLabel.setText(instrumentTypeLabel);
+    public void setInstrumentTypeLabel(String instrumentType) {
+        this.instrumentTypeLabel.setText(instrumentType);
+    }
+
+
+    //Połączenie do głównego kontrolera
+    private storehouseViewController storehouseMainController;
+    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
+        this.storehouseMainController = storehouseMainController;
+    }
+
+    private storehouseModel calibratedInstrumentStorehouse;
+    public void setCalibratedInstrumentStorehouse(storehouseModel calibratedInstrumentStorehouse) {
+        this.calibratedInstrumentStorehouse = calibratedInstrumentStorehouse;
+    }
+
+    private userModel user;
+    public void setUser(userModel user) {
+        this.user = user;
+    }
+    private yearModel year;
+    public void setYear(yearModel year) {
+        this.year = year;
+    }
+
+    //Obiekt, który będzie wzorcowany
+    private registerModel calibratedInstrument;
+    public void setCalibratedInstrument(registerModel calibratedInstrument) {
+        this.calibratedInstrument = calibratedInstrument;
+    }
+    private register2Model calibratedInstrument2;
+    public void setCalibratedInstrument2(register2Model calibratedInstrument2) {
+        this.calibratedInstrument2 = calibratedInstrument2;
+    }
+
+    @FXML
+    private void initialize(){
+        System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
+        registerComboBox.getItems().addAll("W zakresie akredytacji","Poza zakresem akredytacji");
+        registerComboBox.setValue("W zakresie akredytacji");
+        calibrationDateDatePicker.setConverter(Converter.getConverter());
     }
 
     @FXML
@@ -257,11 +252,6 @@ public class calibratedInstrumentViewController {
             }
         }
     }
-    @FXML
-    private void cancelAddCalibrateInstrument(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
-    }
     private String getCardNumber(Integer number){
         if(number <= 9){
             return "000"+String.valueOf(number);
@@ -279,5 +269,10 @@ public class calibratedInstrumentViewController {
         } else {
             return String.valueOf(month);
         }
+    }
+    @FXML
+    private void cancelAddCalibrateInstrument(){
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
     }
 }

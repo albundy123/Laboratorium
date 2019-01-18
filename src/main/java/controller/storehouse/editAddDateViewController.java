@@ -21,35 +21,23 @@ public class editAddDateViewController {
         System.out.println("Halo świry jestem kontruktorem klasy editAddDateViewController");
     }
 
-
     @FXML
     private VBox mainVBox;
-
     @FXML
     private DatePicker addDateDatePicker;
-
-    @FXML
-    private Button cancelSaveAddDateButton;
-
     @FXML
     private Label addDateInformationLabel;
-
-    @FXML
-    private Button saveAddDateButton;
-
 
     public void setAddDateDatePicker(LocalDate addDateDatePicker) {
         this.addDateDatePicker.setValue(addDateDatePicker);
     }
 
     private storehouseModel editedStorehouseElement;
-
     public void setEditedStorehouseElement(storehouseModel editedStorehouseElement) {
         this.editedStorehouseElement = editedStorehouseElement;
     }
 
     private storehouseViewController storehouseMainController;
-
     public void setStorehouseMainController(storehouseViewController storehouseMainController) {
         this.storehouseMainController = storehouseMainController;
     }
@@ -59,7 +47,6 @@ public class editAddDateViewController {
         System.out.println("Halo świry jestem funkcją initialize klasy editAddDateViewController");
         addDateDatePicker.setConverter(Converter.getConverter());
     }
-
     @FXML
     private void saveAddDate() {
         if (addDateDatePicker.getValue() != null&&checkAddDate()) {
@@ -77,13 +64,6 @@ public class editAddDateViewController {
             addDateInformationLabel.setText("Nieprawidłowa data przyjęcia !");
         }
     }
-
-    @FXML
-    private void cancelSaveAddDate() {
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
-    }
-
     private Boolean checkAddDate() {
         LocalDate calibrationDate;
         LocalDate leftDate;
@@ -106,6 +86,11 @@ public class editAddDateViewController {
 
         }
         return true;
+    }
+    @FXML
+    private void cancelSaveAddDate() {
+        Stage window = (Stage) mainVBox.getScene().getWindow();
+        window.close();
     }
 }
 

@@ -141,29 +141,9 @@ public class newInstrumentViewController {
     @FXML
     private void addNewInstrumentName(){
         newInstrumentName=loadInstrumentData(newInstrumentName,INSTRUMENT_NAME_VIEW,"Nazwa");
+
         newInstrumentName.setNewInstrumentMainController(this);
-    }
-    @FXML
-    private void addNewInstrumentType(){
-        newInstrumentType=loadInstrumentData(newInstrumentType,INSTRUMENT_TYPE_VIEW,"Typ");
-        newInstrumentType.setNewInstrumentMainController(this);
-    }
-    @FXML
-    private void addNewInstrumentProducer(){
-        newInstrumentProducer=loadInstrumentData(newInstrumentProducer,INSTRUMENT_PRODUCER_VIEW,"Producent");
-        newInstrumentProducer.setNewInstrumentMainController(this);
-    }
-    @FXML
-    private void addNewInstrumentRange(){
-        newInstrumentRange=loadInstrumentData(newInstrumentRange,INSTRUMENT_RANGE_VIEW,"Zakres");
-        newInstrumentRange.setNewInstrumentMainController(this);
-    }
-    @FXML
-    private void addClientInstrument(){
-        clientMainController=loadInstrumentData(clientMainController,INSTRUMENT_CLIENT_VIEW,"Zleceniodawcy");
-        clientMainController.setNewInstrumentMainController(this);
-        clientMainController.setChoseButtonDisable();
-        clientMainController.getClients();
+
     }
     private <T> T loadInstrumentData(T instrumentData,String resource, String title){
         try {
@@ -179,6 +159,80 @@ public class newInstrumentViewController {
             e.printStackTrace();
         }
         return instrumentData;
+    }
+    @FXML
+    private void addNewInstrumentType(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentTypeView.fxml"));
+            VBox vBox = loader.load();
+            newInstrumentType=loader.getController();
+            if (newInstrumentType != null){
+                newInstrumentType.setNewInstrumentMainController(this);
+            }
+            Stage window = new Stage();
+            window.setTitle("Typ");
+            Scene scene = new Scene(vBox);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void addNewInstrumentProducer(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentProducerView.fxml"));
+            VBox vBox = loader.load();
+            newInstrumentProducer=loader.getController();
+            if (newInstrumentProducer != null){
+                newInstrumentProducer.setNewInstrumentMainController(this);
+            }
+            Stage window = new Stage();
+            window.setTitle("Typ");
+            Scene scene = new Scene(vBox);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void addNewInstrumentRange(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentRangeView.fxml"));
+            VBox vBox = loader.load();
+            newInstrumentRange=loader.getController();
+            if (newInstrumentRange != null){
+                newInstrumentRange.setNewInstrumentMainController(this);
+            }
+            Stage window = new Stage();
+            window.setTitle("Typ");
+            Scene scene = new Scene(vBox);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void addClientInstrument(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/clientView.fxml"));
+            VBox vBox = loader.load();
+            clientMainController=loader.getController();
+            if (clientMainController != null){
+                clientMainController.setNewInstrumentMainController(this);
+                clientMainController.setChoseButtonDisable();
+                clientMainController.getClients();
+            }
+            Stage window = new Stage();
+            window.setTitle("Zleceniodawcy");
+            Scene scene = new Scene(vBox);
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     //Metody, które pobierają listy z konkretnych tabel bazy danych, które przechowują dane do ComboBoxów
     public void getInstrumentNameList() {

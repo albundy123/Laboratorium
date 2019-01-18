@@ -19,33 +19,24 @@ import java.time.LocalDate;
 public class editLeftDateViewController {
     public editLeftDateViewController(){System.out.println("Halo świry jestem kontruktorem klasy editLeftDateViewController"); }
 
-
     @FXML
     private VBox mainVBox;
-
     @FXML
     private DatePicker leftDateDatePicker;
-
-    @FXML
-    private Button cancelSaveLeftDateButton;
-
     @FXML
     private Label leftDateInformationLabel;
 
-    @FXML
-    private Button saveLeftDateButton;
 
     public void setLeftDateDatePicker(LocalDate leftDateDatePicker) {
         this.leftDateDatePicker.setValue(leftDateDatePicker);
     }
 
     private storehouseModel editedStorehouseElement;
-
     public void setEditedStorehouseElement(storehouseModel editedStorehouseElement) {
         this.editedStorehouseElement = editedStorehouseElement;
     }
-    private storehouseViewController storehouseMainController;
 
+    private storehouseViewController storehouseMainController;
     public void setStorehouseMainController(storehouseViewController storehouseMainController) {
         this.storehouseMainController = storehouseMainController;
     }
