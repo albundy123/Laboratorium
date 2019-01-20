@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.registerModel;
 import model.storehouseModel;
 import model.userModel;
+import util.Close;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -107,8 +108,7 @@ public class leftInstrumentViewController {
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                        Stage window = (Stage) mainVBox.getScene().getWindow();
-                        window.close();
+                        Close.closeVBoxWindow(mainVBox);
                         storehouseMainController.getStorehouseList();
                     }
                 }else{
@@ -123,8 +123,7 @@ public class leftInstrumentViewController {
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                        Stage window = (Stage) mainVBox.getScene().getWindow();
-                        window.close();
+                        Close.closeVBoxWindow(mainVBox);
                         storehouseMainController.getStorehouseList();
                     }
                 }
@@ -137,7 +136,6 @@ public class leftInstrumentViewController {
     }
     @FXML
     private void cancelLeftInstrument(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.storehouseModel;
+import util.Close;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -57,8 +58,7 @@ public class editAddDateViewController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
             storehouseMainController.getStorehouseList();
         }else{
             addDateInformationLabel.setText("Nieprawidłowa data przyjęcia !");
@@ -89,8 +89,7 @@ public class editAddDateViewController {
     }
     @FXML
     private void cancelSaveAddDate() {
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }
 

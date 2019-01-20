@@ -7,12 +7,11 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.instrumentNameModel;
+import util.Close;
 import util.ConfirmBox;
 
 import java.sql.SQLException;
@@ -23,7 +22,6 @@ public class newInstrumentNameViewController {
     }
 
     private newInstrumentViewController newInstrumentMainController;
-
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
@@ -36,13 +34,10 @@ public class newInstrumentNameViewController {
     @FXML
     private VBox mainVBox;
     @FXML
-    private Button addNewInstrumentNameButton;
-    @FXML
     private TextField newInstrumentNameTextField;
     @FXML
-    private Button cancelNewInstrumentNameButton;
-    @FXML
     private Label newInstrumentNameLabel;
+
     @FXML
     private void initialize() {
         System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentNameViewController");
@@ -61,8 +56,7 @@ public class newInstrumentNameViewController {
                     newInstrumentNameTextField.clear();
                     if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentNameList();}
                     if(newInstrumentMainController!=null){ newInstrumentMainController.getInstrumentNameList();}
-                    Stage window = (Stage) mainVBox.getScene().getWindow();
-                    window.close();
+                    Close.closeVBoxWindow(mainVBox);
                 } else {
                     newInstrumentNameLabel.setText("Taka nazwa przyrządu już istnieje !");
                 }
@@ -77,12 +71,10 @@ public class newInstrumentNameViewController {
     private void cancelAddNewName(){
         if(!newInstrumentNameTextField.getText().equals("")){
             if(ConfirmBox.display("Niezapisane dane","Czy na pewno chcesz zamknąć okno ?")){
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
             }
         }else{
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+            Close.closeVBoxWindow(mainVBox);
         }
     }
 }

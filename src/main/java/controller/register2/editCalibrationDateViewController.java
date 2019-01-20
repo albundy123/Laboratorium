@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.register2Model;
 import model.registerModel;
 import model.storehouseModel;
+import util.Close;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -26,11 +27,7 @@ public class editCalibrationDateViewController {
     @FXML
     private VBox mainVBox;
     @FXML
-    private Button saveCalibrationDateButton;
-    @FXML
     private Label calibrationDateInformationLabel;
-    @FXML
-    private Button cancelSaveCalibrationDateButton;
     @FXML
     private DatePicker calibrationDateDatePicker;
 
@@ -71,16 +68,14 @@ public class editCalibrationDateViewController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
         }else{
             calibrationDateInformationLabel.setText("Nieprawidłowa data wzorcowania");
         }
     }
     @FXML
     public void cancelSaveCalibrationDate(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
     public Boolean checkCalibrationDate(LocalDate CalibrationDate){
         LocalDate next=null;

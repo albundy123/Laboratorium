@@ -27,6 +27,8 @@ import java.util.List;
 
 public class clientViewController {
     public clientViewController() {System.out.println("Siemanko jestem konstruktorem klasy clientViewController.");}
+    //Scieżki do plików fxml z poszczególnymi widokami
+
 
 
     @FXML

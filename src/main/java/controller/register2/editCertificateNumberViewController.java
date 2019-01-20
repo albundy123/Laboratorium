@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.register2Model;
 import model.registerModel;
+import util.Close;
 
 import java.sql.SQLException;
 
@@ -25,10 +26,6 @@ public class editCertificateNumberViewController {
     private TextField certificateNumberTextField;
     @FXML
     private ComboBox<String> documentKindComboBox;
-    @FXML
-    private Button saveCertificateNumberButton;
-    @FXML
-    private Button cancelSaveCertificateNumberButton;
     @FXML
     private Label certificateNumberInformationLabel;
 
@@ -62,15 +59,13 @@ public class editCertificateNumberViewController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
         }else{
             certificateNumberInformationLabel.setText("Nieprawidłowy numer świadectwa/protokołu");
         }
     }
     @FXML
     public void cancelSaveCertificateNumber(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.clientModel;
 import model.userModel;
+import util.Close;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -104,7 +105,6 @@ public class dialogClientViewController {
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy dialogClientViewController.");
         statusComboBox.getItems().addAll("aktywny","nieaktywny");
-
     }
     @FXML
     private void saveClient(){
@@ -121,8 +121,7 @@ public class dialogClientViewController {
             try {
                 Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
                 clientDao.create(getClient());
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
                 mainClientController.getClients();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -135,8 +134,7 @@ public class dialogClientViewController {
                 try {
                     Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
                     clientDao.update(getClient());
-                    Stage window = (Stage) mainVBox.getScene().getWindow();
-                    window.close();
+                    Close.closeVBoxWindow(mainVBox);
                     if(mainClientController!= null){
                         mainClientController.getClients();}
                     if(editedInstrumentMainController!=null){
@@ -150,8 +148,7 @@ public class dialogClientViewController {
                 try {
                     Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
                     clientDao.update(getClient());
-                    Stage window = (Stage) mainVBox.getScene().getWindow();
-                    window.close();
+                    Close.closeVBoxWindow(mainVBox);
                     if(mainClientController!= null){
                     mainClientController.getClients();}
                     if(editedInstrumentMainController!=null){
@@ -189,7 +186,6 @@ public class dialogClientViewController {
             return true;
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            //alert.initOwner(dialogStage);
             alert.setTitle("Nieprawidłowe dane");
             alert.setHeaderText("Proszę wprowadzić prawidłowe dane dla podanych niżej pól");
             alert.setContentText(errorMessage);
@@ -229,7 +225,6 @@ public class dialogClientViewController {
         clientModel client;
         if (flatNumberTextField.getText().equals("")) {
             client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(),cityTextField.getText(), streetTextField.getText(),houseNumberTextField.getText(),"", statusComboBox.getValue(),null);
-
         }else{
             client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(), cityTextField.getText(),streetTextField.getText(),houseNumberTextField.getText(),flatNumberTextField.getText(), statusComboBox.getValue(),null);
         }
@@ -237,7 +232,6 @@ public class dialogClientViewController {
     }
     @FXML
     private void cancelSaveClient(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

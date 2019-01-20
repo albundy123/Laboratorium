@@ -7,12 +7,12 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.instrumentTypeModel;
+import util.Close;
 import util.ConfirmBox;
 
 import java.sql.SQLException;
@@ -21,14 +21,13 @@ import java.util.List;
 public class newInstrumentTypeViewController {
     public newInstrumentTypeViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentTypeViewController");
     }
-    private newInstrumentViewController newInstrumentMainController;
 
+    private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
 
     private editInstrumentViewController editInstrumentMainController;
-
     public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
         this.editInstrumentMainController = editInstrumentMainController;
     }
@@ -36,13 +35,10 @@ public class newInstrumentTypeViewController {
     @FXML
     private VBox mainVBox;
     @FXML
-    private Button addNewInstrumentTypeButton;
-    @FXML
     private TextField newInstrumentTypeTextField;
     @FXML
-    private Button cancelNewInstrumentTypeButton;
-    @FXML
     private Label newInstrumentTypeLabel;
+
     @FXML
     private void initialize() {
         System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentTypeViewController");
@@ -61,8 +57,7 @@ public class newInstrumentTypeViewController {
                     newInstrumentTypeTextField.clear();
                     if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentTypeList();}
                     if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentTypeList();}
-                    Stage window = (Stage) mainVBox.getScene().getWindow();
-                    window.close();
+                    Close.closeVBoxWindow(mainVBox);
                 } else {
                     newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
                 }
@@ -77,12 +72,10 @@ public class newInstrumentTypeViewController {
     private void cancelAddNewType(){
         if(!newInstrumentTypeTextField.getText().equals("")){
             if(ConfirmBox.display("Niezapisane dane","Czy na pewno chcesz zamknąć okno ?")){
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
             }
         }else{
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
         }
     }
 }

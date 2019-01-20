@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainAdminViewController">
+   <children>
+      <Button fx:id="userEditButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="800.0" text="Użytkownicy">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Button fx:id="nameEditButton" mnemonicParsing="false" onAction="#nameEdit" prefHeight="90.0" prefWidth="800.0" text="Nazwy przyrządów">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Button fx:id="typeEditButton" mnemonicParsing="false" onAction="#typeEdit" prefHeight="90.0" prefWidth="800.0" text="Typy przyrządów">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Button fx:id="producerEditButton" mnemonicParsing="false" onAction="#producerEdit" prefHeight="90.0" prefWidth="800.0" text="Producenci przyrządów">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Button fx:id="rangeEditButton" mnemonicParsing="false" onAction="#rangeEdit" prefHeight="90.0" prefWidth="800.0" text="Zakresy przyrządów">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Button fx:id="unitEditButton" mnemonicParsing="false" onAction="#unitEdit" prefHeight="90.0" prefWidth="800.0" text="Jednostki">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>

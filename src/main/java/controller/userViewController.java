@@ -38,10 +38,6 @@ public class userViewController {
     private TableColumn<userModel, String> passwordColumn;
     @FXML
     private TableColumn<userModel, String> permissionLevelColumn;
-    @FXML
-    private Button addUserButton;
-    @FXML
-    private Button editUserButton;
 
     private List<userModel> userList;
     private ObservableList<userModel> userObservableList = FXCollections.observableArrayList();
@@ -56,6 +52,7 @@ public class userViewController {
     public void setEditedUserFromList(userModel editedUserFromList) {
         this.editedUserFromList = editedUserFromList;
     }
+
     @FXML
     private void initialize(){
         System.out.println("Siemanko jestem funkcją initialize klasy userViewController.");

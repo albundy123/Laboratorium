@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.userModel;
+import util.Close;
 
 import java.sql.SQLException;
 
@@ -25,10 +26,6 @@ public class dialogUserViewController {
     private TextField passwordTextField;
     @FXML
     private ComboBox<String> permissionComboBox;
-    @FXML
-    private Button saveUserButton;
-    @FXML
-    private Button cancelSaveUserButton;
     @FXML
     private Label userLabel;
     @FXML
@@ -83,16 +80,14 @@ public class dialogUserViewController {
     }
     @FXML
     private void cancelSaveUser(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
     private void addNewUser(){
         if(isValidUserData()){
             try {
                 Dao<userModel, Integer> userDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
                 userDao.create(getUser());
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
                 mainUserController.getUsers();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -104,8 +99,7 @@ public class dialogUserViewController {
             try {
                 Dao<userModel, Integer> userDao = DaoManager.createDao(dbSqlite.getConnectionSource(),userModel.class);
                 userDao.update(getUser());
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
                 mainUserController.getUsers();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -133,7 +127,6 @@ public class dialogUserViewController {
             return true;
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            //alert.initOwner(dialogStage);
             alert.setTitle("Nieprawidłowe dane");
             alert.setHeaderText("Proszę wprowadzić prawidłowe dane dla podanych niżej pól");
             alert.setContentText(errorMessage);

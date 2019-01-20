@@ -7,23 +7,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="123.0" prefWidth="197.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.editCalibrationDateViewController">
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="130.0" minWidth="-Infinity" prefHeight="130.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.editCalibrationDateViewController">
     <children>
-        <Label text="Data wzorcowania:">
+        <Label minHeight="17.0" text="Data wzorcowania:">
             <VBox.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </VBox.margin>
         </Label>
-      <DatePicker fx:id="calibrationDateDatePicker">
+      <DatePicker fx:id="calibrationDateDatePicker" minHeight="25.0">
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </DatePicker>
-        <Label fx:id="calibrationDateInformationLabel" textFill="RED">
+        <Label fx:id="calibrationDateInformationLabel" minHeight="17.0" textFill="RED">
             <VBox.margin>
-                <Insets left="5.0" />
+                <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
             </VBox.margin></Label>
-        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="290.0">
+        <HBox alignment="CENTER" minHeight="35.0" prefHeight="48.0" prefWidth="290.0">
             <children>
                 <Button fx:id="saveCalibrationDateButton" mnemonicParsing="false" onAction="#saveCalibrationDate" text="Zapisz" textAlignment="CENTER">
                     <HBox.margin>

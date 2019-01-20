@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class dbSqlite {
 
-    private final static String DATABASE_URL = "jdbc:sqlite:K:/ZC/CM/roboczy/db/baza1.db";
+    private final static String DATABASE_URL = "jdbc:sqlite:C:/db/baza1.db";
     private static ConnectionSource connectionSource;
     private static Dao<userModel, Integer> userModelDao;
 

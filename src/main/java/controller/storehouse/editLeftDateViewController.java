@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.storehouseModel;
+import util.Close;
 import util.ConfirmBox;
 import util.Converter;
 
@@ -58,8 +59,7 @@ public class editLeftDateViewController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
                 storehouseMainController.getStorehouseList();}
             else{
                 leftDateInformationLabel.setText("Nieprawidłowa data wydania !");
@@ -74,8 +74,7 @@ public class editLeftDateViewController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
                 storehouseMainController.getStorehouseList();
             }
         }
@@ -100,7 +99,6 @@ public class editLeftDateViewController {
     }
     @FXML
     private void cancelSaveLeftDate(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

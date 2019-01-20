@@ -92,7 +92,6 @@ public class instrumentViewController {
         editClientButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
         editInstrumentButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
         addFilter();
-
     }
 
      //Metoda służy do pobierania rekordów z tabeli bazy danych "INSTRUMENTS". Następnie wyniki przerzucane sądo listy elementów, które będą wyświetlane
@@ -235,5 +234,4 @@ public class instrumentViewController {
             });
         } );
     }
-
 }

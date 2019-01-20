@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.instrumentRangeModel;
 import model.unitModel;
+import util.Close;
 import util.ConfirmBox;
 
 
@@ -26,12 +27,12 @@ import java.util.List;
 public class newInstrumentRangeViewController {
     public newInstrumentRangeViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentRangeViewController");
     }
+
     private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
     private editInstrumentViewController editInstrumentMainController;
-
     public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
         this.editInstrumentMainController = editInstrumentMainController;
     }
@@ -40,17 +41,14 @@ public class newInstrumentRangeViewController {
     @FXML
     private VBox mainVBox;
     @FXML
-    private Button addNewInstrumentRangeButton;
-    @FXML
     private TextField newInstrumentRangeTextField1;
     @FXML
     private TextField newInstrumentRangeTextField2;
     @FXML
     private ComboBox newInstrumentRangeUnitComboBox;
     @FXML
-    private Button cancelNewInstrumentRangeButton;
-    @FXML
     private Label newInstrumentRangeLabel;
+
     @FXML
     private void initialize() {
         System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentRangeViewController");
@@ -74,8 +72,7 @@ public class newInstrumentRangeViewController {
                     newInstrumentRangeUnitComboBox.valueProperty().set(null);
                     if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentRangeList();}
                     if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentRangeList();}
-                    Stage window = (Stage) mainVBox.getScene().getWindow();
-                    window.close();
+                    Close.closeVBoxWindow(mainVBox);
                 } else {
                     newInstrumentRangeLabel.setText("Taki zakres pomiarowy już istnieje !");
                 }
@@ -90,12 +87,10 @@ public class newInstrumentRangeViewController {
     private void cancelAddNewRange(){
         if((!newInstrumentRangeTextField1.getText().equals(""))&&(!newInstrumentRangeTextField2.getText().equals(""))&& (!newInstrumentRangeUnitComboBox.getSelectionModel().isEmpty())){
             if(ConfirmBox.display("Niezapisane dane","Czy na pewno chcesz zamknąć okno ?")){
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
             }
         }else{
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
         }
     }
     public void getUnitList(){

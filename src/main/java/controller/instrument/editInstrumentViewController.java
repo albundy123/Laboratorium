@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
+import util.Close;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -327,7 +328,6 @@ public class editInstrumentViewController {
             saveEditInstrument();
         }
     }
-
     private void saveEditInstrument(){
         try {
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
@@ -344,17 +344,13 @@ public class editInstrumentViewController {
             List<instrumentModel> result = instrumentDao.query(prepare);
             if(result.size()>1 ) {
                     informationLabel.setText("Nie możesz dodać drugiego takiego samego przyrządu !");
-            } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument())
-            {   System.out.println("Brawo kasztanie możesz edytować");
+            } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument()) {
                 instrumentDao.update(instrument);
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
             }
-            else if(result.size()==0){
-                System.out.println("Brawo kasztanie edytowałeś");
+            else if(result.size()==0){//Edycja przyrzadu nie spowoduje zdublowania innego przyrzadu
                 instrumentDao.update(instrument);
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
+                Close.closeVBoxWindow(mainVBox);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -377,11 +373,9 @@ public class editInstrumentViewController {
         });
         comboBox.setItems(filteredList);
     }
-
     @FXML
     private void cancelSaveInstrument(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
     private boolean isValidInstrumentData() {
         String errorMessage = "";

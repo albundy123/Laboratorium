@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
+import util.Close;
 import util.Converter;
 
 import java.sql.SQLException;
@@ -41,10 +42,6 @@ public class calibratedInstrumentViewController {
     private Label clientLabel;
     @FXML
     private Label instrumentTypeLabel;
-    @FXML
-    private Button addCalibrateInstrumentButton;
-    @FXML
-    private Button cancelAddCalibrateInstrumentButton;
     @FXML
     private ComboBox<String> registerComboBox;
     @FXML
@@ -78,7 +75,6 @@ public class calibratedInstrumentViewController {
         this.instrumentTypeLabel.setText(instrumentType);
     }
 
-
     //Połączenie do głównego kontrolera
     private storehouseViewController storehouseMainController;
     public void setStorehouseMainController(storehouseViewController storehouseMainController) {
@@ -108,7 +104,6 @@ public class calibratedInstrumentViewController {
     public void setCalibratedInstrument2(register2Model calibratedInstrument2) {
         this.calibratedInstrument2 = calibratedInstrument2;
     }
-
     @FXML
     private void initialize(){
         System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
@@ -116,7 +111,6 @@ public class calibratedInstrumentViewController {
         registerComboBox.setValue("W zakresie akredytacji");
         calibrationDateDatePicker.setConverter(Converter.getConverter());
     }
-
     @FXML
     public void calibrateInstrument(){
         if(calibratedInstrument!=null) {
@@ -128,7 +122,6 @@ public class calibratedInstrumentViewController {
                     }else{
                         calibrateInstrumentOutAP();
                     }
-
                     }else{
                         informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
                     }
@@ -140,7 +133,6 @@ public class calibratedInstrumentViewController {
                 informationLabel.setText("Wybierz datę wzorcowania !");
             }
     }
-
     private void calibrateInstrumentInAP() {
         Dao<registerModel, Integer> registerDao = null;
         QueryBuilder<registerModel, Integer> registerQueryBuilder = null;
@@ -163,7 +155,6 @@ public class calibratedInstrumentViewController {
                 prepare = registerQueryBuilder.prepare();
                 result = registerDao.query(prepare);
                 calibratedInstrument.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
-
                 if (result.isEmpty()) { //znaczy się ze pierwszy wpis :)
                     calibratedInstrument.setIdRegisterByYear(1);
                     calibratedInstrument.setCardNumber("1-" + year.getYear());
@@ -184,9 +175,7 @@ public class calibratedInstrumentViewController {
                 calibratedInstrumentStorehouse.setUserWhoCalibrate(user);
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
-
+                Close.closeVBoxWindow(mainVBox);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -202,7 +191,6 @@ public class calibratedInstrumentViewController {
         calibratedInstrument2.setInstrument(calibratedInstrument.getInstrument());
         calibratedInstrument2.setUserWhoCalibrate(calibratedInstrument.getUserWhoCalibrate());
         calibratedInstrument2.setState(calibratedInstrument.getState());
-
         try {
             registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), register2Model.class);
             registerQueryBuilder = registerDao.queryBuilder();
@@ -220,7 +208,6 @@ public class calibratedInstrumentViewController {
                 prepare = registerQueryBuilder.prepare();
                 result = registerDao.query(prepare);
                 calibratedInstrument2.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
-
                 if (result.isEmpty()) { //znaczy się ze pierwszy wpis :)
                     calibratedInstrument2.setIdRegisterByYear(1);
                     calibratedInstrument2.setCardNumber("0001-" + year.getYear());
@@ -244,9 +231,7 @@ public class calibratedInstrumentViewController {
                 calibratedInstrumentStorehouse.setUserWhoCalibrate(user);
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
-                Stage window = (Stage) mainVBox.getScene().getWindow();
-                window.close();
-
+                Close.closeVBoxWindow(mainVBox);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -272,7 +257,6 @@ public class calibratedInstrumentViewController {
     }
     @FXML
     private void cancelAddCalibrateInstrument(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

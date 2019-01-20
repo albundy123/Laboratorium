@@ -22,7 +22,7 @@ public class mainViewController {
     private static final String REGISTER_OUT_AP_VIEW = "/register2/register2View.fxml";
     private static final String INSTRUMENT_VIEW = "/instrument/instrumentView.fxml";
     private static final String CLIENT_VIEW = "/client/clientView.fxml";
-    private static final String USER_VIEW = "/user/userView.fxml";
+    private static final String ADMIN_VIEW = "/admin/mainAdminView.fxml";
 
     @FXML
     private Label userLoginLabel;
@@ -70,14 +70,14 @@ public class mainViewController {
     @FXML
     private VBox clientVBox;
     @FXML
-    private Tab userTab;
+    private Tab adminTab;
     @FXML
-    private AnchorPane userAnchorPane;
+    private AnchorPane adminAnchorPane;
     @FXML
-    private VBox userVBox;
+    private VBox adminVBox;
 
-    public void userTabDisable(){
-        userTab.setDisable(true);
+    public void adminTabDisable(){
+        adminTab.setDisable(true);
     }
     private loginViewController loginMainController;
 
@@ -90,7 +90,7 @@ public class mainViewController {
     private register2ViewController registerOutAPMainController;
     private instrumentViewController instrumentMainController;
     private clientViewController clientMainController;
-    private userViewController userMainController;
+    private mainAdminViewController adminMainController;
 
     @FXML
     private void initialize(){
@@ -102,7 +102,7 @@ public class mainViewController {
         loadTab(registerOutAPMainController,registerOutAPTab,registerOutAPAnchorPane,registerOutAPVBox,REGISTER_OUT_AP_VIEW);
         loadTab(instrumentMainController,instrumentTab,instrumentAnchorPane,instrumentVBox,INSTRUMENT_VIEW);
         loadTab(clientMainController,clientTab,clientAnchorPane,clientVBox,CLIENT_VIEW);
-        loadTab(userMainController,userTab,userAnchorPane,userVBox,USER_VIEW);
+        loadTab(adminMainController,adminTab,adminAnchorPane,adminVBox,ADMIN_VIEW);
     }
     private <T> T loadTab(T tabController,Tab tab, AnchorPane anchorPane, VBox vBox,String resource){
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));

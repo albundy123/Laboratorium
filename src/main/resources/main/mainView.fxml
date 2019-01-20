@@ -97,11 +97,11 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="userTab" text="     Użytkownicy     ">
+                  <Tab fx:id="adminTab" text="     Admistracja     ">
                     <content>
-                      <AnchorPane fx:id="userAnchorPane">
+                      <AnchorPane fx:id="adminAnchorPane">
                            <children>
-                              <VBox fx:id="userVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="adminVBox" prefHeight="652.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>

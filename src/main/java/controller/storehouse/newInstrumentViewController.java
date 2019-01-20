@@ -16,14 +16,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.*;
+import util.Close;
 import util.Converter;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class newInstrumentViewController {
@@ -266,14 +263,12 @@ public class newInstrumentViewController {
         }
         return null;
     }
-
     //Dodawania nowego przyrządu
     public void addNewInstrument(){
         if(isValidInstrumentData()){
             setAddNewInstrumentName();
         }
     }
-
     private void setAddNewInstrumentName(){
         try {
     setUser(storehouseMainController.getUser());
@@ -312,8 +307,7 @@ public class newInstrumentViewController {
                     storehouseDao.create(new storehouseModel(0, instrument, addDateDatePicker.getValue().toString(), null, "", null, "", null, newInstrumentTextArea.getText()));
                 }
             }
-            Stage window = (Stage) mainVBox.getScene().getWindow();
-            window.close();
+            Close.closeVBoxWindow(mainVBox);
             storehouseMainController.getStorehouseList();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -371,7 +365,6 @@ public class newInstrumentViewController {
     }
     @FXML
     private void cancelAddNewInstrument(){
-        Stage window = (Stage) mainVBox.getScene().getWindow();
-        window.close();
+        Close.closeVBoxWindow(mainVBox);
     }
 }

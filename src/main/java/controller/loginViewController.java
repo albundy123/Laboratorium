@@ -12,11 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.userModel;
-
+import util.Close;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -59,8 +57,7 @@ public class loginViewController {
                 loginLabel.setText("Podałeś nieprawidłowe dane");
             }else{
                 setUser(new userModel(result.get(0).getIdUser(),result.get(0).getFirstName(),result.get(0).getLastName(), result.get(0).getLogin(), result.get(0).getPassword(),result.get(0).getPersmissionLevel()));
-                Stage window = (Stage) mainAnchorPane.getScene().getWindow();
-                window.close();
+                Close.closeAnchorPaneWindow(mainAnchorPane);
                 loadUserView();         //Otwiera główne okno programu
             }
         } catch (SQLException e) {
@@ -69,8 +66,7 @@ public class loginViewController {
     }
     @FXML
     private void cancelLogIn(){  //Metoda wywołuje się po wciśnięciu przycisku anuluj
-        Stage window = (Stage) mainAnchorPane.getScene().getWindow(); //Przechwytuje okno i je zamyka
-        window.close();
+        Close.closeAnchorPaneWindow(mainAnchorPane);
     }
     private void loadUserView(){  //Otwieranie głównego okna programu
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));      //Podawanie ścieżki do FXMLA
@@ -82,7 +78,7 @@ public class loginViewController {
                 mainWindowController.setUser(user);                     //Ustawiamy w mainWindowController obiekt user
                 mainWindowController.setUserLoginLabel(user.getLogin());   //Ustawiamy label w oknie MainWindow
                 if(user.getPersmissionLevel().equals("user")) {
-                    mainWindowController.userTabDisable();
+                    mainWindowController.adminTabDisable();
                 }
                 System.out.println("Skonczylem ladowanko"); //Wyswietli dopiero jak zbuduje całe główne okno wraz z zakładkami
             }
