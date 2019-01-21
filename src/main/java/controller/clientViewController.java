@@ -19,8 +19,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.clientModel;
+import model.fxModel.instrumentFxModel;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -232,5 +238,40 @@ public class clientViewController {
             }
         }
 
+    }
+    @FXML
+    private void exportToExcel() throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("Arkusz1");
+        Row row = spreadsheet.createRow(0);
+        //Nazwy kolumn
+        row.createCell(0).setCellValue("Lp. ");
+        row.createCell(1).setCellValue("Skrót");
+        row.createCell(2).setCellValue("Pełna nazwa");
+        row.createCell(3).setCellValue("Kod pocztowy");
+        row.createCell(4).setCellValue("Miejscowość");
+        row.createCell(5).setCellValue("Ulica");
+        row.createCell(6).setCellValue("Nr domu");
+        row.createCell(7).setCellValue("Nr mieszkania");
+
+        int i = 0;
+        for (clientModel clientElement : filteredClientObservableList) {
+            row = spreadsheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i+1);
+            row.createCell(1).setCellValue(clientElement.getShortName());
+            row.createCell(2).setCellValue(clientElement.getFullName());
+            row.createCell(3).setCellValue(clientElement.getPostCode());
+            row.createCell(4).setCellValue(clientElement.getCity());
+            row.createCell(5).setCellValue(clientElement.getStreet());
+            row.createCell(6).setCellValue(clientElement.getHouseNumber());
+            row.createCell(7).setCellValue(clientElement.getFlatNumber());
+            i++;
+        }
+        for (int j = 0; j < 8; j++) {
+            spreadsheet.autoSizeColumn(j);
+        }
+        FileOutputStream fileOut = new FileOutputStream("Zleceniodawcy.xls");
+        workbook.write(fileOut);
+        fileOut.close();
     }
 }

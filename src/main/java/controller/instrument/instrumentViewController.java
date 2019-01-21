@@ -22,7 +22,13 @@ import model.*;
 import model.fxModel.instrumentFxModel;
 import model.fxModel.instrumentStorehouseFxModel;
 import model.fxModel.registerFxModel;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import util.Converter;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -358,5 +364,40 @@ public class instrumentViewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void exportToExcel() throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("Arkusz1");
+        Row row = spreadsheet.createRow(0);
+        //Nazwy kolumn
+        row.createCell(0).setCellValue("Lp. ");
+        row.createCell(1).setCellValue("Nazwa");
+        row.createCell(2).setCellValue("Typ");
+        row.createCell(3).setCellValue("Producent");
+        row.createCell(4).setCellValue("Nr fabryczny");
+        row.createCell(5).setCellValue("Nr identyfikacyjny");
+        row.createCell(6).setCellValue("Zakres pomiarowy");
+        row.createCell(7).setCellValue("Zleceniodawca");
+
+        int i = 0;
+        for (instrumentFxModel instrumentElement : filteredInstrumentFxObservableList) {
+            row = spreadsheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i+1);
+            row.createCell(1).setCellValue(instrumentElement.getInstrumentName());
+            row.createCell(2).setCellValue(instrumentElement.getInstrumentType());
+            row.createCell(3).setCellValue(instrumentElement.getInstrumentProducer());
+            row.createCell(4).setCellValue(instrumentElement.getSerialNumber());
+            row.createCell(5).setCellValue(instrumentElement.getIdentificationNumber());
+            row.createCell(6).setCellValue(instrumentElement.getInstrumentRange());
+            row.createCell(7).setCellValue(instrumentElement.getClient());
+            i++;
+        }
+        for (int j = 0; j < 8; j++) {
+            spreadsheet.autoSizeColumn(j);
+        }
+        FileOutputStream fileOut = new FileOutputStream("Przyrządy.xls");
+        workbook.write(fileOut);
+        fileOut.close();
     }
 }

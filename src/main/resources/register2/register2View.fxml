@@ -16,7 +16,7 @@
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Label>
-                <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="400.0">
+                <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="300.0">
                     <HBox.margin>
                         <Insets bottom="5.0" left="2.0" right="5.0" top="5.0" />
                     </HBox.margin>
@@ -46,6 +46,11 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
+            <Button fx:id="exportToExcelButton" mnemonicParsing="false" onAction="#exportToExcel" prefWidth="125.0" text="Eksport do XLS">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
             </children>
         </HBox>
         <TableView fx:id="registerTableView" prefHeight="460.0" prefWidth="1000.0">

@@ -18,20 +18,24 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.*;
-import model.fxModel.instrumentFxModel;
 import model.fxModel.storehouseFxModel;
 import util.ConfirmBox;
 import util.Converter;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 
 public class storehouseViewController {
     public  storehouseViewController() {System.out.println("Siemanko jestem konstruktorem klasy  storehouseViewController.");}
@@ -95,7 +99,7 @@ public class storehouseViewController {
     @FXML
     private Label leftPersonLabel;
     @FXML
-    private TextArea remarksTextArea;
+    private Label remarksLabel;
     //Pole tekstowe do filtrowania listy
     @FXML
     private TextField searchTextField;
@@ -421,6 +425,9 @@ public class storehouseViewController {
     public void loadStorehouseData(){
         getStorehouseList();
     }
+
+
+
     private void showInformationAboutClient(clientModel client){
         if(client != null){
             shortNameLabel.setText(client.getShortName());
@@ -454,9 +461,9 @@ public class storehouseViewController {
                 leftPersonLabel.setText("");
             }
             if(storehouse.getRemarks()!=null){
-                remarksTextArea.setText(storehouse.getRemarks());
+                remarksLabel.setText(storehouse.getRemarks());
             }else{
-                remarksTextArea.setText("");
+                remarksLabel.setText("");
             }
         }
     }
@@ -475,5 +482,46 @@ public class storehouseViewController {
             e.printStackTrace();
         }
         return yearObservableList;
+    }
+    @FXML
+    private void exportToExcel() throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("Arkusz1");
+        Row row = spreadsheet.createRow(0);
+        //Nazwy kolumn
+        row.createCell(0).setCellValue("Lp.");
+        row.createCell(1).setCellValue("Nazwa");
+        row.createCell(2).setCellValue("Typ");
+        row.createCell(3).setCellValue("Producent");
+        row.createCell(4).setCellValue("Nr fabryczny");
+        row.createCell(5).setCellValue("Nr identyfikacyjny");
+        row.createCell(6).setCellValue("Zakres pomiarowy");
+        row.createCell(7).setCellValue("Zleceniodawca");
+        row.createCell(8).setCellValue("Data przyjęcia");
+        row.createCell(9).setCellValue("Data wzorcowania");
+        row.createCell(10).setCellValue("Data wydania");
+
+        int i=0;
+        for (storehouseFxModel storehouseElement : filteredStorehouseFxObservableList) {
+            row = spreadsheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i+1);
+            row.createCell(1).setCellValue(storehouseElement.getInstrumentName());
+            row.createCell(2).setCellValue(storehouseElement.getInstrumentType());
+            row.createCell(3).setCellValue(storehouseElement.getInstrumentProducer());
+            row.createCell(4).setCellValue(storehouseElement.getSerialNumber());
+            row.createCell(5).setCellValue(storehouseElement.getIdentificationNumber());
+            row.createCell(6).setCellValue(storehouseElement.getInstrumentRange());
+            row.createCell(7).setCellValue(storehouseElement.getClient());
+            row.createCell(8).setCellValue(storehouseElement.getAddDate());
+            row.createCell(9).setCellValue(storehouseElement.getCalibrationDate());
+            row.createCell(10).setCellValue(storehouseElement.getLeftDate());
+            i++;
+        }
+        for(int j=0;j<11;j++){
+            spreadsheet.autoSizeColumn(j);
+        }
+        FileOutputStream fileOut = new FileOutputStream("Magazyn.xls");
+        workbook.write(fileOut);
+        fileOut.close();
     }
 }

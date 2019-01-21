@@ -35,6 +35,11 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
             </Button>
+            <Button fx:id="exportToExcelButton" mnemonicParsing="false" onAction="#exportToExcel" prefWidth="125.0" text="Eksport do XLS">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
             </children>
         </HBox>
       <TableView fx:id="instrumentTableView" prefHeight="360.0" prefWidth="1196.0">

@@ -22,8 +22,13 @@ import model.fxModel.storehouseFxModel;
 import model.registerModel;
 import model.storehouseModel;
 import model.yearModel;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import util.ConfirmBox;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -186,7 +191,8 @@ private registerFxModel editedRegisterElementFromList;
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredRegisterFxObservableList.setPredicate(item -> {
                 if (item.getInstrumentName().toUpperCase().contains(newValue.toUpperCase())|| item.getSerialNumber().toUpperCase().contains(newValue.toUpperCase())||
-                        item.getIdentificationNumber().toUpperCase().contains(newValue.toUpperCase())||item.getClient().toUpperCase().contains(newValue.toUpperCase())) {
+                        item.getIdentificationNumber().toUpperCase().contains(newValue.toUpperCase())||item.getClient().toUpperCase().contains(newValue.toUpperCase())||
+                        item.getCalibratePerson().toUpperCase().contains(newValue.toUpperCase())) {
                     return true;
                 } else {
                     return false;
@@ -325,5 +331,46 @@ private registerFxModel editedRegisterElementFromList;
                 remarksLabel.setText("");
             }
         }
+    }
+    @FXML
+    private void exportToExcel() throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("Arkusz1");
+        Row row = spreadsheet.createRow(0);
+        //Nazwy kolumn
+        row.createCell(0).setCellValue("Lp. ");
+        row.createCell(1).setCellValue("Nr karty");
+        row.createCell(2).setCellValue("Data wzorcowania");
+        row.createCell(3).setCellValue("Nazwa");
+        row.createCell(4).setCellValue("Nr fabryczny");
+        row.createCell(5).setCellValue("Nr identyfikacyjny");
+        row.createCell(6).setCellValue("Zleceniodawca");
+        row.createCell(7).setCellValue("Wzorcujący");
+        row.createCell(8).setCellValue("Nr Świadectwa/Protokołu");
+        row.createCell(9).setCellValue("ŚW/PO");
+        row.createCell(10).setCellValue("Stan");
+
+        int i = 0;
+        for (registerFxModel registerElement : filteredRegisterFxObservableList) {
+            row = spreadsheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i+1);
+            row.createCell(1).setCellValue(registerElement.getCardNumber());
+            row.createCell(2).setCellValue(registerElement.getCalibrationDate());
+            row.createCell(3).setCellValue(registerElement.getInstrumentName());
+            row.createCell(4).setCellValue(registerElement.getSerialNumber());
+            row.createCell(5).setCellValue(registerElement.getIdentificationNumber());
+            row.createCell(6).setCellValue(registerElement.getClient());
+            row.createCell(7).setCellValue(registerElement.getCalibratePerson());
+            row.createCell(8).setCellValue(registerElement.getCertificateNumber());
+            row.createCell(9).setCellValue(registerElement.getDocumentKind());
+            row.createCell(10).setCellValue(registerElement.getState());
+            i++;
+        }
+        for (int j = 0; j < 11; j++) {
+            spreadsheet.autoSizeColumn(j);
+        }
+        FileOutputStream fileOut = new FileOutputStream("RejestrAP.xls");
+        workbook.write(fileOut);
+        fileOut.close();
     }
 }

@@ -39,7 +39,7 @@
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin></Label>
-                <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="400.0">
+                <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="300.0">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
@@ -63,6 +63,11 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin></ComboBox>
             <Button fx:id="loadStorehouseDataButton" mnemonicParsing="false" onAction="#loadStorehouseData" prefWidth="125.0" text="Wczytaj listę">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="exportToExcelButton" mnemonicParsing="false" onAction="#exportToExcel" prefWidth="125.0" text="Eksport do XLS">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
@@ -177,7 +182,7 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="remarksTextArea" layoutX="-16.0" layoutY="-74.0" prefHeight="107.0" prefWidth="702.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                    <Label fx:id="remarksLabel" layoutX="63.0" layoutY="54.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                  </children></AnchorPane>
                           </content>
                         </Tab>

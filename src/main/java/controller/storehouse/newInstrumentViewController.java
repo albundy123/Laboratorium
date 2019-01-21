@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import util.Close;
@@ -168,6 +169,7 @@ public class newInstrumentViewController {
             VBox vBox = loader.load();
             instrumentData=loader.getController();
             Stage window = new Stage();
+            window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
             Scene scene = new Scene(vBox);
             window.setScene(scene);

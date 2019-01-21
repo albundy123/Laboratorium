@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import util.Close;
@@ -26,6 +27,11 @@ import java.util.List;
 public class editInstrumentViewController {
     public editInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy editInstrumentViewController");
     }
+    private static final String INSTRUMENT_NAME_VIEW = "/instrument/newInstrumentNameView.fxml";
+    private static final String INSTRUMENT_TYPE_VIEW = "/instrument/newInstrumentTypeView.fxml";
+    private static final String INSTRUMENT_PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
+    private static final String INSTRUMENT_RANGE_VIEW = "/instrument/newInstrumentRangeView.fxml";
+    private static final String INSTRUMENT_CLIENT_VIEW="/client/clientView.fxml";
 
     private newInstrumentNameViewController newInstrumentName;
     private newInstrumentTypeViewController newInstrumentType;
@@ -33,6 +39,7 @@ public class editInstrumentViewController {
     private newInstrumentRangeViewController newInstrumentRange;
 
     private clientViewController clientMainController;
+
     //Listy do ComboBoxów trochę przerost formy nad tręścią ale w sumie pożyteczna sprawa
     private ObservableList<String> instrumentNameObservableList = FXCollections.observableArrayList();
     private FilteredList<String> filteredNames = new FilteredList<String>(instrumentNameObservableList, p -> true);
@@ -49,17 +56,11 @@ public class editInstrumentViewController {
     private List<instrumentRangeModel> instrumentRangeList;
 
     private instrumentViewController editedInstrumentMainController;
-
-    public void setEditedInstrumentMainController(instrumentViewController editedInstrumentMainController) {
-        this.editedInstrumentMainController = editedInstrumentMainController;
-    }
+    public void setEditedInstrumentMainController(instrumentViewController editedInstrumentMainController) {this.editedInstrumentMainController = editedInstrumentMainController; }
     private storehouseViewController storehouseMainController;
+    public void setStorehouseMainController(storehouseViewController storehouseMainController) {this.storehouseMainController = storehouseMainController;}
 
-    public void setStorehouseMainController(storehouseViewController storehouseMainController) {
-        this.storehouseMainController = storehouseMainController;
-    }
     private instrumentModel editedInstrument;
-
     public void setEditedInstrument(instrumentModel editedInstrument) {
         this.editedInstrument = editedInstrument;
     }
@@ -75,7 +76,6 @@ public class editInstrumentViewController {
     //Wstrzyknięcia elementów z FXMLA
     @FXML
     private VBox mainVBox;
-
     @FXML
     private ComboBox<String> instrumentNameComboBox;
     @FXML
@@ -92,44 +92,28 @@ public class editInstrumentViewController {
     private TextField identificationNumberTextField;
     @FXML
     private Label informationLabel;
-
+//Settery do elementów z formularzy
     public void setInstrumentNameComboBox(String instrumentNameComboBox) {
         this.instrumentNameComboBox.setValue(instrumentNameComboBox);
     }
-
     public void setInstrumentTypeComboBox(String instrumentTypeComboBox) {
         this.instrumentTypeComboBox.setValue(instrumentTypeComboBox);
     }
-
     public void setInstrumentProducerComboBox(String instrumentProducerComboBox) {
         this.instrumentProducerComboBox.setValue(instrumentProducerComboBox);
     }
-
     public void setInstrumentRangeComboBox(String instrumentRangeComboBox) {
         this.instrumentRangeComboBox.setValue(instrumentRangeComboBox);
     }
-
     public void setInstrumentClientComboBox2(String instrumentClientComboBox) {
         this.instrumentClientComboBox.setValue(instrumentClientComboBox);
     }
-
     public void setSerialNumberTextField(String serialNumberTextField) {
         this.serialNumberTextField.setText(serialNumberTextField);
     }
-
     public void setIdentificationNumberTextField(String identificationNumberTextField) {
         this.identificationNumberTextField.setText(identificationNumberTextField);
     }
-
-
-    @FXML
-    private Button addNewInstrumentNameButton;
-    @FXML
-    private Button addNewInstrumentTypeButton;
-    @FXML
-    private Button addNewInstrumentRangeButton;
-    @FXML
-    private Button addNewInstrumentProducerButton;
     public void setInstrumentClientComboBox(String instrumentClientComboBox) {
         this.instrumentClientComboBox.setValue(instrumentClientComboBox);
     }
@@ -148,95 +132,46 @@ public class editInstrumentViewController {
     }
     @FXML
     private void addNewInstrumentName(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentNameView.fxml"));
-            VBox vBox = loader.load();
-            newInstrumentName=loader.getController();
-            if (newInstrumentName != null){
-                newInstrumentName.setEditInstrumentMainController(this);
-            }
-            Stage window = new Stage();
-            window.setTitle("Nazwa");
-            Scene scene = new Scene(vBox);
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        newInstrumentName=loadInstrumentData(newInstrumentName,INSTRUMENT_NAME_VIEW,"Nazwa");
+        newInstrumentName.setEditInstrumentMainController(this);
     }
     @FXML
     private void addNewInstrumentType(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentTypeView.fxml"));
-            VBox vBox = loader.load();
-            newInstrumentType=loader.getController();
-            if (newInstrumentType != null){
-                newInstrumentType.setEditInstrumentMainController(this);
-            }
-            Stage window = new Stage();
-            window.setTitle("Typ");
-            Scene scene = new Scene(vBox);
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        newInstrumentType=loadInstrumentData(newInstrumentType,INSTRUMENT_TYPE_VIEW,"Typ");
+        newInstrumentType.setEditInstrumentMainController(this);
     }
     @FXML
     private void addNewInstrumentProducer(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentProducerView.fxml"));
-            VBox vBox = loader.load();
-            newInstrumentProducer=loader.getController();
-            if (newInstrumentProducer != null){
-                newInstrumentProducer.setEditInstrumentMainController(this);
-            }
-            Stage window = new Stage();
-            window.setTitle("Typ");
-            Scene scene = new Scene(vBox);
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        newInstrumentProducer=loadInstrumentData(newInstrumentProducer,INSTRUMENT_PRODUCER_VIEW,"Producent");
+        newInstrumentProducer.setEditInstrumentMainController(this);
     }
     @FXML
     private void addNewInstrumentRange(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/instrument/newInstrumentRangeView.fxml"));
-            VBox vBox = loader.load();
-            newInstrumentRange=loader.getController();
-            if (newInstrumentRange != null){
-                newInstrumentRange.setEditInstrumentMainController(this);
-            }
-            Stage window = new Stage();
-            window.setTitle("Typ");
-            Scene scene = new Scene(vBox);
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        newInstrumentRange=loadInstrumentData(newInstrumentRange,INSTRUMENT_RANGE_VIEW,"Zakres");
+        newInstrumentRange.setEditInstrumentMainController(this);
     }
     @FXML
     private void addClientInstrument(){
+        clientMainController=loadInstrumentData(clientMainController,INSTRUMENT_CLIENT_VIEW,"Zleceniodawcy");
+        clientMainController.setEditInstrumentMainController(this);
+        clientMainController.setChoseButtonDisable();
+        clientMainController.getClients();
+    }
+    private <T> T loadInstrumentData(T instrumentData,String resource, String title){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/clientView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
             VBox vBox = loader.load();
-            clientMainController=loader.getController();
-            if (clientMainController != null){
-                clientMainController.setEditInstrumentMainController(this);
-                clientMainController.setChoseButtonDisable();
-                clientMainController.getClients();
-            }
+            instrumentData=loader.getController();
             Stage window = new Stage();
-            window.setTitle("Zleceniodawcy");
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle(title);
             Scene scene = new Scene(vBox);
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return instrumentData;
     }
     public void getInstrumentNameList() {
         try {
@@ -295,7 +230,6 @@ public class editInstrumentViewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
     public void getInstrumentProducerList(){
         try {
