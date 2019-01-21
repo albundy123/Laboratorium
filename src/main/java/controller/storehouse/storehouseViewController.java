@@ -68,11 +68,11 @@ public class storehouseViewController {
     @FXML
     private TableColumn<storehouseFxModel, String> instrumentClientColumn;
     @FXML
-    private TableColumn<storehouseFxModel, Date> addDateColumn;
+    private TableColumn<storehouseFxModel, String> addDateColumn;
     @FXML
-    private TableColumn<storehouseFxModel, Date> calibrationDateColumn;
+    private TableColumn<storehouseFxModel, String> calibrationDateColumn;
     @FXML
-    private TableColumn<storehouseFxModel, Date> leftDateColumn;
+    private TableColumn<storehouseFxModel, String> leftDateColumn;
     //Labele do wyświetlania szczegułów może dam to do innego fxmla jak mi się będzie chciało kiedyś
     @FXML
     private Label shortNameLabel;
@@ -150,7 +150,6 @@ public class storehouseViewController {
     //Pobiera listę obiektów storehouseModel z tabeli "STOREHOUSE" wypełnia jednocześnie listę obiektów storehouseFxObservableList
     //Oczywiscie możemy wybrać co chcemy pobrać z super wielkiej tabeli tak przyszłościowo :)
     public void getStorehouseList(){
-
         try {
             storehouseFxObservableList.clear();
             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);

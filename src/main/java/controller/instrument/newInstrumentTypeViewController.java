@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.admin.commonInstrumentViewController;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
@@ -32,10 +33,25 @@ public class newInstrumentTypeViewController {
         this.editInstrumentMainController = editInstrumentMainController;
     }
 
+    private instrumentTypeModel editedInstrumentType;
+    public void setEditedInstrumentType(instrumentTypeModel editedInstrumentType) {
+        this.editedInstrumentType = editedInstrumentType;
+    }
+    private commonInstrumentViewController commonInstrumentController;
+
+    public void setCommonInstrumentController(commonInstrumentViewController commonInstrumentController) {
+        this.commonInstrumentController = commonInstrumentController;
+    }
+
     @FXML
     private VBox mainVBox;
     @FXML
     private TextField newInstrumentTypeTextField;
+
+    public void setNewInstrumentTypeTextField(String newInstrumentType) {
+        this.newInstrumentTypeTextField.setText(newInstrumentType);
+    }
+
     @FXML
     private Label newInstrumentTypeLabel;
 
@@ -52,14 +68,33 @@ public class newInstrumentTypeViewController {
                 instrumentTypeQueryBuilder.where().eq("instrumentType", newInstrumentTypeTextField.getText());
                 PreparedQuery<instrumentTypeModel> prepare = instrumentTypeQueryBuilder.prepare();
                 List<instrumentTypeModel> result = instrumentTypeDao.query(prepare);
-                if (result.isEmpty()) {
-                    instrumentTypeDao.create(new instrumentTypeModel(0, newInstrumentTypeTextField.getText()));
-                    newInstrumentTypeTextField.clear();
-                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentTypeList();}
-                    if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentTypeList();}
-                    Close.closeVBoxWindow(mainVBox);
-                } else {
-                    newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
+                if(editedInstrumentType!=null){//edycja typu
+                    if (result.isEmpty()) {
+                        instrumentTypeDao.update(new instrumentTypeModel(editedInstrumentType.getIdInstrumentType(),newInstrumentTypeTextField.getText()));
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getTypes();
+                        }
+                    }else{
+                        if(result.get(0).getIdInstrumentType()!=editedInstrumentType.getIdInstrumentType()){
+                            newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
+                        }else{
+                            Close.closeVBoxWindow(mainVBox);
+                        }
+                    }
+                }else{
+                    if (result.isEmpty()) {//dodawanie nowego typu
+                        instrumentTypeDao.create(new instrumentTypeModel(0, newInstrumentTypeTextField.getText()));
+                        newInstrumentTypeTextField.clear();
+                        if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentTypeList();}
+                        if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentTypeList();}
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getTypes();
+                        }
+                    } else {
+                        newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

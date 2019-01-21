@@ -114,8 +114,8 @@
                                 <columns>
                                     <TableColumn fx:id="idRegisterByYearColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
                                     <TableColumn fx:id="cardNumberColumn" prefWidth="75.0" text="Nr karty" />
-                                    <TableColumn fx:id="calibrationDateColumn" prefWidth="75.0" text="Data wzorcowania" />
-                                    <TableColumn fx:id="userColumn" prefWidth="75.0" text="Wykonujący wzorcowanie" />
+                                    <TableColumn fx:id="calibrationDateRegisterColumn" prefWidth="75.0" text="Data wzorcowania" />
+                                    <TableColumn fx:id="userWhoCalibrateColumn" prefWidth="75.0" text="Wykonujący wzorcowanie" />
                                       <TableColumn fx:id="certificateNumberColumn" prefWidth="257.0" text="Nr Świadectwa/Nr protokolu" />
                                       <TableColumn fx:id="documentKindColumn" prefWidth="59.0" text="ŚW/PO" />
                                     <TableColumn fx:id="stateColumn" prefWidth="31.0" text="Stan" />
@@ -136,11 +136,11 @@
                                   <columns>
                                       <TableColumn fx:id="idStorehouseColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
                                         <TableColumn fx:id="addDateColumn" prefWidth="75.0" text="Data przyjęcia" />
-                                    <TableColumn fx:id="personWhoAddColumn" prefWidth="75.0" text="Przyjął" />
+                                    <TableColumn fx:id="addPersonColumn" prefWidth="75.0" text="Przyjął" />
                                         <TableColumn fx:id="calibrationDateColumn" prefWidth="75.0" text="Data wzorcowania" />
-                                    <TableColumn fx:id="personWhoCalibrateColumn" prefWidth="75.0" text="Wzorcował" />
+                                    <TableColumn fx:id="calibratePersonColumn" prefWidth="75.0" text="Wzorcował" />
                                         <TableColumn fx:id="leftDateColumn" prefWidth="75.0" text="Data wydania" />
-                                    <TableColumn fx:id="personWhoLeftColumn" prefWidth="75.0" text="Wydał" />
+                                    <TableColumn fx:id="leftPersonColumn" prefWidth="75.0" text="Wydał" />
                                   </columns>
                                   <columnResizePolicy>
                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

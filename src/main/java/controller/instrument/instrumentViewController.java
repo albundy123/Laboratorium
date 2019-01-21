@@ -2,6 +2,8 @@ package controller.instrument;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import controller.dialogClientViewController;
 import dbUtil.dbSqlite;
 import javafx.beans.binding.Bindings;
@@ -16,9 +18,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.clientModel;
+import model.*;
 import model.fxModel.instrumentFxModel;
-import model.instrumentModel;
+import model.fxModel.instrumentStorehouseFxModel;
+import model.fxModel.registerFxModel;
+import util.Converter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,7 +77,14 @@ public class instrumentViewController {
     //Różne listy służądo obsługi TableView itd
     private List<instrumentModel> instrumentModelList = new ArrayList<instrumentModel>(); //Lista instrumentModel z elementami z bazy danych
     private ObservableList<instrumentFxModel> instrumentFxObservableList = FXCollections.observableArrayList(); //Przerzucenie do listy obserwowalnej wykorzystywanej do wyświetlania
-    FilteredList<instrumentFxModel> filteredInstrumentFxObservableList = new FilteredList<>(instrumentFxObservableList, p -> true); //Lista filtrowana służy do szukania
+    private FilteredList<instrumentFxModel> filteredInstrumentFxObservableList = new FilteredList<>(instrumentFxObservableList, p -> true); //Lista filtrowana służy do szukania
+    private List<registerModel> registerModelList = new ArrayList<registerModel>();
+    private List<register2Model> register2ModelList = new ArrayList<register2Model>();
+    private List<storehouseModel> storehouseModelList = new ArrayList<storehouseModel>();
+    private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
+    private ObservableList<instrumentStorehouseFxModel> instrumentStorehouseFxObservableList = FXCollections.observableArrayList();
+
+
 
     private instrumentFxModel editedInstrumentFromList;
 
@@ -129,8 +140,30 @@ public class instrumentViewController {
             if(newValue!=null){
                 setEditedInstrumentFromList(newValue); //Setowanie przyrządu, każde przyciśnięcie
                 showInformationAboutClient(instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getClient());
+                getStorehouseList();
+                getRegisterList();
             }
         });
+
+        idRegisterByYearColumn.setCellValueFactory(new PropertyValueFactory<>("idRegisterByYear"));
+        cardNumberColumn.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
+        calibrationDateRegisterColumn.setCellValueFactory(new PropertyValueFactory<>("calibrationDate"));
+        userWhoCalibrateColumn.setCellValueFactory(new PropertyValueFactory<>("calibratePerson"));
+        certificateNumberColumn.setCellValueFactory(new PropertyValueFactory<>("certificateNumber"));
+        documentKindColumn.setCellValueFactory(new PropertyValueFactory<>("documentKind"));
+        stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
+        registerTableView.setItems(registerFxObservableList);
+
+        idStorehouseColumn.setCellValueFactory(new PropertyValueFactory<>("idStorehouse"));
+        addDateColumn.setCellValueFactory(new PropertyValueFactory<>("addDate"));
+        addPersonColumn.setCellValueFactory(new PropertyValueFactory<>("addPerson"));
+        calibrationDateColumn.setCellValueFactory(new PropertyValueFactory<>("calibrationDate"));
+        calibratePersonColumn.setCellValueFactory(new PropertyValueFactory<>("calibratePerson"));
+        leftDateColumn.setCellValueFactory(new PropertyValueFactory<>("leftDate"));
+        leftPersonColumn.setCellValueFactory(new PropertyValueFactory<>("leftPerson"));
+        storehouseTableView.setItems(instrumentStorehouseFxObservableList);
+
+
     }
     @FXML
     private void editInstrument(){
@@ -233,5 +266,97 @@ public class instrumentViewController {
                 }
             });
         } );
+    }
+
+    @FXML
+    private TableView<instrumentStorehouseFxModel> storehouseTableView;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, Integer> idStorehouseColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> addDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> calibrationDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> leftDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> addPersonColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> calibratePersonColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> leftPersonColumn;
+
+    @FXML
+    private  TableView<registerFxModel> registerTableView;
+    @FXML
+    private TableColumn<registerFxModel, Integer> idRegisterByYearColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> cardNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> calibrationDateRegisterColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> userWhoCalibrateColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> certificateNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> documentKindColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> stateColumn;
+
+    public void getStorehouseList(){
+        try {
+            instrumentStorehouseFxObservableList.clear();
+            Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
+            QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
+            storehouseQueryBuilder.where().eq("instrument_id",instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getIdInstrument());
+            PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
+            storehouseModelList=storehouseDao.query(prepare);
+            Integer indeks = 1;//Ta konstrukcja jest potrzebna do połączenie wyników z bazydanych z tymi wyswietlanymi
+            for (storehouseModel storehouseElement : storehouseModelList) {
+                System.out.println(storehouseElement.toString());
+                instrumentStorehouseFxModel storehouseFx= Converter.convertToInstrumentStorehouseFx(storehouseElement);
+                storehouseFx.setIdStorehouse(indeks);
+                instrumentStorehouseFxObservableList.add(storehouseFx);
+                indeks++;
+            }
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void getRegisterList(){
+        try {
+            registerFxObservableList.clear();
+            Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
+            QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao.queryBuilder();
+            registerQueryBuilder.where().eq("instrument_id",instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getIdInstrument());
+            PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
+            registerModelList=registerDao.query(prepare);
+            Integer indeks = 1;
+            for (registerModel registerElement : registerModelList) {
+                System.out.println(registerElement.getUserWhoCalibrate().getLogin());
+                System.out.println(registerElement.getCalibrationDate());
+                registerFxObservableList.add(new registerFxModel(indeks,indeks,registerElement.getCardNumber(),
+                        registerElement.getCalibrationDate(), "","","", "",
+                        registerElement.getUserWhoCalibrate().getLogin(), registerElement.getCertificateNumber(),
+                        registerElement.getDocumentKind(),registerElement.getState()));
+                indeks++;
+            }
+            Dao<register2Model, Integer> register2Dao = DaoManager.createDao(dbSqlite.getConnectionSource(),register2Model.class);
+            QueryBuilder<register2Model, Integer> register2QueryBuilder = register2Dao.queryBuilder();
+            register2QueryBuilder.where().eq("instrument_id",instrumentModelList.get(editedInstrumentFromList.getIndexOfInstrumentModelList()).getIdInstrument());
+            PreparedQuery<register2Model> prepare2 = register2QueryBuilder.prepare();
+            register2ModelList=register2Dao.query(prepare2);
+            for (register2Model registerElement : register2ModelList) {
+                System.out.println(registerElement.toString());
+                registerFxObservableList.add(new registerFxModel(indeks,indeks,registerElement.getCardNumber(),
+                        registerElement.getCalibrationDate(), "","","", "",
+                        registerElement.getUserWhoCalibrate().getLogin(), registerElement.getCertificateNumber(),
+                        registerElement.getDocumentKind(),registerElement.getState()));
+                indeks++;
+            }
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

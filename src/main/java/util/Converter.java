@@ -2,6 +2,7 @@ package util;
 
 
 import javafx.util.StringConverter;
+import model.fxModel.instrumentStorehouseFxModel;
 import model.fxModel.storehouseFxModel;
 import model.storehouseModel;
 
@@ -45,6 +46,16 @@ public class Converter {
         modelFx.setIdentificationNumber(model.getInstrument().getIdentificationNumber());
         modelFx.setInstrumentRange(model.getInstrument().getInstrumentRange().getInstrumentRange());
         modelFx.setClient(model.getInstrument().getClient().getShortName());
+        modelFx.setAddDate(model.getAddDate());
+        modelFx.setCalibrationDate(model.getCalibrationDate());
+        modelFx.setLeftDate(model.getLeftDate());
+        return modelFx;
+    }
+    public static instrumentStorehouseFxModel convertToInstrumentStorehouseFx(storehouseModel model){
+        instrumentStorehouseFxModel modelFx=new instrumentStorehouseFxModel();
+        modelFx.setAddPerson(model.getUserWhoAdd().getLogin());
+        modelFx.setCalibratePerson(model.getUserWhoCalibrate().getLogin());
+        modelFx.setLeftPerson(model.getUserWhoLeft().getLogin());
         modelFx.setAddDate(model.getAddDate());
         modelFx.setCalibrationDate(model.getCalibrationDate());
         modelFx.setLeftDate(model.getLeftDate());

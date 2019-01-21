@@ -4,13 +4,17 @@ import controller.instrument.instrumentViewController;
 import controller.register.registerViewController;
 import controller.register2.register2ViewController;
 import controller.storehouse.storehouseViewController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import model.userModel;
+import util.Close;
+import util.ConfirmBox;
 
 import java.io.IOException;
 
@@ -76,6 +80,9 @@ public class mainViewController {
     @FXML
     private VBox adminVBox;
 
+    @FXML
+    private SplitPane mainSplitPane;
+
     public void adminTabDisable(){
         adminTab.setDisable(true);
     }
@@ -127,5 +134,12 @@ public class mainViewController {
         AnchorPane.setLeftAnchor(vBox,value);
         AnchorPane.setRightAnchor(vBox,value);
         AnchorPane.setTopAnchor(vBox,value);
+    }
+    @FXML
+    private void logOut(){
+        if(ConfirmBox.display("Wylogowanie","Czy na pewno chcesz zamknąć program ?")){
+            setUser(null);
+            Platform.exit();
+        }
     }
 }

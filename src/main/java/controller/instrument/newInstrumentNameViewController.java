@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.admin.commonInstrumentViewController;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
@@ -30,11 +31,26 @@ public class newInstrumentNameViewController {
     public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
         this.editInstrumentMainController = editInstrumentMainController;
     }
+    private instrumentNameModel editedInstrumentName;
+
+    public void setEditedInstrumentName(instrumentNameModel editedInstrumentName) {
+        this.editedInstrumentName = editedInstrumentName;
+    }
+    private commonInstrumentViewController commonInstrumentController;
+
+    public void setCommonInstrumentController(commonInstrumentViewController commonInstrumentController) {
+        this.commonInstrumentController = commonInstrumentController;
+    }
 
     @FXML
     private VBox mainVBox;
     @FXML
     private TextField newInstrumentNameTextField;
+
+    public void setNewInstrumentNameTextField(String newInstrumentName) {
+        this.newInstrumentNameTextField.setText(newInstrumentName);
+    }
+
     @FXML
     private Label newInstrumentNameLabel;
 
@@ -51,14 +67,33 @@ public class newInstrumentNameViewController {
                 instrumentNameQueryBuilder.where().eq("instrumentName", newInstrumentNameTextField.getText());
                 PreparedQuery<instrumentNameModel> prepare = instrumentNameQueryBuilder.prepare();
                 List<instrumentNameModel> result = instrumentNameDao.query(prepare);
-                if (result.isEmpty()) {
-                    instrumentNameDao.create(new instrumentNameModel(0, newInstrumentNameTextField.getText()));
-                    newInstrumentNameTextField.clear();
-                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentNameList();}
-                    if(newInstrumentMainController!=null){ newInstrumentMainController.getInstrumentNameList();}
-                    Close.closeVBoxWindow(mainVBox);
-                } else {
-                    newInstrumentNameLabel.setText("Taka nazwa przyrządu już istnieje !");
+                if(editedInstrumentName!=null){//edycja nazwy
+                    if (result.isEmpty()) {
+                        instrumentNameDao.update(new instrumentNameModel(editedInstrumentName.getIdInstrumentName(),newInstrumentNameTextField.getText()));
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getNames();
+                        }
+                    } else {
+                        if(result.get(0).getIdInstrumentName()!=editedInstrumentName.getIdInstrumentName()){
+                            newInstrumentNameLabel.setText("Taka nazwa przyrządu już istnieje !");
+                        }else{
+                            Close.closeVBoxWindow(mainVBox);
+                        }
+                    }
+                }else{
+                    if (result.isEmpty()) {//Dodawanie nowej nazwy
+                        instrumentNameDao.create(new instrumentNameModel(0, newInstrumentNameTextField.getText()));
+                        newInstrumentNameTextField.clear();
+                        if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentNameList();}
+                        if(newInstrumentMainController!=null){ newInstrumentMainController.getInstrumentNameList();}
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getNames();
+                        }
+                    } else {
+                        newInstrumentNameLabel.setText("Taka nazwa przyrządu już istnieje !");
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -77,4 +112,5 @@ public class newInstrumentNameViewController {
             Close.closeVBoxWindow(mainVBox);
         }
     }
+
 }

@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controller.admin.commonInstrumentViewController;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.collections.FXCollections;
@@ -36,16 +37,36 @@ public class newInstrumentRangeViewController {
     public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
         this.editInstrumentMainController = editInstrumentMainController;
     }
-
     private ObservableList<String> unitObservableList = FXCollections.observableArrayList();
+
+    private instrumentRangeModel editedInstrumentRange;
+
+    public void setEditedInstrumentRange(instrumentRangeModel editedInstrumentRange) {
+        this.editedInstrumentRange = editedInstrumentRange;
+    }
+    private commonInstrumentViewController commonInstrumentController;
+
+    public void setCommonInstrumentController(commonInstrumentViewController commonInstrumentController) {
+        this.commonInstrumentController = commonInstrumentController;
+    }
     @FXML
     private VBox mainVBox;
     @FXML
     private TextField newInstrumentRangeTextField1;
+    public void setNewInstrumentRangeTextField1(String newInstrumentRange) {
+        this.newInstrumentRangeTextField1.setText(newInstrumentRange);
+    }
     @FXML
     private TextField newInstrumentRangeTextField2;
+    public void setNewInstrumentRangeTextField2(String newInstrumentRange) {
+        this.newInstrumentRangeTextField2.setText(newInstrumentRange);
+    }
     @FXML
     private ComboBox newInstrumentRangeUnitComboBox;
+    public void setNewInstrumentRangeUnitComboBox(String newInstrumentRangeUnit) {
+        this.newInstrumentRangeUnitComboBox.setValue(newInstrumentRangeUnit);
+    }
+
     @FXML
     private Label newInstrumentRangeLabel;
 
@@ -65,16 +86,36 @@ public class newInstrumentRangeViewController {
                 instrumentRangeQueryBuilder.where().eq("instrumentRange", range);
                 PreparedQuery<instrumentRangeModel> prepare = instrumentRangeQueryBuilder.prepare();
                 List<instrumentRangeModel> result = instrumentRangeDao.query(prepare);
-                if (result.isEmpty()) {
-                    instrumentRangeDao.create(new instrumentRangeModel(0, range));
-                    newInstrumentRangeTextField1.clear();
-                    newInstrumentRangeTextField2.clear();
-                    newInstrumentRangeUnitComboBox.valueProperty().set(null);
-                    if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentRangeList();}
-                    if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentRangeList();}
-                    Close.closeVBoxWindow(mainVBox);
-                } else {
-                    newInstrumentRangeLabel.setText("Taki zakres pomiarowy już istnieje !");
+                if(editedInstrumentRange!=null){//edytujemy zakres
+                    if (result.isEmpty()) {
+                        range = "("+newInstrumentRangeTextField1.getText()+" do "+newInstrumentRangeTextField2.getText()+") "+newInstrumentRangeUnitComboBox.getValue();
+                        instrumentRangeDao.update(new instrumentRangeModel(editedInstrumentRange.getIdInstrumentRange(),range));
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getRanges();
+                        }
+                    }else{
+                        if(result.get(0).getIdInstrumentRange()!=editedInstrumentRange.getIdInstrumentRange()){
+                            newInstrumentRangeLabel.setText("Taki zakres pomiarowy już istnieje !");
+                        }else{
+                            Close.closeVBoxWindow(mainVBox);
+                        }
+                    }
+                }else{
+                    if (result.isEmpty()) {
+                        instrumentRangeDao.create(new instrumentRangeModel(0, range));
+                        newInstrumentRangeTextField1.clear();
+                        newInstrumentRangeTextField2.clear();
+                        newInstrumentRangeUnitComboBox.valueProperty().set(null);
+                        if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentRangeList();}
+                        if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentRangeList();}
+                        Close.closeVBoxWindow(mainVBox);
+                        if(commonInstrumentController!=null){
+                            commonInstrumentController.getRanges();
+                        }
+                    } else {
+                        newInstrumentRangeLabel.setText("Taki zakres pomiarowy już istnieje !");
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
