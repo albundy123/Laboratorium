@@ -76,7 +76,7 @@
         </HBox>
         <TableView fx:id="storehouseTableView" prefHeight="420.0" prefWidth="996.0">
             <columns>
-                <TableColumn fx:id="idInstrumentColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
+                <TableColumn fx:id="idInstrumentColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
                 <TableColumn fx:id="instrumentNameColumn" prefWidth="75.0" text="Nazwa" />
                 <TableColumn fx:id="instrumentTypeColumn" prefWidth="75.0" text="Typ" />
                 <TableColumn fx:id="instrumentProducerColumn" prefWidth="75.0" text="Producent" />

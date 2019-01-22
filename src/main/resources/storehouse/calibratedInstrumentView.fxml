@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.storehouse.calibratedInstrumentViewController">
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="362.0" minWidth="-Infinity" prefHeight="362.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.storehouse.calibratedInstrumentViewController">
     <children>
         <HBox prefHeight="31.0" prefWidth="500.0">
             <children>
@@ -34,8 +34,8 @@
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="35.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="35.0" minHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="85.0" minHeight="30.0" prefHeight="35.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>

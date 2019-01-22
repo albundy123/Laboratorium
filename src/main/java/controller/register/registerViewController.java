@@ -18,16 +18,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.clientModel;
 import model.fxModel.registerFxModel;
-import model.fxModel.storehouseFxModel;
 import model.registerModel;
 import model.storehouseModel;
 import model.yearModel;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.ConfirmBox;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,6 +37,8 @@ public class registerViewController {
     public  registerViewController() {System.out.println("Siemanko jestem konstruktorem klasy  registerViewController.");}
 
 //Najpierw tabela z kolumnami do wyswietlania
+    @FXML
+    private VBox mainVBox;
     @FXML
     private TableView<registerFxModel> registerTableView;
     @FXML
@@ -186,6 +186,7 @@ private registerFxModel editedRegisterElementFromList;
                 showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
             }
         });
+        registerTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
     }
     private void addFilter(){
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
@@ -334,7 +335,7 @@ private registerFxModel editedRegisterElementFromList;
     }
     @FXML
     private void exportToExcel() throws IOException {
-        Workbook workbook = new HSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
         Sheet spreadsheet = workbook.createSheet("Arkusz1");
         Row row = spreadsheet.createRow(0);
         //Nazwy kolumn
@@ -369,7 +370,7 @@ private registerFxModel editedRegisterElementFromList;
         for (int j = 0; j < 11; j++) {
             spreadsheet.autoSizeColumn(j);
         }
-        FileOutputStream fileOut = new FileOutputStream("RejestrAP.xls");
+        FileOutputStream fileOut = new FileOutputStream("RejestrAP.xlsx");
         workbook.write(fileOut);
         fileOut.close();
     }

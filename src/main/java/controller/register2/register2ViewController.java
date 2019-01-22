@@ -18,13 +18,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import model.fxModel.registerFxModel;
-import model.fxModel.storehouseFxModel;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.ConfirmBox;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -36,6 +34,8 @@ public class register2ViewController {
     public  register2ViewController() {System.out.println("Siemanko jestem konstruktorem klasy  register2ViewController.");}
 
     //Najpierw tabela z kolumnami do wyswietlania
+    @FXML
+    private VBox mainVBox;
     @FXML
     private TableView<registerFxModel> registerTableView;
     @FXML
@@ -184,6 +184,7 @@ public class register2ViewController {
                 showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
             }
         });
+        registerTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
     }
     private void addFilter(){
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
@@ -332,7 +333,7 @@ public class register2ViewController {
     }
     @FXML
     private void exportToExcel() throws IOException {
-        Workbook workbook = new HSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
         Sheet spreadsheet = workbook.createSheet("Arkusz1");
         Row row = spreadsheet.createRow(0);
         //Nazwy kolumn
@@ -367,7 +368,7 @@ public class register2ViewController {
         for (int j = 0; j < 11; j++) {
             spreadsheet.autoSizeColumn(j);
         }
-        FileOutputStream fileOut = new FileOutputStream("RejestrPozaAP.xls");
+        FileOutputStream fileOut = new FileOutputStream("RejestrPozaAP.xlsx");
         workbook.write(fileOut);
         fileOut.close();
     }

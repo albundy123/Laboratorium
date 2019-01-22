@@ -6,7 +6,6 @@ import controller.instrument.editInstrumentViewController;
 import controller.storehouse.newInstrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -19,11 +18,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.clientModel;
-import model.fxModel.instrumentFxModel;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 import java.io.FileOutputStream;
@@ -202,6 +200,7 @@ public class clientViewController {
             setEditedClientFromList(newValue);
             showInformation(newValue);
         });
+        clientTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
     }
     private void addFilter(){
         fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
@@ -241,7 +240,7 @@ public class clientViewController {
     }
     @FXML
     private void exportToExcel() throws IOException {
-        Workbook workbook = new HSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
         Sheet spreadsheet = workbook.createSheet("Arkusz1");
         Row row = spreadsheet.createRow(0);
         //Nazwy kolumn
@@ -270,7 +269,7 @@ public class clientViewController {
         for (int j = 0; j < 8; j++) {
             spreadsheet.autoSizeColumn(j);
         }
-        FileOutputStream fileOut = new FileOutputStream("Zleceniodawcy.xls");
+        FileOutputStream fileOut = new FileOutputStream("Zleceniodawcy.xlsx");
         workbook.write(fileOut);
         fileOut.close();
     }

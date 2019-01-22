@@ -22,10 +22,10 @@ import model.*;
 import model.fxModel.instrumentFxModel;
 import model.fxModel.instrumentStorehouseFxModel;
 import model.fxModel.registerFxModel;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Converter;
 
 import java.io.FileOutputStream;
@@ -39,6 +39,8 @@ public class instrumentViewController {
 
 
     //Tabela z danymi wszystkie kolumny muszą być wstrzyknięte żeby potem można było z nich korzystać
+    @FXML
+    private VBox mainVBox;
     @FXML
     private TableView<instrumentFxModel> instrumentTableView;
     @FXML
@@ -57,9 +59,6 @@ public class instrumentViewController {
     private TableColumn<instrumentFxModel, String> instrumentRangeColumn;
     @FXML
     private TableColumn<instrumentFxModel, String> instrumentClientColumn;
-
-    @FXML
-    private VBox mainVBox;
 
     //Wyświetlanie zleceniodawcy na dolnym TabPane
     @FXML
@@ -150,7 +149,7 @@ public class instrumentViewController {
                 getRegisterList();
             }
         });
-
+        instrumentTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
         idRegisterByYearColumn.setCellValueFactory(new PropertyValueFactory<>("idRegisterByYear"));
         cardNumberColumn.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
         calibrationDateRegisterColumn.setCellValueFactory(new PropertyValueFactory<>("calibrationDate"));
@@ -367,7 +366,7 @@ public class instrumentViewController {
     }
     @FXML
     private void exportToExcel() throws IOException {
-        Workbook workbook = new HSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
         Sheet spreadsheet = workbook.createSheet("Arkusz1");
         Row row = spreadsheet.createRow(0);
         //Nazwy kolumn
@@ -396,7 +395,7 @@ public class instrumentViewController {
         for (int j = 0; j < 8; j++) {
             spreadsheet.autoSizeColumn(j);
         }
-        FileOutputStream fileOut = new FileOutputStream("Przyrządy.xls");
+        FileOutputStream fileOut = new FileOutputStream("Przyrządy.xlsx");
         workbook.write(fileOut);
         fileOut.close();
     }

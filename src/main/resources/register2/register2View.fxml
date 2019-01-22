@@ -55,8 +55,8 @@
         </HBox>
         <TableView fx:id="registerTableView" prefHeight="460.0" prefWidth="1000.0">
             <columns>
-                <TableColumn fx:id="idRegisterByYearColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
-                <TableColumn fx:id="cardNumberColumn" prefWidth="75.0" text="Nr karty" />
+                <TableColumn fx:id="idRegisterByYearColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
+                <TableColumn fx:id="cardNumberColumn" maxWidth="80.0" minWidth="80.0" text="Nr karty" />
                 <TableColumn fx:id="calibrationDateColumn" prefWidth="75.0" text="Data wzorcowania" />
                 <TableColumn fx:id="instrumentNameColumn" prefWidth="75.0" text="Nazwa" />
                 <TableColumn fx:id="instrumentSerialNumberColumn" prefWidth="75.0" text="Nr fabryczny" />
@@ -66,9 +66,9 @@
                 <TableColumn prefWidth="178.0" text="Świadectwo wzorcowania">
                     <columns>
                         <TableColumn fx:id="certificateNumberColumn" prefWidth="138.0" text="Nr Świadectwa" />
-                        <TableColumn fx:id="documentKindColumn" prefWidth="51.0" text="ŚW/PO" />
+                        <TableColumn fx:id="documentKindColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ŚW/PO" />
                     </columns></TableColumn>
-                <TableColumn fx:id="stateColumn" prefWidth="31.0" text="Stan" />
+                <TableColumn fx:id="stateColumn" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" text="Stan" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

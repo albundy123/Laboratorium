@@ -47,12 +47,12 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="loginTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="login" GridPane.columnIndex="1">
+                        <TextField fx:id="loginTextField" maxWidth="150.0" minWidth="150.0" onAction="#logIn" prefWidth="150.0" promptText="login" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </TextField>
-                        <PasswordField fx:id="passwordField" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="hasło" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <PasswordField fx:id="passwordField" maxWidth="150.0" onAction="#logIn" prefHeight="25.0" prefWidth="150.0" promptText="hasło" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
