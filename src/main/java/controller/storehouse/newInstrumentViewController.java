@@ -306,7 +306,7 @@ public class newInstrumentViewController {
                     alert.setHeaderText("Proszę zweryfikować dane lub uzupełnić wpis dotyczący przyrządu");
                     alert.showAndWait();
                 }else {
-                    storehouseDao.create(new storehouseModel(0, instrument, addDateDatePicker.getValue().toString(), null, "", null, "", null, newInstrumentTextArea.getText()));
+                    storehouseDao.create(new storehouseModel(0, instrument, addDateDatePicker.getValue().toString(), user, "", null, "", null, newInstrumentTextArea.getText()));
                 }
             }
             Close.closeVBoxWindow(mainVBox);

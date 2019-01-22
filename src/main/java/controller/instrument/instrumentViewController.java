@@ -308,6 +308,7 @@ public class instrumentViewController {
     private TableColumn<registerFxModel, String> stateColumn;
 
     public void getStorehouseList(){
+        System.out.println("Działa storhaułsa");
         try {
             instrumentStorehouseFxObservableList.clear();
             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
@@ -329,6 +330,7 @@ public class instrumentViewController {
         }
     }
     private void getRegisterList(){
+        System.out.println("Działa registra");
         try {
             registerFxObservableList.clear();
             Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);

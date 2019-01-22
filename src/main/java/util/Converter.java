@@ -53,9 +53,21 @@ public class Converter {
     }
     public static instrumentStorehouseFxModel convertToInstrumentStorehouseFx(storehouseModel model){
         instrumentStorehouseFxModel modelFx=new instrumentStorehouseFxModel();
-        modelFx.setAddPerson(model.getUserWhoAdd().getLogin());
-        modelFx.setCalibratePerson(model.getUserWhoCalibrate().getLogin());
-        modelFx.setLeftPerson(model.getUserWhoLeft().getLogin());
+        if(model.getUserWhoAdd()!=null) {
+            modelFx.setAddPerson(model.getUserWhoAdd().getLogin());
+        }else {
+            modelFx.setAddPerson("");
+        }
+        if(model.getUserWhoCalibrate()!=null) {
+            modelFx.setCalibratePerson(model.getUserWhoCalibrate().getLogin());
+        }else {
+            modelFx.setCalibratePerson("");
+        }
+        if(model.getUserWhoLeft()!=null) {
+            modelFx.setLeftPerson(model.getUserWhoLeft().getLogin());
+        }else {
+            modelFx.setLeftPerson("");
+        }
         modelFx.setAddDate(model.getAddDate());
         modelFx.setCalibrationDate(model.getCalibrationDate());
         modelFx.setLeftDate(model.getLeftDate());
