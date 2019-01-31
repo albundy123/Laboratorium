@@ -164,7 +164,7 @@ public class newInstrumentViewController {
         clientMainController=loadInstrumentData(clientMainController,INSTRUMENT_CLIENT_VIEW,"Zleceniodawcy");
         clientMainController.setNewInstrumentMainController(this);
         clientMainController.setChoseButtonDisable();
-        clientMainController.getClients();
+        clientMainController.getActiveClients();
     }
     private <T> T loadInstrumentData(T instrumentData,String resource, String title){
         try {

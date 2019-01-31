@@ -180,6 +180,22 @@ public class clientViewController {
             e.printStackTrace();
         }
     }
+    public void getActiveClients(){
+        try {
+            clientObservableList.clear();
+            Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
+            List<clientModel> clientList = clientDao.queryForAll();
+            clientList.forEach(client ->{
+                if(client.getStatus().equals("aktywny")) {
+                    clientObservableList.add(client);
+                }
+            });
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initializeTableView(){
         idClientColumn.setCellValueFactory(new PropertyValueFactory<>("idClient"));
         shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortName"));

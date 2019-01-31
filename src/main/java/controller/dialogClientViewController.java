@@ -10,9 +10,7 @@ import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.clientModel;
-import model.userModel;
 import util.Close;
 
 import java.sql.SQLException;
@@ -43,11 +41,6 @@ public class dialogClientViewController {
     private ComboBox<String> statusComboBox;
     @FXML
     private Label clientLabel;
-    @FXML
-    private Button saveClientButton;
-    @FXML
-    private Button cancelSaveClientButton;
-
 
     private Integer idEditedClient;
     private clientViewController mainClientController;
@@ -115,7 +108,7 @@ public class dialogClientViewController {
         }
     }
     private void addNewClient(){
-        if(isValidClientData()&& isValidClientDataInDB()){
+        if(isValidClientData()&& isValidClientDataInDB()==0){
             try {
                 Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
                 clientDao.create(getClient());
@@ -124,37 +117,27 @@ public class dialogClientViewController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }else{
+            showAlert();
         }
     }
-    private void editClient(){
-        if(isSomethingChange(editedClientShortName,shortNameTextField.getText(),editedClientFullName,fullNameTextField.getText())){
-            if(isValidClientData()&& isValidClientDataInDB()){
-                try {
-                    Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
-                    clientDao.update(getClient());
-                    Close.closeVBoxWindow(mainVBox);
-                    if(mainClientController!= null){
-                        mainClientController.getClients();}
-                    if(editedInstrumentMainController!=null){
-                        editedInstrumentMainController.getInstruments();}
-                } catch (SQLException e) {
-                    e.printStackTrace();
+    private void editClient() {
+        if (isValidClientData() && (isValidClientDataInDB() == idEditedClient || isValidClientDataInDB()==0 || statusComboBox.getValue().equals("nieaktywny"))) {
+            try {
+                Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(), clientModel.class);
+                clientDao.update(getClient());
+                Close.closeVBoxWindow(mainVBox);
+                if (mainClientController != null) {
+                    mainClientController.getClients();
                 }
+                if (editedInstrumentMainController != null) {
+                    editedInstrumentMainController.getInstruments();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }else{
-            if(isValidClientData()){
-                try {
-                    Dao<clientModel, Integer> clientDao = DaoManager.createDao(dbSqlite.getConnectionSource(),clientModel.class);
-                    clientDao.update(getClient());
-                    Close.closeVBoxWindow(mainVBox);
-                    if(mainClientController!= null){
-                    mainClientController.getClients();}
-                    if(editedInstrumentMainController!=null){
-                        editedInstrumentMainController.getInstruments();}
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            showAlert();
         }
     }
     private boolean isValidClientData() {
@@ -191,7 +174,7 @@ public class dialogClientViewController {
             return false;
         }
     }
-    private boolean isValidClientDataInDB(){
+    private int isValidClientDataInDB(){
         try {
             Dao<clientModel, Integer> clientDao= DaoManager.createDao(dbSqlite.getConnectionSource(), clientModel.class);
             QueryBuilder<clientModel, Integer> userQueryBuilder = clientDao.queryBuilder();
@@ -200,25 +183,20 @@ public class dialogClientViewController {
             PreparedQuery<clientModel> prepare = userQueryBuilder.prepare();
             List<clientModel> result = clientDao.query(prepare);
             if(result.isEmpty()) {
-                return true;
+                return 0;
             }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Nieprawidłowe dane");
-                alert.setHeaderText("W bazie danych istnieje już klient o podanej nazwie");
-                alert.showAndWait();
-                return false;
+                return result.get(0).getIdClient();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
-    private boolean isSomethingChange(String shortNameFirst, String shortNameSecond, String fullNameFirst, String fullNameSecond){
-        if(shortNameFirst.equals(shortNameSecond)&& fullNameFirst.equals(fullNameSecond)){
-            return false;
-        }else{
-            return true;
-        }
+    private void showAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Nieprawidłowe dane");
+        alert.setHeaderText("W bazie danych istnieje już klient o podanej nazwie");
+        alert.showAndWait();
     }
     private clientModel getClient(){
         clientModel client;

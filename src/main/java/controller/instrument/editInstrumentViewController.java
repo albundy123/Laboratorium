@@ -25,8 +25,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class editInstrumentViewController {
-    public editInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy editInstrumentViewController");
-    }
+    public editInstrumentViewController() {}
     private static final String INSTRUMENT_NAME_VIEW = "/instrument/newInstrumentNameView.fxml";
     private static final String INSTRUMENT_TYPE_VIEW = "/instrument/newInstrumentTypeView.fxml";
     private static final String INSTRUMENT_PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
@@ -120,7 +119,6 @@ public class editInstrumentViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy editInstrumentViewController");
         getInstrumentNameList();
         initComboBox(instrumentNameComboBox,filteredNames);
         getInstrumentTypeList();
@@ -155,7 +153,7 @@ public class editInstrumentViewController {
         clientMainController=loadInstrumentData(clientMainController,INSTRUMENT_CLIENT_VIEW,"Zleceniodawcy");
         clientMainController.setEditInstrumentMainController(this);
         clientMainController.setChoseButtonDisable();
-        clientMainController.getClients();
+        clientMainController.getActiveClients();
     }
     private <T> T loadInstrumentData(T instrumentData,String resource, String title){
         try {
