@@ -97,6 +97,10 @@ public class newInstrumentViewController {
     private DatePicker addDateDatePicker;
     @FXML
     private TextArea newInstrumentTextArea;
+    @FXML
+    private Label serialNumberCheckResultLabel;
+    @FXML
+    private Label identificationNumberCheckResultLabel;
 
     //Setery potrzebn, żeby ustawić wstępne wartości z obiektu klasy storehouseViewController jak wybieramy edit
     public void setInstrumentNameComboBox(String instrumentName) {
@@ -125,7 +129,6 @@ public class newInstrumentViewController {
     }
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy newInstrumentViewController");
         getInstrumentNameList();
         initComboBox(instrumentNameComboBox,filteredNames);
         getInstrumentTypeList();
@@ -268,12 +271,12 @@ public class newInstrumentViewController {
     //Dodawania nowego przyrządu
     public void addNewInstrument(){
         if(isValidInstrumentData()){
-            setAddNewInstrumentName();
+            addNewInstrumentAfterCheckData();
         }
     }
-    private void setAddNewInstrumentName(){
+    private void addNewInstrumentAfterCheckData(){
         try {
-    setUser(storehouseMainController.getUser());
+            setUser(storehouseMainController.getUser());
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
             QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
             if(!serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()) {
@@ -291,19 +294,17 @@ public class newInstrumentViewController {
             if(result.isEmpty()) {
                 instrumentDao.create(instrument);
                 storehouseDao.create(new storehouseModel(0,instrument,addDateDatePicker.getValue().toString(),user,"",null,"",null,newInstrumentTextArea.getText()));
-                System.out.println("Dodajemy przyrząd do tabeli przyrządy i potem do storehouse");
-
             }else{
                 instrument=result.get(0);
-                System.out.println("Przyrząd był juzw tabeli przryządy");
                 QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
                 storehouseQueryBuilder.where().eq("instrument_id", instrument.getIdInstrument()).and().eq("leftDate","");
                 PreparedQuery<storehouseModel> storehousePrepare = storehouseQueryBuilder.prepare();
                 List<storehouseModel> storehouseResult=storehouseDao.query(storehousePrepare);
                 if(!storehouseResult.isEmpty()){ //Blokuje możliwość dodania do magazynu przyrządu który nie został wydany, tzn. ciagle jest na stanie
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Przyrząd już jest na stanie w magazynie");
+                    alert.setTitle("Nieprawidłowe dane");
                     alert.setHeaderText("Proszę zweryfikować dane lub uzupełnić wpis dotyczący przyrządu");
+                    alert.setContentText("Przyrząd jest już na stanie w magazynie!!!");
                     alert.showAndWait();
                 }else {
                     storehouseDao.create(new storehouseModel(0, instrument, addDateDatePicker.getValue().toString(), user, "", null, "", null, newInstrumentTextArea.getText()));
@@ -354,6 +355,9 @@ public class newInstrumentViewController {
         if (instrumentClientComboBox.getValue() == null ) {
             errorMessage += "Nie wybrałeś zleceniodawcy ! \n";
         }
+        if (addDateDatePicker.getValue() == null ) {
+            errorMessage += "Nie wybrałeś prawidłowo daty dodania ! \n";
+        }
         if (errorMessage.length() == 0) {
             return true;
         } else {
@@ -363,6 +367,58 @@ public class newInstrumentViewController {
             alert.setContentText(errorMessage);
             alert.showAndWait();
             return false;
+        }
+    }
+    @FXML
+    private void checkBySerialNumber(){
+        if(!serialNumberTextField.getText().isEmpty()){
+            try {
+                Dao<instrumentModel, Integer>instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
+                QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
+                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText());
+                PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
+                List<instrumentModel> result = instrumentDao.query(prepare);
+                if(result.isEmpty()) {
+                    serialNumberCheckResultLabel.setText("Nie znaleziono");
+                }
+                else{
+                    instrumentNameComboBox.setValue(result.get(0).getInstrumentName().getInstrumentName());
+                    instrumentTypeComboBox.setValue(result.get(0).getInstrumentType().getInstrumentType());
+                    instrumentProducerComboBox.setValue(result.get(0).getInstrumentProducer().getInstrumentProducer());
+                    identificationNumberTextField.setText(result.get(0).getIdentificationNumber());
+                    instrumentRangeComboBox.setValue(result.get(0).getInstrumentRange().getInstrumentRange());
+                    instrumentClientComboBox.setValue(result.get(0).getClient().getShortName());
+                    setClientInstrument(result.get(0).getClient());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    private void checkByIdentificationNumber(){
+        if(!identificationNumberTextField.getText().isEmpty()){
+            try {
+                Dao<instrumentModel, Integer>instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
+                QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
+                instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
+                PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
+                List<instrumentModel> result = instrumentDao.query(prepare);
+                if(result.isEmpty()) {
+                    identificationNumberCheckResultLabel.setText("Nie znaleziono");
+                }
+                else{
+                    instrumentNameComboBox.setValue(result.get(0).getInstrumentName().getInstrumentName());
+                    instrumentTypeComboBox.setValue(result.get(0).getInstrumentType().getInstrumentType());
+                    instrumentProducerComboBox.setValue(result.get(0).getInstrumentProducer().getInstrumentProducer());
+                    serialNumberTextField.setText(result.get(0).getSerialNumber());
+                    instrumentRangeComboBox.setValue(result.get(0).getInstrumentRange().getInstrumentRange());
+                    instrumentClientComboBox.setValue(result.get(0).getClient().getShortName());
+                    setClientInstrument(result.get(0).getClient());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     @FXML

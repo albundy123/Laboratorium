@@ -30,10 +30,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class clientViewController {
-    public clientViewController() {System.out.println("Siemanko jestem konstruktorem klasy clientViewController.");}
-    //Scieżki do plików fxml z poszczególnymi widokami
-
-
+    public clientViewController() {}
 
     @FXML
     private VBox mainVBox;
@@ -103,9 +100,7 @@ public class clientViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy clientViewController.");
         addFilter();
-       // getClients();
         initializeTableView();
         editClientButton.disableProperty().bind(Bindings.isEmpty(clientTableView.getSelectionModel().getSelectedItems()));
         choseClientButton.setDisable(true);

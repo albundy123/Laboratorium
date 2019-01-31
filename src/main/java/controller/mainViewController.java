@@ -19,7 +19,7 @@ import util.ConfirmBox;
 import java.io.IOException;
 
 public class mainViewController {
-    public  mainViewController() {System.out.println("Siemanko jestem konstruktorem klasy  mainViewController.");}
+    public  mainViewController() {}
     //Scieżki do plików fxml z poszczególnymi widokami
     private static final String STOREHOUSE_VIEW = "/storehouse/storehouseView.fxml";
     private static final String REGISTER_IN_AP_VIEW = "/register/registerView.fxml";
@@ -101,7 +101,6 @@ public class mainViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy mainViewController.");
         //Ładowanie poszczególnych kart
         storehouseMainController= loadTab(storehouseMainController,storehouseTab,storehouseAnchorPane,storehouseVBox,STOREHOUSE_VIEW);
         storehouseMainController.setMainWindowController(this);

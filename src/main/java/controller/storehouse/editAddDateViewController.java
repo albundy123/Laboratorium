@@ -2,14 +2,11 @@ package controller.storehouse;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.storehouseModel;
 import util.Close;
 import util.Converter;
@@ -18,9 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class editAddDateViewController {
-    public editAddDateViewController() {
-        System.out.println("Halo świry jestem kontruktorem klasy editAddDateViewController");
-    }
+    public editAddDateViewController() {}
 
     @FXML
     private VBox mainVBox;
@@ -45,7 +40,6 @@ public class editAddDateViewController {
 
     @FXML
     private void initialize() {
-        System.out.println("Halo świry jestem funkcją initialize klasy editAddDateViewController");
         addDateDatePicker.setConverter(Converter.getConverter());
     }
     @FXML
@@ -83,7 +77,6 @@ public class editAddDateViewController {
                     return true;
                 }
             }
-
         }
         return true;
     }

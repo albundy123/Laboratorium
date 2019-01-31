@@ -4,11 +4,9 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.storehouseModel;
 import util.Close;
 import util.ConfirmBox;
@@ -18,7 +16,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class editLeftDateViewController {
-    public editLeftDateViewController(){System.out.println("Halo świry jestem kontruktorem klasy editLeftDateViewController"); }
+    public editLeftDateViewController(){}
 
     @FXML
     private VBox mainVBox;
@@ -44,7 +42,6 @@ public class editLeftDateViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy editLeftDateViewController");
         leftDateDatePicker.setConverter(Converter.getConverter());
     }
 

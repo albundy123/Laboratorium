@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class userViewController {
-    public userViewController() {System.out.println("Siemanko jestem konstruktorem klasy userViewController.");}
+    public userViewController() {}
 
     @FXML
     private TableView<userModel> userTableView;
@@ -39,7 +39,6 @@ public class userViewController {
     @FXML
     private TableColumn<userModel, String> permissionLevelColumn;
 
-    private List<userModel> userList;
     private ObservableList<userModel> userObservableList = FXCollections.observableArrayList();
 
     private userModel editedUserFromList;
@@ -55,7 +54,6 @@ public class userViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy userViewController.");
         initializeTableView();
         getUsers();
     }

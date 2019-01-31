@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import controller.instrument.instrumentViewController;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 public class dialogClientViewController {
-    public dialogClientViewController() {System.out.println("Siemanko jestem konstruktorem klasy dialogClientViewController.");}
+    public dialogClientViewController() {}
 
 
     @FXML
@@ -103,16 +104,13 @@ public class dialogClientViewController {
     }
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy dialogClientViewController.");
         statusComboBox.getItems().addAll("aktywny","nieaktywny");
     }
     @FXML
     private void saveClient(){
         if(idEditedClient !=null){
-            System.out.println("Edytujemy");
             editClient();
         }else{
-            System.out.println("Dodajemy");
             addNewClient();
         }
     }
@@ -197,7 +195,8 @@ public class dialogClientViewController {
         try {
             Dao<clientModel, Integer> clientDao= DaoManager.createDao(dbSqlite.getConnectionSource(), clientModel.class);
             QueryBuilder<clientModel, Integer> userQueryBuilder = clientDao.queryBuilder();
-            userQueryBuilder.where().eq("shortName",shortNameTextField.getText()).or().eq("fullName",fullNameTextField.getText());
+            Where<clientModel, Integer> where = userQueryBuilder.where();
+            where.and(where.or(where.eq("shortName",shortNameTextField.getText()),where.eq("fullName",fullNameTextField.getText())),where.eq("status","aktywny"));
             PreparedQuery<clientModel> prepare = userQueryBuilder.prepare();
             List<clientModel> result = clientDao.query(prepare);
             if(result.isEmpty()) {

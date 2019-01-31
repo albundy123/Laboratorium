@@ -114,7 +114,11 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Label>
-            <ComboBox fx:id="registerComboBox" prefHeight="25.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="registerLabel" text="W zakresie akredytacji AP 131" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
             </children>
         </GridPane>
         <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0">

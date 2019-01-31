@@ -19,11 +19,12 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="calibrateInstrumentButton" mnemonicParsing="false" onAction="#calibrateInstrument" prefHeight="25.0" prefWidth="150.0" text="Wzorcuj przyrząd">
+                  <Button fx:id="calibrateInstrumentButton1" mnemonicParsing="false" onAction="#calibrateInstrument1" prefHeight="25.0" prefWidth="250.0" text="Wzorcuj przyrząd w zakresie akredytacji">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
+                  <Button fx:id="calibrateInstrumentButton2" mnemonicParsing="false" onAction="#calibrateInstrument2" prefHeight="25.0" prefWidth="250.0" text="Wzorcuj przyrząd poza zakresem akredytacji" />
                   <Button fx:id="leftInstrumentButton" mnemonicParsing="false" onAction="#leftInstrument" prefHeight="25.0" prefWidth="150.0" text="Wydaj przyrząd">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

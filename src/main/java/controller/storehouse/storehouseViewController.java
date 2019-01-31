@@ -35,7 +35,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 
 public class storehouseViewController {
-    public  storehouseViewController() {System.out.println("Siemanko jestem konstruktorem klasy  storehouseViewController.");}
+    public  storehouseViewController() {}
 
     private userModel user;
     public void setUser(userModel user) {
@@ -142,7 +142,6 @@ public class storehouseViewController {
     //Funkcja initialize wykonuje się konstruktorze, róże rzeczy tu można robić zwłaszcza że mamy już załadowane kontroli opisane wyżej
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy storehouseViewController.");
         isInStorehouseComboBox.getItems().addAll("Wszystkie","W magazynie");
         isInStorehouseComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
@@ -189,7 +188,7 @@ public class storehouseViewController {
     }
     //Przypisywanie pól storehouseFxObservableList do storehouseTableView
     private void initializeTableView(){
-        idInstrumentColumn.setCellValueFactory(new PropertyValueFactory<>("idInstrument"));
+        idInstrumentColumn.setCellValueFactory(new PropertyValueFactory<>("indexOfStorehouseModelList"));
         instrumentNameColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentName"));
         instrumentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentType"));
         instrumentProducerColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentProducer"));
@@ -285,18 +284,30 @@ public class storehouseViewController {
             }
     }
     @FXML
-    public void calibrateInstrument(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
+    public void calibrateInstrument1(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
         if(storehouseFxElementFromList!=null && storehouseFxElementFromList.getLeftDate().equals("")) {
             if(!storehouseFxElementFromList.getCalibrationDate().equals("")){
                 if(ConfirmBox.display("Ponowne wzorcowanie!", "Czy chcesz wzorcować ten przyrząd ponownie ?")){
-                    calibrateInstrumentAfterCheckConditions();
+                    calibrateInstrumentAfterCheckConditions(1,"W zakresie akredytacji AP 131");
                 }
             }else{
-                calibrateInstrumentAfterCheckConditions();
+                calibrateInstrumentAfterCheckConditions(1,"W zakresie akredytacji AP 131");
             }
         }
     }
-    public void calibrateInstrumentAfterCheckConditions(){
+    @FXML
+    public void calibrateInstrument2(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
+        if(storehouseFxElementFromList!=null && storehouseFxElementFromList.getLeftDate().equals("")) {
+            if(!storehouseFxElementFromList.getCalibrationDate().equals("")){
+                if(ConfirmBox.display("Ponowne wzorcowanie!", "Czy chcesz wzorcować ten przyrząd ponownie ?")){
+                    calibrateInstrumentAfterCheckConditions(2,"Poza zakresem akredytacji");
+                }
+            }else{
+                calibrateInstrumentAfterCheckConditions(2,"Poza zakresem akredytacji");
+            }
+        }
+    }
+    public void calibrateInstrumentAfterCheckConditions(int whichRegister,String label){
         try {
             setUser(mainWindowController.getUser());
             registerModel calibrateInstrument = new registerModel(0,0,storehouseElement.getIdStorehouse(),
@@ -310,6 +321,8 @@ public class storehouseViewController {
                 calibratedInstrumentController.setCalibratedInstrumentStorehouse(storehouseElement);
                 calibratedInstrumentController.setUser(user);
                 calibratedInstrumentController.setYear(year);
+                calibratedInstrumentController.setWhichRegister(whichRegister);
+                calibratedInstrumentController.setRegisterLabel(label);
                 setCalibratedInstrumentLabels();
                 //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
             }
@@ -424,9 +437,6 @@ public class storehouseViewController {
     public void loadStorehouseData(){
         getStorehouseList();
     }
-
-
-
     private void showInformationAboutClient(clientModel client){
         if(client != null){
             shortNameLabel.setText(client.getShortName());

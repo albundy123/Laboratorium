@@ -13,7 +13,8 @@ import java.sql.SQLException;
 
 public class dbSqlite {
 
-    private final static String DATABASE_URL = "jdbc:sqlite:K:/ZC/CM/roboczy/db/baza1.db";
+    //private final static String DATABASE_URL = "jdbc:sqlite:K:/ZC/CM/roboczy/db/baza1.db";
+    private final static String DATABASE_URL = "jdbc:sqlite:C:/db/baza1.db";
     private static ConnectionSource connectionSource;
     private static Dao<userModel, Integer> userModelDao;
 
@@ -46,10 +47,10 @@ public class dbSqlite {
             //userModelDao = DaoManager.createDao(dbSqlite.getConnectionSource(), userModel.class);
             //TableUtils.dropTable(dbSqlite.getConnectionSource(), clientModel.class,true);
             //TableUtils.dropTable(dbSqlite.getConnectionSource(), registerModel.class,true);
-            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), instrumentModel.class);
-            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), storehouseModel.class);
-            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), register2Model.class);
-            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), registerModel.class);
+            TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), clientModel.class);
+           // TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), storehouseModel.class);
+           // TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), register2Model.class);
+           // TableUtils.createTableIfNotExists(dbSqlite.getConnectionSource(), registerModel.class);
 
         } catch (SQLException e) {
             e.printStackTrace();

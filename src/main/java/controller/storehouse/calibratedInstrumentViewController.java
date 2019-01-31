@@ -6,16 +6,12 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.*;
 import util.Close;
 import util.Converter;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -43,9 +39,14 @@ public class calibratedInstrumentViewController {
     @FXML
     private Label instrumentTypeLabel;
     @FXML
-    private ComboBox<String> registerComboBox;
-    @FXML
     private Label informationLabel;
+    @FXML
+    private Label registerLabel;
+
+    public void setRegisterLabel(String register) {
+        this.registerLabel.setText(register);
+    }
+
     //Do ładowania danych o przyrzadzie do wzorcowania
     public void setInstrumentNameLabel(String instrumentName) {
         this.instrumentNameLabel.setText(instrumentName);
@@ -96,6 +97,10 @@ public class calibratedInstrumentViewController {
     }
 
     //Obiekt, który będzie wzorcowany
+    private int whichRegister=0;
+    public void setWhichRegister(int whichRegister){
+        this.whichRegister=whichRegister;
+    }
     private registerModel calibratedInstrument;
     public void setCalibratedInstrument(registerModel calibratedInstrument) {
         this.calibratedInstrument = calibratedInstrument;
@@ -107,8 +112,6 @@ public class calibratedInstrumentViewController {
     @FXML
     private void initialize(){
         System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
-        registerComboBox.getItems().addAll("W zakresie akredytacji","Poza zakresem akredytacji");
-        registerComboBox.setValue("W zakresie akredytacji");
         calibrationDateDatePicker.setConverter(Converter.getConverter());
     }
     @FXML
@@ -117,9 +120,9 @@ public class calibratedInstrumentViewController {
             if (calibrationDateDatePicker.getValue() != null) {
                 if (!calibrationDateDatePicker.getValue().isBefore(LocalDate.parse(calibratedInstrumentStorehouse.getAddDate()))){
 
-                    if(registerComboBox.getValue().equals("W zakresie akredytacji")) {
+                    if(whichRegister==1) {
                         calibrateInstrumentInAP();
-                    }else{
+                    }else if (whichRegister==2){
                         calibrateInstrumentOutAP();
                     }
                     }else{

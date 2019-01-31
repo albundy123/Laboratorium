@@ -2,28 +2,21 @@ package controller.storehouse;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import model.registerModel;
 import model.storehouseModel;
 import model.userModel;
 import util.Close;
 import util.Converter;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
+
 
 public class leftInstrumentViewController {
-    public leftInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy leftInstrumentViewController");
-    }
+    public leftInstrumentViewController() {}
 
     @FXML
     VBox mainVBox;
@@ -88,7 +81,6 @@ public class leftInstrumentViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy leftInstrumentViewController");
         leftDateDatePicker.setConverter(Converter.getConverter());
     }
 
@@ -97,7 +89,7 @@ public class leftInstrumentViewController {
         if(leftInstrument!=null) {
             if (leftDateDatePicker.getValue() != null) {
                 if(leftInstrument.getCalibrationDate().equals("")){ // Bez wzorcowania
-                    if(!leftDateDatePicker.getValue().isAfter(LocalDate.parse(leftInstrument.getAddDate()))){
+                    if(leftDateDatePicker.getValue().isBefore(LocalDate.parse(leftInstrument.getAddDate()))){
                         informationLabel.setText("Data wydanie jest wcześniejsza niż przyjęcia !");
                     }else{
                         try {
@@ -127,7 +119,6 @@ public class leftInstrumentViewController {
                         storehouseMainController.getStorehouseList();
                     }
                 }
-
             }
             else{
                 informationLabel.setText("Wybierz datę wydania");

@@ -6,14 +6,13 @@ import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.userModel;
 import util.Close;
 
 import java.sql.SQLException;
 
 public class dialogUserViewController {
-    public dialogUserViewController() {System.out.println("Siemanko jestem konstruktorem klasy dialogUserViewController.");}
+    public dialogUserViewController() {}
 
     //Wstrzyknięcie pól z widoku, żeby można było na nich operować
     @FXML
@@ -65,16 +64,13 @@ public class dialogUserViewController {
     //Funkcja initialize wykonuje się po konstruktorze
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy dialogUserViewController.");
         permissionComboBox.getItems().addAll("admin","user");
     }
     @FXML
     private void saveUser(){
         if(idEditedUser !=null){
-            System.out.println("Edytujemy");
             editUser();
         }else{
-            System.out.println("Dodajemy");
             addNewUser();
         }
     }

@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class loginViewController {
-    public loginViewController() {System.out.println("Siemanko jestem konstruktorem klasy loginViewController.");} //Informacyjne
+    public loginViewController() {}
 
     //Wstrzykujemy pola z FXMLa, te na których wykonujemy jakieś operacje dlatego @FXML przed każdym
     @FXML
@@ -41,7 +41,6 @@ public class loginViewController {
 
     @FXML
     private void initialize(){  //Funkcja initialize wykonuje się bezpośrednio po konstruktorze nie będę tego powtarzał we wszystkich klasach więc napiszę tutaj. Można tutaj konfigurować różne rzeczy.
-        System.out.println("Siemanko jestem funkcją initialize klasy loginViewController.");
         Image image = new Image("/images/user.jpg");
         loginImageView.setImage(image);
     }

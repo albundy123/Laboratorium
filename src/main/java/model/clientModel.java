@@ -8,9 +8,9 @@ import com.j256.ormlite.table.DatabaseTable;
 public class clientModel {
     @DatabaseField(generatedId = true)
     private Integer idClient;
-    @DatabaseField(uniqueCombo = true)
+    @DatabaseField()
     private String shortName;
-    @DatabaseField(uniqueCombo = true,dataType = DataType.LONG_STRING)
+    @DatabaseField(dataType = DataType.LONG_STRING)
     private String fullName;
     @DatabaseField
     private String postCode;
