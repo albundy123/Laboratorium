@@ -6,11 +6,9 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.registerModel;
 import model.storehouseModel;
 import util.Close;
@@ -21,16 +19,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class editCalibrationDateViewController {
-    public editCalibrationDateViewController(){System.out.println("Halo świry jestem kontruktorem klasy editCalibrationDateViewController"); }
+    public editCalibrationDateViewController(){}
 
     @FXML
     private VBox mainVBox;
     @FXML
-    private Button saveCalibrationDateButton;
-    @FXML
     private Label calibrationDateInformationLabel;
-    @FXML
-    private Button cancelSaveCalibrationDateButton;
     @FXML
     private DatePicker calibrationDateDatePicker;
 
@@ -40,7 +34,6 @@ public class editCalibrationDateViewController {
 
     @FXML
     public void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy editCalibrationDateViewController");
         calibrationDateDatePicker.setConverter(Converter.getConverter());
     }
     private registerModel editedRegisterElement;
@@ -68,6 +61,7 @@ public class editCalibrationDateViewController {
                 registerDao.update(editedRegisterElement);
                 editedStorehouseElement.setCalibrationDate(calibrationDateDatePicker.getValue().toString());
                 storehouseDao.update(editedStorehouseElement);
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -114,7 +108,7 @@ public class editCalibrationDateViewController {
             PreparedQuery<storehouseModel> prepare1=storehouseQueryBuilder.prepare();
             List<storehouseModel> result1=storehouseDao.query(prepare1);
             if(result1.isEmpty()){
-                calibrationDateInformationLabel.setText("Jakiś mega błąd absolutnie");
+                calibrationDateInformationLabel.setText("Niezidentyfikowany błąd");
                 System.out.println("Cos tam"+editedRegisterElement.getIdStorehouse());
             }else{
                 setEditedStorehouseElement(result1.get(0));
@@ -125,6 +119,7 @@ public class editCalibrationDateViewController {
                     leftDate=LocalDate.parse(result1.get(0).getLeftDate());
                 }
             }
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -133,6 +128,5 @@ public class editCalibrationDateViewController {
         }else{
             return false;
         }
-
     }
 }

@@ -80,9 +80,6 @@ public class mainViewController {
     @FXML
     private VBox adminVBox;
 
-    @FXML
-    private SplitPane mainSplitPane;
-
     public void adminTabDisable(){
         adminTab.setDisable(true);
     }

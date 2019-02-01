@@ -26,8 +26,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class newInstrumentRangeViewController {
-    public newInstrumentRangeViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentRangeViewController");
-    }
+    public newInstrumentRangeViewController() {}
 
     private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
@@ -72,7 +71,6 @@ public class newInstrumentRangeViewController {
 
     @FXML
     private void initialize() {
-        System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentRangeViewController");
         getUnitList();
         newInstrumentRangeUnitComboBox.setItems(unitObservableList);
     }
@@ -117,6 +115,7 @@ public class newInstrumentRangeViewController {
                         newInstrumentRangeLabel.setText("Taki zakres pomiarowy już istnieje !");
                     }
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

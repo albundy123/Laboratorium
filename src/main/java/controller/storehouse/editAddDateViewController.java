@@ -49,6 +49,7 @@ public class editAddDateViewController {
                 Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
                 editedStorehouseElement.setAddDate(addDateDatePicker.getValue().toString());
                 storehouseDao.update(editedStorehouseElement);
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

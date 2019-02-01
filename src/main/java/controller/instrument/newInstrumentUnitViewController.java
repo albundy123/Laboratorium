@@ -18,8 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class newInstrumentUnitViewController {
-    public newInstrumentUnitViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentUnitViewController");
-    }
+    public newInstrumentUnitViewController() {}
 
     private unitModel editedInstrumentUnit;
 
@@ -43,9 +42,7 @@ public class newInstrumentUnitViewController {
     private Label newInstrumentUnitLabel;
 
     @FXML
-    private void initialize() {
-        System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentUnitViewController");
-    }
+    private void initialize() {}
 
     @FXML
     private void addNewUnit(){
@@ -82,6 +79,7 @@ public class newInstrumentUnitViewController {
                         newInstrumentUnitLabel.setText("Taka jednostka już istnieje !");
                     }
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

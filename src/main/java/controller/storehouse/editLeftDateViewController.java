@@ -53,6 +53,7 @@ public class editLeftDateViewController {
                     Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
                     editedStorehouseElement.setLeftDate(leftDateDatePicker.getValue().toString());
                     storehouseDao.update(editedStorehouseElement);
+                    dbSqlite.closeConnection();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -68,6 +69,7 @@ public class editLeftDateViewController {
                     Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(), storehouseModel.class);
                     editedStorehouseElement.setLeftDate("");
                     storehouseDao.update(editedStorehouseElement);
+                    dbSqlite.closeConnection();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

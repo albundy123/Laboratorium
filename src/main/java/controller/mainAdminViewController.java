@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 public class mainAdminViewController {
-    public  mainAdminViewController() {System.out.println("Siemanko jestem konstruktorem klasy  mainAdminViewController.");}
+    public  mainAdminViewController() {}
 
 
     private static final String COMMON_VIEW = "/admin/commonInstrumentView.fxml";
@@ -21,9 +21,7 @@ public class mainAdminViewController {
 
 
     @FXML
-    private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy mainAdminViewController.");
-    }
+    private void initialize(){}
     @FXML
     private void userEdit(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/userView.fxml"));

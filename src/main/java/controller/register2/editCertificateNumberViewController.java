@@ -4,21 +4,17 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import dbUtil.dbSqlite;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.register2Model;
-import model.registerModel;
 import util.Close;
 
 import java.sql.SQLException;
 
 public class editCertificateNumberViewController {
-    public editCertificateNumberViewController() {System.out.println("Halo świry jestem kontruktorem klasy editCertificateNumberViewController");
-    }
+    public editCertificateNumberViewController() {}
 
     @FXML
     private VBox mainVBox;
@@ -29,21 +25,26 @@ public class editCertificateNumberViewController {
     @FXML
     private Label certificateNumberInformationLabel;
 
-    @FXML
-    public void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy editCertificateNumberViewController");
-        documentKindComboBox.getItems().addAll("Świadectwo wzorcowania","Protokół odmowy wzorcowania");
-        documentKindComboBox.setValue("Świadectwo wzorcowania");
+    public void setCertificateNumberTextField(String certificateNumber) {
+        this.certificateNumberTextField.setText(certificateNumber);
     }
+
     private register2Model editedRegisterElement;
     public void setEditedRegisterElement(register2Model editedRegisterElement) {
         this.editedRegisterElement = editedRegisterElement;
     }
-    private register2ViewController registerMainController;
 
+    private register2ViewController registerMainController;
     public void setRegisterMainController(register2ViewController registerMainController) {
         this.registerMainController = registerMainController;
     }
+
+    @FXML
+    public void initialize(){
+        documentKindComboBox.getItems().addAll("Świadectwo wzorcowania","Protokół odmowy wzorcowania");
+        documentKindComboBox.setValue("Świadectwo wzorcowania");
+    }
+
     @FXML
     public void saveCertificateNumber(){
         if(certificateNumberTextField.getText().contains(editedRegisterElement.getCardNumber())) {
@@ -56,6 +57,7 @@ public class editCertificateNumberViewController {
             try {
                 Dao<register2Model, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),register2Model.class);
                 registerDao.update(editedRegisterElement);
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

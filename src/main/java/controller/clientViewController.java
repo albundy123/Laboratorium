@@ -65,10 +65,6 @@ public class clientViewController {
     @FXML
     private TextField fullNameSearchTextField;
     @FXML
-    private CheckBox isActiveClientCheckBox;
-    @FXML
-    private Button addClientButton;
-    @FXML
     private Button editClientButton;
     @FXML
     private Button choseClientButton;
@@ -80,18 +76,16 @@ public class clientViewController {
     FilteredList<clientModel> filteredClientObservableList = new FilteredList<>(clientObservableList, p -> true);
 
     private newInstrumentViewController newInstrumentMainController;
-
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
         this.newInstrumentMainController = newInstrumentMainController;
     }
-    private editInstrumentViewController editInstrumentMainController;
 
+    private editInstrumentViewController editInstrumentMainController;
     public void setEditInstrumentMainController(editInstrumentViewController editInstrumentMainController) {
         this.editInstrumentMainController = editInstrumentMainController;
     }
 
     private clientModel editedClientFromList;
-
     public void setEditedClientFromList(clientModel editedClientFromList) {
         this.editedClientFromList = editedClientFromList;
     }

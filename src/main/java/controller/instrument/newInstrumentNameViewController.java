@@ -19,8 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class newInstrumentNameViewController {
-    public newInstrumentNameViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentNameViewController");
-    }
+    public newInstrumentNameViewController() {}
 
     private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
@@ -56,7 +55,6 @@ public class newInstrumentNameViewController {
 
     @FXML
     private void initialize() {
-        System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentNameViewController");
     }
     @FXML
     private void addNewName(){
@@ -95,6 +93,7 @@ public class newInstrumentNameViewController {
                         newInstrumentNameLabel.setText("Taka nazwa przyrządu już istnieje !");
                     }
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

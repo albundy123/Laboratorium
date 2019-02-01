@@ -97,6 +97,7 @@ public class leftInstrumentViewController {
                             leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
                             leftInstrument.setUserWhoLeft(user);
                             storehouseDao.update(leftInstrument);
+                            dbSqlite.closeConnection();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -112,6 +113,7 @@ public class leftInstrumentViewController {
                             leftInstrument.setLeftDate(leftDateDatePicker.getValue().toString());
                             leftInstrument.setUserWhoLeft(user);
                             storehouseDao.update(leftInstrument);
+                            dbSqlite.closeConnection();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

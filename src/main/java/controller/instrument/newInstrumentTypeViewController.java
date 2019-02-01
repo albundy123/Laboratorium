@@ -20,8 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class newInstrumentTypeViewController {
-    public newInstrumentTypeViewController() {System.out.println("Jestem konstruktorem klasy newInstrumentTypeViewController");
-    }
+    public newInstrumentTypeViewController() {}
 
     private newInstrumentViewController newInstrumentMainController;
     public void setNewInstrumentMainController(newInstrumentViewController newInstrumentMainController) {
@@ -56,9 +55,7 @@ public class newInstrumentTypeViewController {
     private Label newInstrumentTypeLabel;
 
     @FXML
-    private void initialize() {
-        System.out.println("Jestem funkcją initialize obiektu klasy newInstrumentTypeViewController");
-    }
+    private void initialize() {}
     @FXML
     private void addNewType(){
         if(!newInstrumentTypeTextField.getText().equals("")) {
@@ -96,6 +93,7 @@ public class newInstrumentTypeViewController {
                         newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
                     }
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -85,6 +85,7 @@ public class dialogUserViewController {
                 userDao.create(getUser());
                 Close.closeVBoxWindow(mainVBox);
                 mainUserController.getUsers();
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -97,6 +98,7 @@ public class dialogUserViewController {
                 userDao.update(getUser());
                 Close.closeVBoxWindow(mainVBox);
                 mainUserController.getUsers();
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

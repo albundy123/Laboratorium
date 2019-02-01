@@ -26,6 +26,7 @@ import java.util.List;
 
 public class editInstrumentViewController {
     public editInstrumentViewController() {}
+
     private static final String INSTRUMENT_NAME_VIEW = "/instrument/newInstrumentNameView.fxml";
     private static final String INSTRUMENT_TYPE_VIEW = "/instrument/newInstrumentTypeView.fxml";
     private static final String INSTRUMENT_PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
@@ -155,7 +156,7 @@ public class editInstrumentViewController {
         clientMainController.setChoseButtonDisable();
         clientMainController.getActiveClients();
     }
-    private <T> T loadInstrumentData(T instrumentData,String resource, String title){
+    private <T> T loadInstrumentData(T instrumentData,String resource, String title){//Generyczna metoda do ładowania różnych widoków
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
             VBox vBox = loader.load();
@@ -284,6 +285,7 @@ public class editInstrumentViewController {
                 instrumentDao.update(instrument);
                 Close.closeVBoxWindow(mainVBox);
             }
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -309,7 +311,7 @@ public class editInstrumentViewController {
     private void cancelSaveInstrument(){
         Close.closeVBoxWindow(mainVBox);
     }
-    private boolean isValidInstrumentData() {
+    private boolean isValidInstrumentData() {//Bardzo prosta walidacja wprowadzonych danych
         String errorMessage = "";
         if (instrumentNameComboBox.getValue() == null) {
             errorMessage += "Nie wybrałeś nazwy urządzenia ! \n";

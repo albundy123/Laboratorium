@@ -25,8 +25,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class newInstrumentViewController {
-    public newInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy newInstrumentViewController");
-    }
+    public newInstrumentViewController() {}
+    //Deklaracja stałych ze ścieżkami do widoków fxml
     private static final String INSTRUMENT_NAME_VIEW = "/instrument/newInstrumentNameView.fxml";
     private static final String INSTRUMENT_TYPE_VIEW = "/instrument/newInstrumentTypeView.fxml";
     private static final String INSTRUMENT_PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
@@ -312,6 +312,7 @@ public class newInstrumentViewController {
             }
             Close.closeVBoxWindow(mainVBox);
             storehouseMainController.getStorehouseList();
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -334,7 +335,7 @@ public class newInstrumentViewController {
         });
         comboBox.setItems(filteredList);
     }
-    //Metoda do sprawdzania poprawności danych tak sobie prosta wyświetla alert
+    //Prosta metoda do sprawdzania poprawności danych
     private boolean isValidInstrumentData() {
         String errorMessage = "";
         if (instrumentNameComboBox.getValue() == null) {
@@ -370,7 +371,7 @@ public class newInstrumentViewController {
         }
     }
     @FXML
-    private void checkBySerialNumber(){
+    private void checkBySerialNumber(){ //metody do przyspieszania wprowadzania nowych przyrządów na stan magazynu
         if(!serialNumberTextField.getText().isEmpty()){
             try {
                 Dao<instrumentModel, Integer>instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
@@ -380,6 +381,13 @@ public class newInstrumentViewController {
                 List<instrumentModel> result = instrumentDao.query(prepare);
                 if(result.isEmpty()) {
                     serialNumberCheckResultLabel.setText("Nie znaleziono");
+                    instrumentNameComboBox.setValue(null);
+                    instrumentTypeComboBox.setValue(null);
+                    instrumentProducerComboBox.setValue(null);
+                    identificationNumberTextField.setText("");
+                    instrumentRangeComboBox.setValue(null);
+                    instrumentClientComboBox.setValue(null);
+                    setClientInstrument(null);
                 }
                 else{
                     instrumentNameComboBox.setValue(result.get(0).getInstrumentName().getInstrumentName());
@@ -390,6 +398,7 @@ public class newInstrumentViewController {
                     instrumentClientComboBox.setValue(result.get(0).getClient().getShortName());
                     setClientInstrument(result.get(0).getClient());
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -406,6 +415,13 @@ public class newInstrumentViewController {
                 List<instrumentModel> result = instrumentDao.query(prepare);
                 if(result.isEmpty()) {
                     identificationNumberCheckResultLabel.setText("Nie znaleziono");
+                    instrumentNameComboBox.setValue(null);
+                    instrumentTypeComboBox.setValue(null);
+                    instrumentProducerComboBox.setValue(null);
+                    serialNumberTextField.setText("");
+                    instrumentRangeComboBox.setValue(null);
+                    instrumentClientComboBox.setValue(null);
+                    setClientInstrument(null);
                 }
                 else{
                     instrumentNameComboBox.setValue(result.get(0).getInstrumentName().getInstrumentName());
@@ -416,6 +432,7 @@ public class newInstrumentViewController {
                     instrumentClientComboBox.setValue(result.get(0).getClient().getShortName());
                     setClientInstrument(result.get(0).getClient());
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

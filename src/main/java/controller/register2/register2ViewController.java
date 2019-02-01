@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class register2ViewController {
-    public  register2ViewController() {System.out.println("Siemanko jestem konstruktorem klasy  register2ViewController.");}
+    public  register2ViewController() {}
 
     //Najpierw tabela z kolumnami do wyswietlania
     @FXML
@@ -90,12 +90,6 @@ public class register2ViewController {
     private ComboBox<String> yearComboBox;
     @FXML
     private ComboBox<String> isStateOkComboBox; //Czy wszystkie czy tylko te co mamy na stanie
-    @FXML
-    private Button loadRegisterDataButton;          //Uruchamia ładowanie
-
-
-
-
 
     private List<register2Model> registerModelList = new ArrayList<register2Model>();
     private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
@@ -113,18 +107,15 @@ public class register2ViewController {
     private void setYear(yearModel year) {
         this.year = year;
     }
+
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
-
         isStateOkComboBox.getItems().addAll("Wszystkie","ON","OFF");
         isStateOkComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
         yearComboBox.setValue(year.getYear()); //Domyślnie będzie rok bieżący :)
-        // getRegisterList();
         initializeTableView();
         addFilter();
-
     }
 
     public void getRegisterList(){
@@ -134,17 +125,13 @@ public class register2ViewController {
             QueryBuilder<register2Model, Integer> registerQueryBuilder = registerDao.queryBuilder();
             if(isStateOkComboBox.getValue().equals(yearComboBox.getValue())) {     //Tylko kiedy obydwa mają tę samą wartość całkiem przypadkowo :)
                 registerModelList = registerDao.queryForAll();
-                System.out.println("Wszystkie");
             }else{
                 if(!isStateOkComboBox.getValue().equals("Wszystkie")&& yearComboBox.getValue().equals("Wszystkie")){
                     registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue());
-                    System.out.println("W magazynie");
                 }else if(isStateOkComboBox.getValue().equals("Wszystkie")&& !yearComboBox.getValue().equals("Wszystkie")){
                     registerQueryBuilder.where().like("calibrationDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("Wszystkie z danego roku");
                 }else{
                     registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue()).and().like("calibrationDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("Wybrane z danego roku");
                 }
                 PreparedQuery<register2Model> prepare = registerQueryBuilder.prepare();
                 registerModelList=registerDao.query(prepare);
@@ -225,6 +212,7 @@ public class register2ViewController {
                 if (editCertificateNumberMainController != null){
                     editCertificateNumberMainController.setRegisterMainController(this);
                     editCertificateNumberMainController.setEditedRegisterElement(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()));
+                    editCertificateNumberMainController.setCertificateNumberTextField(editedRegisterElementFromList.getCertificateNumber());
                 }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
@@ -246,6 +234,7 @@ public class register2ViewController {
                     editedRegisterElement.setState("OFF");
                     Dao<register2Model, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),register2Model.class);
                     registerDao.update(editedRegisterElement);
+                    dbSqlite.closeConnection();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -274,7 +263,6 @@ public class register2ViewController {
                 e.printStackTrace();
             }
         }
-
     }
     @FXML
     public void loadRegister(){
@@ -301,6 +289,7 @@ public class register2ViewController {
             storehouseQueryBuilder.where().eq("idStorehouse",idStorehouse);
             PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
             result=storehouseDao.query(prepare);
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

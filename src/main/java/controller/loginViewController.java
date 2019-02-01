@@ -59,6 +59,7 @@ public class loginViewController {
                 Close.closeAnchorPaneWindow(mainAnchorPane);
                 loadUserView();         //Otwiera główne okno programu
             }
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

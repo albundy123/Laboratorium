@@ -114,6 +114,7 @@ public class dialogClientViewController {
                 clientDao.create(getClient());
                 Close.closeVBoxWindow(mainVBox);
                 mainClientController.getClients();
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -133,6 +134,7 @@ public class dialogClientViewController {
                 if (editedInstrumentMainController != null) {
                     editedInstrumentMainController.getInstruments();
                 }
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -183,8 +185,10 @@ public class dialogClientViewController {
             PreparedQuery<clientModel> prepare = userQueryBuilder.prepare();
             List<clientModel> result = clientDao.query(prepare);
             if(result.isEmpty()) {
+                dbSqlite.closeConnection();
                 return 0;
             }else{
+                dbSqlite.closeConnection();
                 return result.get(0).getIdClient();
             }
         } catch (SQLException e) {

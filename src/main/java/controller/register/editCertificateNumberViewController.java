@@ -14,8 +14,7 @@ import util.Close;
 import java.sql.SQLException;
 
 public class editCertificateNumberViewController {
-    public editCertificateNumberViewController() {System.out.println("Halo świry jestem kontruktorem klasy editCertificateNumberViewController");
-    }
+    public editCertificateNumberViewController() {}
 
     @FXML
     private VBox mainVBox;
@@ -26,9 +25,12 @@ public class editCertificateNumberViewController {
     @FXML
     private Label certificateNumberInformationLabel;
 
+    public void setCertificateNumberTextField(String certificateNumber) {
+        this.certificateNumberTextField.setText(certificateNumber);
+    }
+
     @FXML
     public void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy editCertificateNumberViewController");
         documentKindComboBox.getItems().addAll("Świadectwo wzorcowania","Protokół odmowy wzorcowania");
         documentKindComboBox.setValue("Świadectwo wzorcowania");
     }

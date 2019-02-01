@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class registerViewController {
-    public  registerViewController() {System.out.println("Siemanko jestem konstruktorem klasy  registerViewController.");}
+    public  registerViewController() {}
 
 //Najpierw tabela z kolumnami do wyswietlania
     @FXML
@@ -94,11 +94,6 @@ public class registerViewController {
     private ComboBox<String> yearComboBox;
     @FXML
     private ComboBox<String> isStateOkComboBox; //Czy wszystkie czy tylko te co mamy na stanie
-    @FXML
-    private Button loadRegisterDataButton;          //Uruchamia ładowanie
-
-
-
 
     private List<registerModel> registerModelList = new ArrayList<registerModel>();
     private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
@@ -118,16 +113,12 @@ private registerFxModel editedRegisterElementFromList;
 
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy registerViewController.");
-
         isStateOkComboBox.getItems().addAll("Wszystkie","ON","OFF");
         isStateOkComboBox.setValue("Wszystkie");
         yearComboBox.setItems(getYearsList());
         yearComboBox.setValue(year.getYear()); //Domyślnie będzie rok bieżący :)
-       // getRegisterList();
         initializeTableView();
         addFilter();
-
     }
 
     public void getRegisterList(){
@@ -137,17 +128,13 @@ private registerFxModel editedRegisterElementFromList;
             QueryBuilder<registerModel, Integer> registerQueryBuilder = registerDao.queryBuilder();
             if(isStateOkComboBox.getValue().equals(yearComboBox.getValue())) {     //Tylko kiedy obydwa mają tę samą wartość całkiem przypadkowo :)
                 registerModelList = registerDao.queryForAll();
-                System.out.println("Wszystkie");
             }else{
                 if(!isStateOkComboBox.getValue().equals("Wszystkie")&& yearComboBox.getValue().equals("Wszystkie")){
                     registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue());
-                    System.out.println("W magazynie");
                 }else if(isStateOkComboBox.getValue().equals("Wszystkie")&& !yearComboBox.getValue().equals("Wszystkie")){
                     registerQueryBuilder.where().like("calibrationDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("Wszystkie z danego roku");
                 }else{
                     registerQueryBuilder.where().eq("state",isStateOkComboBox.getValue()).and().like("calibrationDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("Wybrane z danego roku");
                 }
                 PreparedQuery<registerModel> prepare = registerQueryBuilder.prepare();
                 registerModelList=registerDao.query(prepare);
@@ -228,6 +215,7 @@ private registerFxModel editedRegisterElementFromList;
                 if (editCertificateNumberMainController != null){
                     editCertificateNumberMainController.setRegisterMainController(this);
                     editCertificateNumberMainController.setEditedRegisterElement(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()));
+                    editCertificateNumberMainController.setCertificateNumberTextField(editedRegisterElementFromList.getCertificateNumber());
                 }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
@@ -249,6 +237,7 @@ private registerFxModel editedRegisterElementFromList;
                     editedRegisterElement.setState("OFF");
                     Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
                     registerDao.update(editedRegisterElement);
+                    dbSqlite.closeConnection();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -277,7 +266,6 @@ private registerFxModel editedRegisterElementFromList;
                 e.printStackTrace();
             }
         }
-
     }
     @FXML
     public void loadRegister(){
@@ -304,10 +292,10 @@ private registerFxModel editedRegisterElementFromList;
             storehouseQueryBuilder.where().eq("idStorehouse",idStorehouse);
             PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
             result=storehouseDao.query(prepare);
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         if(!result.isEmpty()){
             addDateLabel.setText(result.get(0).getAddDate());
             calibrationDateLabel.setText(result.get(0).getCalibrationDate());

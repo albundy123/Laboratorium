@@ -28,7 +28,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Converter;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class instrumentViewController {
-    public instrumentViewController() {System.out.println("Siemanko jestem konstruktorem klasy instrumentViewController.");}
+    public instrumentViewController() {}
 
 
     //Tabela z danymi wszystkie kolumny muszą być wstrzyknięte żeby potem można było z nich korzystać
@@ -71,7 +70,40 @@ public class instrumentViewController {
     @FXML
     private Label streetLabel;
 
-    //Tu będzie jeszcze wyświetlanie wzorcowań i przygód w magazynie
+    //Te elementy potrzebne są do wyświetlania szczegółów dotyczących każdego przyrządu
+    @FXML
+    private TableView<instrumentStorehouseFxModel> storehouseTableView;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, Integer> idStorehouseColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> addDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> calibrationDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> leftDateColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> addPersonColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> calibratePersonColumn;
+    @FXML
+    private TableColumn<instrumentStorehouseFxModel, String> leftPersonColumn;
+
+    @FXML
+    private  TableView<registerFxModel> registerTableView;
+    @FXML
+    private TableColumn<registerFxModel, Integer> idRegisterByYearColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> cardNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> calibrationDateRegisterColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> userWhoCalibrateColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> certificateNumberColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> documentKindColumn;
+    @FXML
+    private TableColumn<registerFxModel, String> stateColumn;
 
     @FXML
     private TextField searchTextField;
@@ -90,10 +122,7 @@ public class instrumentViewController {
     private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
     private ObservableList<instrumentStorehouseFxModel> instrumentStorehouseFxObservableList = FXCollections.observableArrayList();
 
-
-
     private instrumentFxModel editedInstrumentFromList;
-
     public void setEditedInstrumentFromList(instrumentFxModel editedInstrumentFromList) {
         this.editedInstrumentFromList = editedInstrumentFromList;
     }
@@ -104,7 +133,6 @@ public class instrumentViewController {
 
     @FXML
     private void initialize(){
-        System.out.println("Siemanko jestem funkcją initialize klasy instrumentViewController.");
         initializeTableView();
         editClientButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
         editInstrumentButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
@@ -259,7 +287,7 @@ public class instrumentViewController {
         editedClientController.setIdEditedClient(client.getIdClient());
         editedClientController.setClientLabel("Klient");
     }
-    private void addFilter(){
+    private void addFilter(){//Umożliwia filtrację wyświetlanej TableView po wartościach z kilku kolumn
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredInstrumentFxObservableList.setPredicate(item -> {
                 if (item.getInstrumentName().toUpperCase().contains(newValue.toUpperCase())||item.getInstrumentType().toUpperCase().contains(newValue.toUpperCase())||
@@ -273,43 +301,8 @@ public class instrumentViewController {
             });
         } );
     }
-
-    @FXML
-    private TableView<instrumentStorehouseFxModel> storehouseTableView;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, Integer> idStorehouseColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> addDateColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> calibrationDateColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> leftDateColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> addPersonColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> calibratePersonColumn;
-    @FXML
-    private TableColumn<instrumentStorehouseFxModel, String> leftPersonColumn;
-
-    @FXML
-    private  TableView<registerFxModel> registerTableView;
-    @FXML
-    private TableColumn<registerFxModel, Integer> idRegisterByYearColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> cardNumberColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> calibrationDateRegisterColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> userWhoCalibrateColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> certificateNumberColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> documentKindColumn;
-    @FXML
-    private TableColumn<registerFxModel, String> stateColumn;
-
+    //Pobieranie szczegółów o danych przyrządzie, uruchamiana kliknięciem na dany przyrząd w tableview
     public void getStorehouseList(){
-        System.out.println("Działa storhaułsa");
         try {
             instrumentStorehouseFxObservableList.clear();
             Dao<storehouseModel, Integer> storehouseDao = DaoManager.createDao(dbSqlite.getConnectionSource(),storehouseModel.class);
@@ -331,7 +324,6 @@ public class instrumentViewController {
         }
     }
     private void getRegisterList(){
-        System.out.println("Działa registra");
         try {
             registerFxObservableList.clear();
             Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);

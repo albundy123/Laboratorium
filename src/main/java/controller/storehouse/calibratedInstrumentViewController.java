@@ -17,8 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class calibratedInstrumentViewController {
-    public calibratedInstrumentViewController() {System.out.println("Halo świry jestem kontruktorem klasy calibratedInstrumentViewController");
-    }
+    public calibratedInstrumentViewController() {}
 
     @FXML
     VBox mainVBox;
@@ -111,7 +110,6 @@ public class calibratedInstrumentViewController {
     }
     @FXML
     private void initialize(){
-        System.out.println("Halo świry jestem funkcją initialize klasy calibratedInstrumentViewController");
         calibrationDateDatePicker.setConverter(Converter.getConverter());
     }
     @FXML
@@ -147,6 +145,7 @@ public class calibratedInstrumentViewController {
             registerQueryBuilder.where().gt("calibrationDate", calibrationDateDatePicker.getValue());
             prepare = registerQueryBuilder.prepare();
             result = registerDao.query(prepare);
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -179,6 +178,7 @@ public class calibratedInstrumentViewController {
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
                 Close.closeVBoxWindow(mainVBox);
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -200,6 +200,7 @@ public class calibratedInstrumentViewController {
             registerQueryBuilder.where().gt("calibrationDate", calibrationDateDatePicker.getValue());
             prepare = registerQueryBuilder.prepare();
             result = registerDao.query(prepare);
+            dbSqlite.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -235,6 +236,7 @@ public class calibratedInstrumentViewController {
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
                 Close.closeVBoxWindow(mainVBox);
+                dbSqlite.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
