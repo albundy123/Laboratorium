@@ -31,6 +31,7 @@ public class commonInstrumentViewController {
     private static final String PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
     private static final String RANGE_VIEW = "/instrument/newInstrumentRangeView.fxml";
     private static final String UNIT_VIEW = "/instrument/newInstrumentUnitView.fxml";
+    private static final String YEAR_VIEW = "/admin/yearView.fxml";
 //Wstrzyknięcie elementów z FXMLa
     @FXML
     private TableView<commonFxModel> commonTableView;
@@ -48,6 +49,7 @@ public class commonInstrumentViewController {
     private List<instrumentProducerModel> producerList;
     private List<instrumentRangeModel> rangeList;
     private List<unitModel> unitList;
+    private List<yearModel> yearList;
     //Lista do wyświetlania elementów w TableView
     private ObservableList<commonFxModel> commonObservableList = FXCollections.observableArrayList();
 
@@ -66,7 +68,7 @@ public class commonInstrumentViewController {
     private newInstrumentProducerViewController newInstrumentProducerController;
     private newInstrumentRangeViewController newInstrumentRangeController;
     private newInstrumentUnitViewController newInstrumentUnitController;
-
+    private yearViewController yearController;
     @FXML
     private void initialize(){
         initializeTable();
@@ -144,6 +146,19 @@ public class commonInstrumentViewController {
             e.printStackTrace();
         }
     }
+    public void getYears(){
+        commonObservableList.clear();
+        try {
+            Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(), yearModel.class);
+            yearList=yearDao.queryForAll();
+            yearList.forEach(year ->{
+                commonObservableList.add(new commonFxModel(year.getIdYear(),year.getYear()));
+            });
+            dbSqlite.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     //@FXML oznacza że metody są podpięte do przycisków
     @FXML
     private void addNew(){
@@ -190,6 +205,10 @@ public class commonInstrumentViewController {
             newInstrumentUnitController=loadWindow(newInstrumentUnitController, UNIT_VIEW,"Jednostki pomiarowe");
             newInstrumentUnitController.setEditedInstrumentUnit(null);
             newInstrumentUnitController.setCommonInstrumentController(this);
+        }else if(parameter==6){
+            yearController=loadWindow(yearController, YEAR_VIEW,"Lata");
+            yearController.setEditedYear(null);
+            yearController.setCommonInstrumentController(this);
         }
     }
     private void editParameter(){//W zależności od tego co chcemy wyedytować ładuje się inny widok i inna jest obłsuga przycisków
@@ -219,40 +238,51 @@ public class commonInstrumentViewController {
                 newInstrumentUnitController.setNewInstrumentUnitTextField(editedElementFromList.getCommonString());
                 newInstrumentUnitController.setEditedInstrumentUnit(new unitModel(editedElementFromList.getIdCommon(), editedElementFromList.getCommonString()));
                 newInstrumentUnitController.setCommonInstrumentController(this);
+            } else if (parameter == 6) {
+                yearController = loadWindow(yearController, YEAR_VIEW, "Lata");
+                yearController.setYearTextField(editedElementFromList.getCommonString());
+                yearController.setEditedYear(new yearModel(editedElementFromList.getIdCommon(), editedElementFromList.getCommonString()));
+                yearController.setCommonInstrumentController(this);
             }
         }
     }
     private void deleteParameter(){//Podobnie jak powyżej
         try {
-            Dao<instrumentModel, Integer> instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
-            QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
-            instrumentQueryBuilder.where().eq(getColumnName(), editedElementFromList.getIdCommon());
-            PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
-            List<instrumentModel> result = instrumentDao.query(prepare);
-            if (result.isEmpty()) {
-                if (parameter == 1){
-                    Dao<instrumentNameModel, Integer> instrumentNameDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentNameModel.class);
-                    instrumentNameDao.delete(new instrumentNameModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
-                    getNames();
-                } else if (parameter == 2) {
-                    Dao<instrumentTypeModel, Integer> instrumentTypeDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentTypeModel.class);
-                    instrumentTypeDao.delete(new instrumentTypeModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
-                    getTypes();
-                } else if (parameter == 3) {
-                    Dao<instrumentProducerModel, Integer> instrumentProducerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentProducerModel.class);
-                    instrumentProducerDao.delete(new instrumentProducerModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
-                    getProducers();
-                } else if (parameter == 4) {
-                    Dao<instrumentRangeModel, Integer> instrumentRangeDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentRangeModel.class);
-                    instrumentRangeDao.delete(new instrumentRangeModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
-                    getRanges();
+            if(parameter==6){
+                Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(),yearModel.class);
+                yearDao.delete(new yearModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
+                getYears();
+            }else{
+                    Dao<instrumentModel, Integer> instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
+                    QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
+                    instrumentQueryBuilder.where().eq(getColumnName(), editedElementFromList.getIdCommon());
+                    PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
+                    List<instrumentModel> result = instrumentDao.query(prepare);
+                    if (result.isEmpty()) {
+                        if (parameter == 1){
+                            Dao<instrumentNameModel, Integer> instrumentNameDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentNameModel.class);
+                            instrumentNameDao.delete(new instrumentNameModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
+                            getNames();
+                        } else if (parameter == 2) {
+                            Dao<instrumentTypeModel, Integer> instrumentTypeDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentTypeModel.class);
+                            instrumentTypeDao.delete(new instrumentTypeModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
+                            getTypes();
+                        } else if (parameter == 3) {
+                            Dao<instrumentProducerModel, Integer> instrumentProducerDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentProducerModel.class);
+                            instrumentProducerDao.delete(new instrumentProducerModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
+                            getProducers();
+                        } else if (parameter == 4) {
+                            Dao<instrumentRangeModel, Integer> instrumentRangeDao = DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentRangeModel.class);
+                            instrumentRangeDao.delete(new instrumentRangeModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
+                            getRanges();
+                        }
+                    }
+                else {//Jeżeli dany elemnet był już wykorzystany, czyli jest wpisany w inną tabelę to nie można go usunąć nie dotyczy roku
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Nie można usunąć tego pola");
+                    alert.showAndWait();
                 }
-            }
-            else {//Jeżeli dany elemnet był już wykorzystany, czyli jest wpisany w inną tabelę to nie można go usunąć
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Błąd");
-                alert.setHeaderText("Nie można usunąć tego pola");
-                alert.showAndWait();
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
@@ -291,6 +321,8 @@ public class commonInstrumentViewController {
             return "instrumentProducer_id";
         } else if (parameter == 4) {
             return "instrumentRange_id";
+        }else if (parameter == 6) {
+            return "year";
         }
         return null;
     }

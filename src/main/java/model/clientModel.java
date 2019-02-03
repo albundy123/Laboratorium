@@ -24,12 +24,11 @@ public class clientModel {
     private String flatNumber;
     @DatabaseField
     private String status;
-    @DatabaseField(foreign = true)
-    private userModel user;
+
 
     public clientModel() {
     }
-    public clientModel(Integer idClient, String shortName, String fullName, String postCode, String city, String street, String houseNumber, String flatNumber, String status, userModel user) {
+    public clientModel(Integer idClient, String shortName, String fullName, String postCode, String city, String street, String houseNumber, String flatNumber, String status) {
         this.idClient = idClient;
         this.shortName = shortName;
         this.fullName = fullName;
@@ -39,7 +38,6 @@ public class clientModel {
         this.houseNumber = houseNumber;
         this.flatNumber = flatNumber;
         this.status = status;
-        this.user = user;
     }
 
     public Integer getIdClient() {
@@ -114,11 +112,4 @@ public class clientModel {
         this.status = status;
     }
 
-    public userModel getUser() {
-        return user;
-    }
-
-    public void setUser(userModel user) {
-        this.user = user;
-    }
 }

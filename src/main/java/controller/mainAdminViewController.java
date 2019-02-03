@@ -72,6 +72,13 @@ public class mainAdminViewController {
         commonMainController.setValueColumn("Jednostki");
         commonMainController.setParameter(5);
     }
+    @FXML
+    private void yearEdit(){
+        openCommonWindow("Lata");
+        commonMainController.getYears();
+        commonMainController.setValueColumn("Lata");
+        commonMainController.setParameter(6);
+    }
     private void openCommonWindow(String title){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMON_VIEW));

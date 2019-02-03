@@ -54,6 +54,9 @@
             </children>
         </HBox>
         <TableView fx:id="registerTableView" prefHeight="460.0" prefWidth="1000.0">
+            <placeholder>
+                <Label text="Brak wyników. Proszę wczytać dane."/>
+            </placeholder>
             <columns>
                 <TableColumn fx:id="idRegisterByYearColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
                 <TableColumn fx:id="cardNumberColumn" maxWidth="80.0" minWidth="80.0" text="Nr karty" />

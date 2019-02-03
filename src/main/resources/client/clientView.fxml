@@ -48,6 +48,9 @@
          </children>
       </HBox>
         <TableView fx:id="clientTableView" prefHeight="420.0" prefWidth="800.0">
+            <placeholder>
+                <Label text="Brak wyników. Proszę wczytać dane."/>
+            </placeholder>
             <columns>
                 <TableColumn fx:id="idClientColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
                 <TableColumn fx:id="shortNameColumn" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Skrót" />

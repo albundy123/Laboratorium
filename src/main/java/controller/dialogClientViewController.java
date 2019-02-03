@@ -205,9 +205,9 @@ public class dialogClientViewController {
     private clientModel getClient(){
         clientModel client;
         if (flatNumberTextField.getText().equals("")) {
-            client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(),cityTextField.getText(), streetTextField.getText(),houseNumberTextField.getText(),"", statusComboBox.getValue(),null);
+            client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(),cityTextField.getText(), streetTextField.getText(),houseNumberTextField.getText(),"", statusComboBox.getValue());
         }else{
-            client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(), cityTextField.getText(),streetTextField.getText(),houseNumberTextField.getText(),flatNumberTextField.getText(), statusComboBox.getValue(),null);
+            client = new clientModel(idEditedClient, shortNameTextField.getText(), fullNameTextField.getText(), postCodeTextField.getText(), cityTextField.getText(),streetTextField.getText(),houseNumberTextField.getText(),flatNumberTextField.getText(), statusComboBox.getValue());
         }
         return client;
     }

@@ -43,6 +43,9 @@
             </children>
         </HBox>
       <TableView fx:id="instrumentTableView" prefHeight="360.0" prefWidth="1196.0">
+          <placeholder>
+              <Label text="Brak wyników. Proszę wczytać dane."/>
+          </placeholder>
         <columns>
           <TableColumn fx:id="idInstrumentColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
           <TableColumn fx:id="instrumentNameColumn" prefWidth="75.0" text="Nazwa" />
@@ -116,6 +119,9 @@
                       <Tab text="Wzorcowania">
                         <content>
                             <TableView fx:id="registerTableView" prefHeight="460.0" prefWidth="1000.0">
+                                <placeholder>
+                                    <Label text=""/>
+                                </placeholder>
                                 <columns>
                                     <TableColumn fx:id="idRegisterByYearColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
                                     <TableColumn fx:id="cardNumberColumn" prefWidth="75.0" text="Nr karty" />
@@ -138,6 +144,9 @@
                         <Tab text="Magazyn">
                           <content>
                               <TableView fx:id="storehouseTableView" prefHeight="420.0" prefWidth="996.0">
+                                  <placeholder>
+                                      <Label text=""/>
+                                  </placeholder>
                                   <columns>
                                       <TableColumn fx:id="idStorehouseColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Lp." />
                                         <TableColumn fx:id="addDateColumn" prefWidth="75.0" text="Data przyjęcia" />

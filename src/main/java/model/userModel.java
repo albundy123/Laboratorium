@@ -8,15 +8,15 @@ public class userModel {
 //Konfiguracja kolumn tabeli
     @DatabaseField(generatedId = true)
     private Integer idUser;
-    @DatabaseField(canBeNull = false, uniqueCombo = true)
+    @DatabaseField
     private String firstName;
-    @DatabaseField(canBeNull = false,uniqueCombo = true)
+    @DatabaseField
     private String lastName;
-    @DatabaseField(canBeNull = false,uniqueCombo = true)
+    @DatabaseField
     private String login;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String password;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String persmissionLevel; //admin,User
 //Konstruktor bezparametrowy
     public userModel() {
