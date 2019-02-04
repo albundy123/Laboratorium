@@ -159,17 +159,13 @@ public class storehouseViewController {
             QueryBuilder<storehouseModel, Integer> storehouseQueryBuilder = storehouseDao.queryBuilder();
             if(isInStorehouseComboBox.getValue().equals(yearComboBox.getValue())) {     //Tylko kiedy obydwa mają tę samą wartość całkiem przypadkowo :)
                 storehouseModelList = storehouseDao.queryForAll();
-                System.out.println("Wszystkie");
             }else{
                 if(!isInStorehouseComboBox.getValue().equals("Wszystkie")&& yearComboBox.getValue().equals("Wszystkie")){
                     storehouseQueryBuilder.where().eq("leftDate","");
-                    System.out.println("W magazynie");
                 }else if(isInStorehouseComboBox.getValue().equals("Wszystkie")&& !yearComboBox.getValue().equals("Wszystkie")){
                     storehouseQueryBuilder.where().like("addDate","%"+yearComboBox.getValue()+"%").or().like("leftDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("Wszystkie z danego roku");
                 }else{
                     storehouseQueryBuilder.where().eq("leftDate","").and().like("addDate","%"+yearComboBox.getValue()+"%");
-                    System.out.println("W magazynie z danego roku");
                 }
                 PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
                 storehouseModelList=storehouseDao.query(prepare);

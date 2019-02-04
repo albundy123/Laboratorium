@@ -311,24 +311,24 @@ public class editInstrumentViewController {
     private void cancelSaveInstrument(){
         Close.closeVBoxWindow(mainVBox);
     }
-    private boolean isValidInstrumentData() {//Bardzo prosta walidacja wprowadzonych danych
+    private boolean isValidInstrumentData() {
         String errorMessage = "";
-        if (instrumentNameComboBox.getValue() == null) {
+        if (getName(instrumentNameComboBox.getValue()) == null) {
             errorMessage += "Nie wybrałeś nazwy urządzenia ! \n";
         }
-        if (instrumentTypeComboBox.getValue() == null) {
+        if (getType(instrumentTypeComboBox.getValue()) == null) {
             errorMessage += "Nie wybrałeś typu urządzenia ! \n";
         }
-        if (instrumentProducerComboBox.getValue() == null) {
+        if (getProducer(instrumentProducerComboBox.getValue()) == null) {
             errorMessage += "Nie wybrałeś producenta urządzenia ! \n";
         }
         if ((serialNumberTextField.getText().isEmpty())&&(identificationNumberTextField.getText().isEmpty())) {
             errorMessage += "Przyrząd musi posiadać numer fabryczny lub numer identyfikacyjny ! \n";
         }
-        if (instrumentRangeComboBox.getValue() == null) {
+        if (getRange(instrumentRangeComboBox.getValue()) == null) {
             errorMessage += "Nie wybrałeś zakresu urządzenia ! \n";
         }
-        if (instrumentClientComboBox.getValue() == null ) {
+        if (clientInstrument == null ) {
             errorMessage += "Nie wybrałeś zleceniodawcy ! \n";
         }
         if (errorMessage.length() == 0) {

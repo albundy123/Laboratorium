@@ -86,9 +86,7 @@ public class newInstrumentTypeViewController {
                         if(editInstrumentMainController!=null){editInstrumentMainController.getInstrumentTypeList();}
                         if(newInstrumentMainController!=null){newInstrumentMainController.getInstrumentTypeList();}
                         Close.closeVBoxWindow(mainVBox);
-                        if(commonInstrumentController!=null){
-                            commonInstrumentController.getTypes();
-                        }
+                        if(commonInstrumentController!=null){commonInstrumentController.getTypes();}
                     } else {
                         newInstrumentTypeLabel.setText("Taki typ przyrządu już istnieje !");
                     }
