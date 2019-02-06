@@ -170,7 +170,7 @@ public class storehouseViewController {
                 PreparedQuery<storehouseModel> prepare = storehouseQueryBuilder.prepare();
                 storehouseModelList=storehouseDao.query(prepare);
             }
-            Integer indeks = 0;//Ta konstrukcja jest potrzebna do połączenie wyników z bazydanych z tymi wyswietlanymi
+            Integer indeks = 1;//Ta konstrukcja jest potrzebna do połączenie wyników z bazydanych z tymi wyswietlanymi
             for (storehouseModel storehouseElement : storehouseModelList) {
                 System.out.println(storehouseElement.toString());
                 storehouseFxModel storehouseFx= Converter.convertToStorehouseFx(storehouseElement);
@@ -200,7 +200,7 @@ public class storehouseViewController {
         storehouseTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue!=null) {
                 setStorehouseFxElementFromList(newValue);
-                setStorehouseElement(storehouseModelList.get(storehouseFxElementFromList.getIndexOfStorehouseModelList()));
+                setStorehouseElement(storehouseModelList.get(storehouseFxElementFromList.getIndexOfStorehouseModelList()-1));
                 showInformationAboutClient(storehouseElement.getInstrument().getClient());
                 showInformationAboutHistory(storehouseElement);
             }
@@ -348,7 +348,7 @@ public class storehouseViewController {
     public void leftInstrumentAfterCheckConditions(){
         try {
             setUser(mainWindowController.getUser());
-            storehouseModel leftInstrument = storehouseModelList.get(storehouseFxElementFromList.getIndexOfStorehouseModelList());
+            storehouseModel leftInstrument = storehouseModelList.get(storehouseFxElementFromList.getIndexOfStorehouseModelList()-1);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/leftInstrumentView.fxml"));
             VBox vBox = loader.load();
             leftInstrumentController = loader.getController();

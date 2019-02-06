@@ -116,23 +116,22 @@ public class calibratedInstrumentViewController {
     public void calibrateInstrument(){
         if(calibratedInstrument!=null) {
             if (calibrationDateDatePicker.getValue() != null) {
-                if (!calibrationDateDatePicker.getValue().isBefore(LocalDate.parse(calibratedInstrumentStorehouse.getAddDate()))){
+                if (!calibrationDateDatePicker.getValue().isBefore(LocalDate.parse(calibratedInstrumentStorehouse.getAddDate()))) {
 
-                    if(whichRegister==1) {
+                    if (whichRegister == 1) {
                         calibrateInstrumentInAP();
-                    }else if (whichRegister==2){
+                    } else if (whichRegister == 2) {
                         calibrateInstrumentOutAP();
-                    }
-                    }else{
+                    } else {
                         informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
                     }
-                }else{
+                } else {
                     informationLabel.setText("Data wzorcowania jest wcześniejsza niż data przyjęcia !");
                 }
-            }
-            else{
+            } else {
                 informationLabel.setText("Wybierz datę wzorcowania !");
             }
+        }
     }
     private void calibrateInstrumentInAP() {
         Dao<registerModel, Integer> registerDao = null;
@@ -165,10 +164,16 @@ public class calibratedInstrumentViewController {
                     if (result.get(0).getCardNumber().contains(year.getYear())) {
                         calibratedInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear() + 1);
                         calibratedInstrument.setCardNumber(result.get(0).getIdRegisterByYear() + 1 + "-" + year.getYear());
+                        if(calibratedInstrument.getInstrument().getClient().getFullName().contains("ENERGOPOMIAR")){
+                            calibratedInstrument.setCertificateNumber("EP-"+calibratedInstrument.getCardNumber()+"-P");
+                        }
                         registerDao.update(calibratedInstrument);
                     } else {
                         calibratedInstrument.setIdRegisterByYear(1);
                         calibratedInstrument.setCardNumber("1-" + year.getYear());
+                        if(calibratedInstrument.getInstrument().getClient().getFullName().contains("ENERGOPOMIAR")){
+                            calibratedInstrument.setCertificateNumber("EP-"+calibratedInstrument.getCardNumber()+"-P");
+                        }
                         registerDao.update(calibratedInstrument);
                     }
                 }
@@ -177,6 +182,8 @@ public class calibratedInstrumentViewController {
                 calibratedInstrumentStorehouse.setUserWhoCalibrate(user);
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
+                setCalibratedInstrument(null);
+                storehouseMainController.setStorehouseFxElementFromList(null);
                 Close.closeVBoxWindow(mainVBox);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
@@ -235,6 +242,8 @@ public class calibratedInstrumentViewController {
                 calibratedInstrumentStorehouse.setUserWhoCalibrate(user);
                 storehouseDao.update(calibratedInstrumentStorehouse);
                 storehouseMainController.getStorehouseList();
+                setCalibratedInstrument2(null);
+                storehouseMainController.setStorehouseFxElementFromList(null);
                 Close.closeVBoxWindow(mainVBox);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {

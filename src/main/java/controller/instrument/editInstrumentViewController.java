@@ -256,8 +256,10 @@ public class editInstrumentViewController {
             e.printStackTrace();
         }
     }
-    public void editInstrument(){
+    @FXML
+    private void editInstrument(){
         if(isValidInstrumentData()){
+
             saveEditInstrument();
         }
     }
@@ -277,7 +279,7 @@ public class editInstrumentViewController {
             List<instrumentModel> result = instrumentDao.query(prepare);
             if(result.size()>1 ) {
                     informationLabel.setText("Nie możesz dodać drugiego takiego samego przyrządu !");
-            } else if(result.size()==1 && result.get(0).getIdInstrument()==editedInstrument.getIdInstrument()) {
+            } else if(result.size()==1 && result.get(0).getIdInstrument().equals(editedInstrument.getIdInstrument())) {
                 instrumentDao.update(instrument);
                 Close.closeVBoxWindow(mainVBox);
             }
