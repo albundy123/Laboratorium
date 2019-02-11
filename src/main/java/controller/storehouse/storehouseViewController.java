@@ -205,7 +205,7 @@ public class storehouseViewController {
                 showInformationAboutHistory(storehouseElement);
             }
         });
-        storehouseTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
+        storehouseTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.56));
     }
     @FXML   //Uruchamia okno edycji przyrządu
     private void editInstrument(){
