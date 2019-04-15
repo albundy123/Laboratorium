@@ -9,6 +9,9 @@ package util;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
 
+/**
+ * Klasa zawierająca metodę display do wyświetlania okna dialogowego
+ */
 public class ConfirmBox {
     static boolean answer;
     public static boolean display(String title, String message){

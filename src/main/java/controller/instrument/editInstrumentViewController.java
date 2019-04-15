@@ -19,11 +19,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import util.Close;
+import util.showAlert;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do edycji przyrządu editInstrumentView.fxml
+ */
 public class editInstrumentViewController {
     public editInstrumentViewController() {}
 
@@ -70,9 +74,6 @@ public class editInstrumentViewController {
     public void setClientInstrument(clientModel clientInstrument) {
         this.clientInstrument = clientInstrument;
     }
-
-
-
     //Wstrzyknięcia elementów z FXMLA
     @FXML
     private VBox mainVBox;
@@ -92,7 +93,7 @@ public class editInstrumentViewController {
     private TextField identificationNumberTextField;
     @FXML
     private Label informationLabel;
-//Settery do elementów z formularzy
+    //Settery do elementów z formularzy
     public void setInstrumentNameComboBox(String instrumentNameComboBox) {
         this.instrumentNameComboBox.setValue(instrumentNameComboBox);
     }
@@ -129,11 +130,13 @@ public class editInstrumentViewController {
         getInstrumentRangeList();
         initComboBox(instrumentRangeComboBox,filteredRange);
     }
+    /**Metoda służy do otwierania okna służącego do dodawania nowej nazwy przyrządu*/
     @FXML
     private void addNewInstrumentName(){
         newInstrumentName=loadInstrumentData(newInstrumentName,INSTRUMENT_NAME_VIEW,"Nazwa");
         newInstrumentName.setEditInstrumentMainController(this);
     }
+    /**Metoda służy do otwierania okna służącego do dodawania nowego typu przyrządu*/
     @FXML
     private void addNewInstrumentType(){
         newInstrumentType=loadInstrumentData(newInstrumentType,INSTRUMENT_TYPE_VIEW,"Typ");
@@ -144,11 +147,13 @@ public class editInstrumentViewController {
         newInstrumentProducer=loadInstrumentData(newInstrumentProducer,INSTRUMENT_PRODUCER_VIEW,"Producent");
         newInstrumentProducer.setEditInstrumentMainController(this);
     }
+    /**Metoda służy do otwierania okna służącego do dodawania zakresu pomiarowego*/
     @FXML
     private void addNewInstrumentRange(){
         newInstrumentRange=loadInstrumentData(newInstrumentRange,INSTRUMENT_RANGE_VIEW,"Zakres");
         newInstrumentRange.setEditInstrumentMainController(this);
     }
+    /**Metoda służy do otwierania okna z klientami laboratorium. Z listy wybieramy właściciela przyrządu*/
     @FXML
     private void addClientInstrument(){
         clientMainController=loadInstrumentData(clientMainController,INSTRUMENT_CLIENT_VIEW,"Zleceniodawcy");
@@ -156,6 +161,7 @@ public class editInstrumentViewController {
         clientMainController.setChoseButtonDisable();
         clientMainController.getActiveClients();
     }
+    /** Generyczna metoda do ładowani widoków, zwraca obiekt kontrolera */
     private <T> T loadInstrumentData(T instrumentData,String resource, String title){//Generyczna metoda do ładowania różnych widoków
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
@@ -168,10 +174,11 @@ public class editInstrumentViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         return instrumentData;
     }
+    /**Pobiera z bazy danych nazwy przyrządów */
     public void getInstrumentNameList() {
         try {
             instrumentNameObservableList.clear();
@@ -182,7 +189,7 @@ public class editInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     public instrumentNameModel getName(String instrumentName){
@@ -217,6 +224,7 @@ public class editInstrumentViewController {
         }
         return null;
     }
+    /**Pobiera z bazy danych typy przyrządów */
     public void getInstrumentTypeList(){
         try {
             instrumentTypeObservableList.clear();
@@ -227,9 +235,10 @@ public class editInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobiera z bazy danych producentów przyrządów */
     public void getInstrumentProducerList(){
         try {
             instrumentProducerObservableList.clear();
@@ -240,9 +249,10 @@ public class editInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobiera z bazy danych zakresy pomiarowe przyrządów */
     public void getInstrumentRangeList() {
         try {
             instrumentRangeObservableList.clear();
@@ -253,16 +263,19 @@ public class editInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     @FXML
     private void editInstrument(){
         if(isValidInstrumentData()){
-
             saveEditInstrument();
         }
     }
+
+    /**
+     * Metoda do zapisywania w bazie danych wyeadytowanego przyrządu.
+     */
     private void saveEditInstrument(){
         try {
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
@@ -292,6 +305,12 @@ public class editInstrumentViewController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metoda do inicjalizacji kontrolerów ComboBox, dzięki czemu działa w nich filtrowanie danych
+     * @param comboBox
+     * @param filteredList
+     */
     private void initComboBox(ComboBox<String> comboBox, FilteredList<String> filteredList){
         comboBox.setEditable(true);
         comboBox.getEditor().textProperty().addListener((v, oldValue, newValue) -> {
@@ -313,6 +332,7 @@ public class editInstrumentViewController {
     private void cancelSaveInstrument(){
         Close.closeVBoxWindow(mainVBox);
     }
+    /** Metoda do walidacji wprowadzanych danych. W przypadku błędów wyświetla alert */
     private boolean isValidInstrumentData() {
         String errorMessage = "";
         if (getName(instrumentNameComboBox.getValue()) == null) {

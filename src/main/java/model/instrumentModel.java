@@ -2,7 +2,9 @@ package model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/**
+ * Klasa implementująca model danych w tabeli INSTRUMENTS
+ */
 @DatabaseTable(tableName = "INSTRUMENTS")
 public class instrumentModel {
     @DatabaseField(generatedId = true)

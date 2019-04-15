@@ -15,9 +15,13 @@ import javafx.scene.layout.VBox;
 import model.userModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 import java.io.IOException;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę głównego okna programu. Ustawia widoki do poszczególnych kart w zależnosci o poziomu dostępu.
+ */
 public class mainViewController {
     public  mainViewController() {}
     //Scieżki do plików fxml z poszczególnymi widokami
@@ -98,7 +102,7 @@ public class mainViewController {
 
     @FXML
     private void initialize(){
-        //Ładowanie poszczególnych kart
+        //Ladowanie poszczegolnych kart
         storehouseMainController= loadTab(storehouseMainController,storehouseTab,storehouseAnchorPane,storehouseVBox,STOREHOUSE_VIEW);
         storehouseMainController.setMainWindowController(this);
         loadTab(registerInAPMainController,registerInAPTab,registerInAPAnchorPane,registerInAPVBox,REGISTER_IN_AP_VIEW);
@@ -116,7 +120,7 @@ public class mainViewController {
                 setTabContent(tab,anchorPane,vBox);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         return tabController;
     }

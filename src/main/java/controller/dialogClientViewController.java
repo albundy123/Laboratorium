@@ -12,11 +12,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import model.clientModel;
 import util.Close;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.util.List;
 
-
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna służącego od edycji Zleceniodawcy
+ */
 public class dialogClientViewController {
     public dialogClientViewController() {}
 
@@ -116,7 +119,7 @@ public class dialogClientViewController {
                 mainClientController.getClients();
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             showAlert();
@@ -136,7 +139,7 @@ public class dialogClientViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             showAlert();
@@ -192,7 +195,7 @@ public class dialogClientViewController {
                 return result.get(0).getIdClient();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
             return 0;
         }
     }

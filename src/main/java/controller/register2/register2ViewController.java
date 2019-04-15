@@ -29,7 +29,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna na karcie Rejestr poza zakresem AP, opisanego w pliku register2View.fxml
+ * Działanie analogiczne jak kontrolera registerViewController
+ */
 public class register2ViewController {
     public  register2ViewController() {}
 

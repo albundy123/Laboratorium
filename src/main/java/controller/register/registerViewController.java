@@ -27,6 +27,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.ConfirmBox;
+import util.showAlert;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,6 +36,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna na karcie Rejestr w zakres AP, opisanego w pliku registerView.fxml
+ */
 public class registerViewController {
     public  registerViewController() {}
 
@@ -99,7 +104,7 @@ public class registerViewController {
     private ObservableList<registerFxModel> registerFxObservableList = FXCollections.observableArrayList();
     FilteredList<registerFxModel> filteredRegisterFxObservableList = new FilteredList<>(registerFxObservableList, p -> true); //Lista filtrowana służy do szukania
 
-private registerFxModel editedRegisterElementFromList;
+    private registerFxModel editedRegisterElementFromList;
 
     public void setEditedRegisterElementFromList(registerFxModel editedRegisterElementFromList) {
         this.editedRegisterElementFromList = editedRegisterElementFromList;
@@ -121,6 +126,9 @@ private registerFxModel editedRegisterElementFromList;
         addFilter();
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie z tabeli Register danych, które następnie są wyświetlane w kontrolerze TableView
+     */
     public void getRegisterList(){
         try {
             registerFxObservableList.clear();
@@ -151,7 +159,7 @@ private registerFxModel editedRegisterElementFromList;
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     private void initializeTableView(){
@@ -201,7 +209,7 @@ private registerFxModel editedRegisterElementFromList;
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         return yearObservableList;
     }
@@ -224,7 +232,7 @@ private registerFxModel editedRegisterElementFromList;
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -239,7 +247,7 @@ private registerFxModel editedRegisterElementFromList;
                     registerDao.update(editedRegisterElement);
                     dbSqlite.closeConnection();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    showAlert.display(e.getMessage());
                 }
             }
         }
@@ -263,7 +271,7 @@ private registerFxModel editedRegisterElementFromList;
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -283,6 +291,11 @@ private registerFxModel editedRegisterElementFromList;
             }
         }
     }
+
+    /**
+     * Metoda pobiera informacja o danym przyrządzie z tabeli Storehouse. Dzięki czemu możena obserwować historię pobytu przyrządu w magazynie
+     * @param idStorehouse
+     */
     private void showInformationAboutHistory(Integer idStorehouse){
         Dao<storehouseModel, Integer> storehouseDao = null;
         List<storehouseModel> result=null;
@@ -294,7 +307,7 @@ private registerFxModel editedRegisterElementFromList;
             result=storehouseDao.query(prepare);
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         if(!result.isEmpty()){
             addDateLabel.setText(result.get(0).getAddDate());
@@ -322,6 +335,11 @@ private registerFxModel editedRegisterElementFromList;
             }
         }
     }
+
+    /**
+     * Metoda służy do eksportu aktualnej zawartości kontrolera TableView do pliku excela.
+     * @throws IOException
+     */
     @FXML
     private void exportToExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();

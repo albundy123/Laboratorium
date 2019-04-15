@@ -13,10 +13,13 @@ import javafx.scene.layout.VBox;
 import model.unitModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do dodawania nowej jednostki pomiarowej newUnitView.fxml
+ */
 public class newInstrumentUnitViewController {
     public newInstrumentUnitViewController() {}
 
@@ -81,7 +84,7 @@ public class newInstrumentUnitViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             newInstrumentUnitLabel.setText("Wprowadź prawidłową jednostkę !");

@@ -8,9 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import model.userModel;
 import util.Close;
+import util.showAlert;
 
 import java.sql.SQLException;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okną edycji użytkowników
+ */
 public class dialogUserViewController {
     public dialogUserViewController() {}
 
@@ -87,7 +91,7 @@ public class dialogUserViewController {
                 mainUserController.getUsers();
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -100,7 +104,7 @@ public class dialogUserViewController {
                 mainUserController.getUsers();
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }

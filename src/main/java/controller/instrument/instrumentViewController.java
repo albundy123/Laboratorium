@@ -25,18 +25,20 @@ import model.fxModel.registerFxModel;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Converter;
+import util.showAlert;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna Przyrządy.
+ */
 public class instrumentViewController {
     public instrumentViewController() {}
-
 
     //Tabela z danymi wszystkie kolumny muszą być wstrzyknięte żeby potem można było z nich korzystać
     @FXML
@@ -128,7 +130,6 @@ public class instrumentViewController {
     }
 
     private dialogClientViewController editedClientController;  //Potrzebny, żebym mógł edytować klienta z dolnego tabPane
-
     private editInstrumentViewController editedInstrumentController;  //Kontroler z nowego okna, które służy do edycji danych przyrządu. Potrzebne do przesyłania danych między oknami
 
     @FXML
@@ -138,9 +139,10 @@ public class instrumentViewController {
         editInstrumentButton.disableProperty().bind(Bindings.isEmpty(instrumentTableView.getSelectionModel().getSelectedItems()));
         addFilter();
     }
-
-     //Metoda służy do pobierania rekordów z tabeli bazy danych "INSTRUMENTS". Następnie wyniki przerzucane sądo listy elementów, które będą wyświetlane
-    public void getInstruments(){
+    /**
+     * Metoda służy do pobierania rekordów z tabeli bazy danych "INSTRUMENTS". Następnie wyniki przerzucane są do listy elementów, które będą wyświetlane
+     */
+     public void getInstruments(){
         try {
             instrumentFxObservableList.clear();
             Dao<instrumentModel, Integer> instrumentDao = DaoManager.createDao(dbSqlite.getConnectionSource(),instrumentModel.class);
@@ -156,10 +158,13 @@ public class instrumentViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
-    //Metoda służy do łaczenia kolumn TableView z elementami listy. Następnie wybierana jest konkretne lista obserwowalna.
+
+    /**
+     * Metoda służy do łaczenia kolumn TableView z elementami listy. Następnie wybierana jest konkretne lista obserwowalna.
+     */
     private void initializeTableView(){
         idInstrumentColumn.setCellValueFactory(new PropertyValueFactory<>("idInstrument"));
         instrumentNameColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentName"));
@@ -196,8 +201,6 @@ public class instrumentViewController {
         leftDateColumn.setCellValueFactory(new PropertyValueFactory<>("leftDate"));
         leftPersonColumn.setCellValueFactory(new PropertyValueFactory<>("leftPerson"));
         storehouseTableView.setItems(instrumentStorehouseFxObservableList);
-
-
     }
     @FXML
     private void editInstrument(){
@@ -219,7 +222,7 @@ public class instrumentViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -267,7 +270,7 @@ public class instrumentViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -287,6 +290,10 @@ public class instrumentViewController {
         editedClientController.setIdEditedClient(client.getIdClient());
         editedClientController.setClientLabel("Klient");
     }
+
+    /**
+     * Metoda umożliwia filtrację danych w kontrolerze TableView
+     */
     private void addFilter(){//Umożliwia filtrację wyświetlanej TableView po wartościach z kilku kolumn
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredInstrumentFxObservableList.setPredicate(item -> {
@@ -301,7 +308,11 @@ public class instrumentViewController {
             });
         } );
     }
-    //Pobieranie szczegółów o danych przyrządzie, uruchamiana kliknięciem na dany przyrząd w tableview
+
+    /**
+     * Metoda odpowiedzialna za pobieranie szczegółów o danym przyrządzie, uruchamiana kliknięciem na dany przyrząd w tableview
+     * W tym przypadku historia jego pobytów magazynie
+     */
     public void getStorehouseList(){
         try {
             instrumentStorehouseFxObservableList.clear();
@@ -320,9 +331,13 @@ public class instrumentViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**
+     * Metoda odpowiedzialna za pobieranie szczegółów o danym przyrządzie, uruchamiana kliknięciem na dany przyrząd w tableview
+     * W tym przypadku historia jego wzorcowań
+     */
     private void getRegisterList(){
         try {
             registerFxObservableList.clear();
@@ -356,9 +371,13 @@ public class instrumentViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**
+     * Metoda służąca do eksportowania bieżącego stanu TableView do pliku Excel.
+     * @throws IOException
+     */
     @FXML
     private void exportToExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -373,7 +392,6 @@ public class instrumentViewController {
         row.createCell(5).setCellValue("Nr identyfikacyjny");
         row.createCell(6).setCellValue("Zakres pomiarowy");
         row.createCell(7).setCellValue("Zleceniodawca");
-
         int i = 0;
         for (instrumentFxModel instrumentElement : filteredInstrumentFxObservableList) {
             row = spreadsheet.createRow(i + 1);

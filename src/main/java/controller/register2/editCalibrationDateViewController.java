@@ -16,11 +16,14 @@ import model.registerModel;
 import model.storehouseModel;
 import util.Close;
 import util.Converter;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna edycji numery świadectwa wzorcowania editCertificateNumberView.fxml
+ */
 public class editCalibrationDateViewController {
     public editCalibrationDateViewController(){}
 
@@ -34,7 +37,6 @@ public class editCalibrationDateViewController {
     public void setCalibrationDateDatePicker(LocalDate calibrationDateDatePicker) {
         this.calibrationDateDatePicker.setValue(calibrationDateDatePicker);
     }
-
     @FXML
     public void initialize(){
         calibrationDateDatePicker.setConverter(Converter.getConverter());
@@ -66,7 +68,7 @@ public class editCalibrationDateViewController {
                 storehouseDao.update(editedStorehouseElement);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
             Close.closeVBoxWindow(mainVBox);
         }else{
@@ -124,7 +126,7 @@ public class editCalibrationDateViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         if((!CalibrationDate.isBefore(previous)) &&(!CalibrationDate.isAfter(next))&&(!CalibrationDate.isBefore(addDate))&&(!CalibrationDate.isAfter(leftDate))){
             return true;

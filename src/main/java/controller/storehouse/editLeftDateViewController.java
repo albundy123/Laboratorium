@@ -11,10 +11,14 @@ import model.storehouseModel;
 import util.Close;
 import util.ConfirmBox;
 import util.Converter;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna do edycji daty wydania przyrządu
+ */
 public class editLeftDateViewController {
     public editLeftDateViewController(){}
 
@@ -55,7 +59,7 @@ public class editLeftDateViewController {
                     storehouseDao.update(editedStorehouseElement);
                     dbSqlite.closeConnection();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    showAlert.display(e.getMessage());
                 }
                 Close.closeVBoxWindow(mainVBox);
                 storehouseMainController.getStorehouseList();}
@@ -71,13 +75,18 @@ public class editLeftDateViewController {
                     storehouseDao.update(editedStorehouseElement);
                     dbSqlite.closeConnection();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    showAlert.display(e.getMessage());
                 }
                 Close.closeVBoxWindow(mainVBox);
                 storehouseMainController.getStorehouseList();
             }
         }
     }
+
+    /**
+     * Metoda weryfikuje czy podana data wydania nie stoi w sprzeczności z powiązanymi datami.
+     * @return
+     */
     private Boolean checkLeftDate() {
         LocalDate calibrationDate;
         LocalDate addDate= LocalDate.parse(editedStorehouseElement.getLeftDate());;

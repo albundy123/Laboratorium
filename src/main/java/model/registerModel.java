@@ -2,7 +2,9 @@ package model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/**
+ * Klasa implementująca model danych w tabeli REGISTER
+ */
 @DatabaseTable(tableName = "REGISTER")
 public class registerModel {
     @DatabaseField(generatedId = true)

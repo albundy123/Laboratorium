@@ -12,10 +12,15 @@ import javafx.scene.layout.VBox;
 import model.*;
 import util.Close;
 import util.Converter;
+import util.showAlert;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna, które służy do dodawania przyrządu do wzorcowania
+ */
 public class calibratedInstrumentViewController {
     public calibratedInstrumentViewController() {}
 
@@ -122,8 +127,6 @@ public class calibratedInstrumentViewController {
                         calibrateInstrumentInAP();
                     } else if (whichRegister == 2) {
                         calibrateInstrumentOutAP();
-                    } else {
-                        informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
                     }
                 } else {
                     informationLabel.setText("Data wzorcowania jest wcześniejsza niż data przyjęcia !");
@@ -133,6 +136,11 @@ public class calibratedInstrumentViewController {
             }
         }
     }
+
+    /**
+     * Metoda służy do dodawania przyrządu do rejestru wzorcowania w zakresie AP.
+     * Zawiera mechanizmu kontroli prawidłowości danych
+     */
     private void calibrateInstrumentInAP() {
         Dao<registerModel, Integer> registerDao = null;
         QueryBuilder<registerModel, Integer> registerQueryBuilder = null;
@@ -146,7 +154,7 @@ public class calibratedInstrumentViewController {
             result = registerDao.query(prepare);
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         if (result.isEmpty()) {
             try {
@@ -187,10 +195,16 @@ public class calibratedInstrumentViewController {
                 Close.closeVBoxWindow(mainVBox);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
+        }else {
+            informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
         }
     }
+    /**
+     * Metoda służy do dodawania przyrządu do rejestru wzorcowania poza zakresem AP.
+     * Zawiera mechanizmu kontroli prawidłowości danych
+     */
     private void calibrateInstrumentOutAP(){
         Dao<register2Model, Integer> registerDao = null;
         QueryBuilder<register2Model, Integer> registerQueryBuilder = null;
@@ -209,7 +223,7 @@ public class calibratedInstrumentViewController {
             result = registerDao.query(prepare);
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         if (result.isEmpty()) {
             try {
@@ -247,10 +261,18 @@ public class calibratedInstrumentViewController {
                 Close.closeVBoxWindow(mainVBox);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
+        }else {
+            informationLabel.setText("Data wzorcowania jest wcześniejsza niż ostatnia w rejestrze!");
         }
     }
+
+    /**
+     * Metoda służy do tworzenia numeru karty wzorcowania poza zakresem AP
+     * @param number
+     * @return
+     */
     private String getCardNumber(Integer number){
         if(number <= 9){
             return "000"+String.valueOf(number);
@@ -262,6 +284,12 @@ public class calibratedInstrumentViewController {
             return String.valueOf(number);
         }
     }
+
+    /**
+     * Metoda służy do budowy numeru świadectwa wzorcowania poza zakresem AP
+     * @param month
+     * @return
+     */
     private String getCertificateNumber(Integer month) {
         if (month <= 9) {
             return "0" + String.valueOf(month);

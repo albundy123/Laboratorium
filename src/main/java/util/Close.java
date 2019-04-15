@@ -5,6 +5,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Klasa zawierające metody do zamykania okien.
+ */
 public class Close {
     public static void closeVBoxWindow(VBox vBox){
         Stage window = (Stage)vBox.getScene().getWindow();

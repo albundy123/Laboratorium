@@ -17,22 +17,25 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
 import model.fxModel.commonFxModel;
-
+import util.showAlert;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-//Kontroler odpowiada za obsługę widoku CommonInstrumentView
+
+/**
+ * Klasa kontrolera odpowiada ze obsługę widoku CommonInstrumentView, w którym można dodawać, edytować lub usuwać wartości z tabel takich jak nazwy przyrządu itd.
+ */
 public class commonInstrumentViewController {
     public commonInstrumentViewController() {}
-//Deklaracje stałych do poszczególnych widoków
+    //Deklaracje stałych do poszczególnych widoków
     private static final String NAME_VIEW = "/instrument/newInstrumentNameView.fxml";
     private static final String TYPE_VIEW = "/instrument/newInstrumentTypeView.fxml";
     private static final String PRODUCER_VIEW = "/instrument/newInstrumentProducerView.fxml";
     private static final String RANGE_VIEW = "/instrument/newInstrumentRangeView.fxml";
     private static final String UNIT_VIEW = "/instrument/newInstrumentUnitView.fxml";
     private static final String YEAR_VIEW = "/admin/yearView.fxml";
-//Wstrzyknięcie elementów z FXMLa
+    //Wstrzyknięcie elementów z FXMLa
     @FXML
     private TableView<commonFxModel> commonTableView;
     @FXML
@@ -43,7 +46,7 @@ public class commonInstrumentViewController {
     public void setValueColumn(String text) {
         this.valueColumn.setText(text);
     }
-//Listy potrzebne do przechowywania danych pobranych z bazy
+    //Listy potrzebne do przechowywania danych pobranych z bazy
     private List<instrumentNameModel> nameList;
     private List<instrumentTypeModel> typeList;
     private List<instrumentProducerModel> producerList;
@@ -80,7 +83,7 @@ public class commonInstrumentViewController {
         commonTableView.setItems(commonObservableList);
         commonTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> setEditedElementFromList(newValue));
     }
-//Pobieranie danych z bazy dla poszczególnych rodzajów danych
+    /**Pobieranie nazw przyrządów z bazy danych*/
     public void getNames(){
         commonObservableList.clear();
         try {
@@ -91,9 +94,10 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobieranie typów przyrządów z bazy danych*/
     public void getTypes(){
         commonObservableList.clear();
         try {
@@ -104,9 +108,10 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobieranie producentów przyrządów z bazy danych*/
     public void getProducers(){
         commonObservableList.clear();
         try {
@@ -117,9 +122,10 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobieranie zakresów pomiarowych z bazy danych*/
     public void getRanges(){
         commonObservableList.clear();
         try {
@@ -130,9 +136,10 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobieranie jednostek bazy danych*/
     public void getUnits(){
         commonObservableList.clear();
         try {
@@ -143,9 +150,10 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Pobieranie lat bazy danych*/
     public void getYears(){
         commonObservableList.clear();
         try {
@@ -156,7 +164,7 @@ public class commonInstrumentViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     //@FXML oznacza że metody są podpięte do przycisków
@@ -177,14 +185,19 @@ public class commonInstrumentViewController {
                     instrumentUnitDao.delete(new unitModel(editedElementFromList.getIdCommon(),editedElementFromList.getCommonString()));
                     getUnits();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    showAlert.display(e.getMessage());
                 }
             } else {
                 deleteParameter();
             }
         }
     }
-    private void addNewParameter(){//W zależności od tego co chcemy dodać ładuje się inny widok i inna jest obsługa przycisków
+
+    /**
+     * Metoda służy do dodawania nowych wartości do tabel z nazwami przyrządów, typami przyrządów itd
+     * W zależności od tego co chcemy dodać ładuje się inny widok i inna jest obsługa przycisków
+     */
+    private void addNewParameter(){
         if(parameter==1){
             newInstrumentNameController=loadWindow(newInstrumentNameController, NAME_VIEW,"Nazwy przyrządów");
             newInstrumentNameController.setEditedInstrumentName(null);
@@ -211,7 +224,11 @@ public class commonInstrumentViewController {
             yearController.setCommonInstrumentController(this);
         }
     }
-    private void editParameter(){//W zależności od tego co chcemy wyedytować ładuje się inny widok i inna jest obłsuga przycisków
+    /**
+     * Metoda służy do edycji parametrów takich jak nazwa przyrządu, typ przyrządu itd.
+     * W zależności od tego co chcemy wyedytować ładuje się inny widok i inna jest obłsuga przycisków
+     */
+    private void editParameter(){
         if(editedElementFromList!=null) {
             if (parameter == 1) {
                 newInstrumentNameController = loadWindow(newInstrumentNameController, NAME_VIEW, "Nazwy przyrządów");
@@ -246,7 +263,10 @@ public class commonInstrumentViewController {
             }
         }
     }
-    private void deleteParameter(){//Podobnie jak powyżej
+    /**
+     * Metoda służy do usuwania wybranego elementu z bazy danych, może to być nazwa przyrządu, typ przyrządu itd
+     */
+    private void deleteParameter(){
         try {
             if(parameter==6){
                 Dao<yearModel, Integer> yearDao = DaoManager.createDao(dbSqlite.getConnectionSource(),yearModel.class);
@@ -286,9 +306,17 @@ public class commonInstrumentViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**
+     * Metoda służy do ładowania różnych okien. Okna zbudowana są analogicznie.
+     * @param controller
+     * @param resource
+     * @param title
+     * @param <T>
+     * @return
+     */
     private <T> T loadWindow(T controller,String resource, String title){//Generyczna metoda do otwierania widoków
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         try {
@@ -300,10 +328,16 @@ public class commonInstrumentViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         return controller;
     }
+
+    /**
+     * Metoda rozbija zakres przyrządu na poszczególne pola, z których się składa
+     * @param range
+     * @param controller
+     */
     private void decodeRange(String range, newInstrumentRangeViewController controller){//Umożliwia edycję zakresu pomiarowego, który ejst specjalnie zbudowanym stringiem
         String begin=range.substring(1,range.indexOf('d')-1);
         String end=range.substring(range.indexOf('o')+1,range.indexOf(')'));
@@ -312,7 +346,12 @@ public class commonInstrumentViewController {
         controller.setNewInstrumentRangeTextField2(end);
         controller.setNewInstrumentRangeUnitComboBox(unit);
     }
-    private String getColumnName(){//Zmienia nagłówke pierwszej kolumny w zależności od tego, które okno otwarliśmy
+
+    /**
+     * Metoda zmienia nagłówek pierwszej kolumny w wyświetlanym kontrolerze TableView w zależności od tego, które okno otwarliśmy
+     * @return
+     */
+    private String getColumnName(){
         if (parameter == 1) {
             return "instrumentName_id";
         } else if (parameter == 2) {

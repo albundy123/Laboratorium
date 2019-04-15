@@ -11,10 +11,14 @@ import model.storehouseModel;
 import model.userModel;
 import util.Close;
 import util.Converter;
+import util.showAlert;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna, które służy do wydawania przyrządu z magazynu
+ */
 public class leftInstrumentViewController {
     public leftInstrumentViewController() {}
 
@@ -84,6 +88,9 @@ public class leftInstrumentViewController {
         leftDateDatePicker.setConverter(Converter.getConverter());
     }
 
+    /**
+     * Metoda odpowiada za wydawanie przyrządu z magazynu.
+     */
     @FXML
     public void leftInstrument(){
         if(leftInstrument!=null) {
@@ -99,7 +106,7 @@ public class leftInstrumentViewController {
                             storehouseDao.update(leftInstrument);
                             dbSqlite.closeConnection();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            showAlert.display(e.getMessage());
                         }
                         Close.closeVBoxWindow(mainVBox);
                         storehouseMainController.getStorehouseList();
@@ -115,7 +122,7 @@ public class leftInstrumentViewController {
                             storehouseDao.update(leftInstrument);
                             dbSqlite.closeConnection();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            showAlert.display(e.getMessage());
                         }
                         Close.closeVBoxWindow(mainVBox);
                         storehouseMainController.getStorehouseList();

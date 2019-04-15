@@ -15,11 +15,14 @@ import javafx.stage.Stage;
 import model.instrumentProducerModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do dodawania nowego producenta przyrządu newInstrumentProducerView.fxml
+ */
 public class newInstrumentProducerViewController {
     public newInstrumentProducerViewController() {}
 
@@ -97,7 +100,7 @@ public class newInstrumentProducerViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                 showAlert.display(e.getMessage());
             }
         }else{
             newInstrumentProducerLabel.setText("Wprowadź prawidłowy typ przyrządu !");

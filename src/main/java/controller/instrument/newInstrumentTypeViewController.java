@@ -15,10 +15,13 @@ import javafx.stage.Stage;
 import model.instrumentTypeModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do dodawania nowego typu przyrządu newInstrumentTypeView.fxml
+ */
 public class newInstrumentTypeViewController {
     public newInstrumentTypeViewController() {}
 
@@ -93,7 +96,7 @@ public class newInstrumentTypeViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             newInstrumentTypeLabel.setText("Wprowadź prawidłowy typ przyrządu !");

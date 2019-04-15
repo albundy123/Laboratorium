@@ -14,10 +14,14 @@ import javafx.scene.layout.VBox;
 import model.instrumentNameModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do dodawania nowej nazwy przyrządu. newInstrumentNameView.fxml
+ */
 public class newInstrumentNameViewController {
     public newInstrumentNameViewController() {}
 
@@ -56,6 +60,7 @@ public class newInstrumentNameViewController {
     @FXML
     private void initialize() {
     }
+
     @FXML
     private void addNewName(){
         if(!newInstrumentNameTextField.getText().equals("")) {
@@ -95,7 +100,7 @@ public class newInstrumentNameViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             newInstrumentNameLabel.setText("Wprowadź prawidłową nazwę przyrządu !");

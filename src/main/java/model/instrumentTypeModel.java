@@ -2,7 +2,9 @@ package model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/**
+ * Klasa implementująca model danych w tabeli INSTRUMENT_TYPES
+ */
 @DatabaseTable(tableName = "INSTRUMENT_TYPES")
 public class instrumentTypeModel {
     @DatabaseField(generatedId = true)
@@ -12,12 +14,10 @@ public class instrumentTypeModel {
 
     public instrumentTypeModel() {
     }
-
     public instrumentTypeModel(Integer idInstrumentType, String instrumentType) {
         this.idInstrumentType = idInstrumentType;
         this.instrumentType = instrumentType;
     }
-
     public Integer getIdInstrumentType() {
         return idInstrumentType;
     }

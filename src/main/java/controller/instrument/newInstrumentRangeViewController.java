@@ -20,11 +20,14 @@ import model.instrumentRangeModel;
 import model.unitModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Klasa kontrolera przeznaczonego do obsługi okna do dodawania nowego zakresu pomiarowego przyrządu newInstrumentRangeView.fxml
+ */
 public class newInstrumentRangeViewController {
     public newInstrumentRangeViewController() {}
 
@@ -117,7 +120,7 @@ public class newInstrumentRangeViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             newInstrumentRangeLabel.setText("Wprowadź prawidłowo zakres pomiarowy !");
@@ -143,7 +146,7 @@ public class newInstrumentRangeViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
 
     }

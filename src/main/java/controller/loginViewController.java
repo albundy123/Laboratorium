@@ -15,37 +15,43 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.userModel;
 import util.Close;
+import util.showAlert;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialna za obsługę okna logowania
+ */
 public class loginViewController {
     public loginViewController() {}
 
-    //Wstrzykujemy pola z FXMLa, te na których wykonujemy jakieś operacje dlatego @FXML przed każdym
+    /*Wstrzykujemy pola z FXMLa, te na których wykonujemy jakieś operacje dlatego @FXML przed każdym */
     @FXML
-    private ImageView loginImageView;   //Kontrolka ImageView do wyświetlania obrazu człowieczka
+    private ImageView loginImageView;   /*Kontrolka ImageView do wyświetlania obrazu człowieczka*/
     @FXML
-    private TextField loginTextField;   //Kontrolka TextField do wpisania loginu użytkownika
+    private TextField loginTextField;   /*Kontrolka TextField do wpisania loginu użytkownika*/
     @FXML
-    private PasswordField passwordField;    //Kontrolka PasswordField do wpisania hasła użytkownika
+    private PasswordField passwordField;    /*Kontrolka PasswordField do wpisania hasła użytkownika*/
     @FXML
-    private Label loginLabel;               //Kontrolka Label do wyświetlania informacja o nieprawidłowych danych
+    private Label loginLabel;               /*Kontrolka Label do wyświetlania informacja o nieprawidłowych danych*/
     @FXML
-    private AnchorPane mainAnchorPane;      //Główny kontener AnchorPane, nadrzędny kontener okna logowania
-    //Pola
-    private userModel user;                 //Pole użytkownik tworzone jest przy logowaniu i następnie pobierane przez następne kontrolery
-    public userModel getUser() {return user;} //Setter i Getter
+    private AnchorPane mainAnchorPane;      /*Główny kontener AnchorPane, nadrzędny kontener okna logowania*/
+    private userModel user;                 /*Pole użytkownik tworzone jest przy logowaniu i następnie pobierane przez następne kontrolery*/
+    public userModel getUser() {return user;} /*Setter i Getter*/
     private void setUser(userModel user) {this.user = user;}
-    private mainViewController mainWindowController;  //Obiekt kontrolera okna MainWindow (głównego okna programu)
+    private mainViewController mainWindowController;  /*Obiekt kontrolera okna MainWindow (głównego okna programu)*/
 
     @FXML
-    private void initialize(){  //Funkcja initialize wykonuje się bezpośrednio po konstruktorze nie będę tego powtarzał we wszystkich klasach więc napiszę tutaj. Można tutaj konfigurować różne rzeczy.
+    private void initialize(){
         Image image = new Image("/images/user.jpg");
         loginImageView.setImage(image);
     }
+    /**
+     * Metoda wywołuje się po wciśnięciu przycisku loguj. Sprawdza czy w bazie danych jest użytkownik o danym logini i haśle
+     */
     @FXML
-    private void logIn(){  //Metoda wywołuje się po wciśnięciu przycisku loguj.
+    private void logIn(){
         try {
             Dao<userModel, Integer> userDao= DaoManager.createDao(dbSqlite.getConnectionSource(), userModel.class);
             QueryBuilder<userModel, Integer> userQueryBuilder = userDao.queryBuilder();
@@ -61,17 +67,21 @@ public class loginViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     @FXML
     private void cancelLogIn(){  //Metoda wywołuje się po wciśnięciu przycisku anuluj
         Close.closeAnchorPaneWindow(mainAnchorPane);
     }
-    private void loadUserView(){  //Otwieranie głównego okna programu
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));      //Podawanie ścieżki do FXMLA
+
+    /**
+     * Metoda odpowiedzialna za otwierania głównego okna programu opisanego w pliku mainView.fxml
+     */
+    private void loadUserView(){
         try {
-            SplitPane mainSplitPane = loader.load();                                                    //Ładowanie FXMLA, równocześnie powoduje utworzenie kontrolera związanego z tym FXMLem
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/mainView.fxml"));      //Podawanie ścieżki do FXMLA
+            SplitPane mainSplitPane = loader.load();                                                    //Ladowanie FXMLA, rownocześnie powoduje utworzenie kontrolera związanego z tym FXMLem
             mainWindowController=loader.getController();                //Przechwytujemy ten kontroler
             if(mainWindowController!=null){
                 mainWindowController.setLoginMainController(this);      //mainWindowController zawiera
@@ -80,11 +90,10 @@ public class loginViewController {
                 if(user.getPersmissionLevel().equals("user")) {
                     mainWindowController.adminTabDisable();
                 }
-                System.out.println("Skonczylem ladowanko"); //Wyswietli dopiero jak zbuduje całe główne okno wraz z zakładkami
             }
             showWIndow(mainSplitPane);
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     private void showWIndow(SplitPane mainSplitPane){

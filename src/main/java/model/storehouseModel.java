@@ -7,7 +7,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 import static com.j256.ormlite.field.DataType.*;
-
+/**
+ * Klasa implementująca model danych w tabeli STOREHOUSE
+ */
 @DatabaseTable (tableName = "STOREHOUSE")
 public class storehouseModel {
 

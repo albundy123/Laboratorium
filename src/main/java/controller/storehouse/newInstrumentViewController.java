@@ -20,10 +20,15 @@ import javafx.stage.Stage;
 import model.*;
 import util.Close;
 import util.Converter;
+import util.showAlert;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna dodawania nowego przyrządu.
+ */
 public class newInstrumentViewController {
     public newInstrumentViewController() {}
     //Deklaracja stałych ze ścieżkami do widoków fxml
@@ -274,6 +279,11 @@ public class newInstrumentViewController {
             addNewInstrumentAfterCheckData();
         }
     }
+
+    /**
+     * Metoda odpowiada za dodanie nowego przyrządu do tabeli storehouse.
+     * Metoda posiada mechanizmy kontroli prawidłowości wprowadzonych danych.
+     */
     private void addNewInstrumentAfterCheckData(){
         try {
             setUser(storehouseMainController.getUser());
@@ -314,10 +324,13 @@ public class newInstrumentViewController {
             storehouseMainController.getStorehouseList();
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
-    //Metoda służy do konfiguracji ComboBoxów, żeby można było filtrować w nich wartości
+
+    /**
+     * Metoda służy do konfiguracji ComboBoxów, żeby można było filtrować w nich wartości
+     */
     private void initComboBox(ComboBox<String> comboBox, FilteredList<String> filteredList){
         comboBox.setEditable(true);
         comboBox.getEditor().textProperty().addListener((v, oldValue, newValue) -> {
@@ -335,7 +348,11 @@ public class newInstrumentViewController {
         });
         comboBox.setItems(filteredList);
     }
-    //Prosta metoda do sprawdzania poprawności danych
+
+    /**
+     * Prosta metoda do sprawdzania poprawności danych. W razie błędów wyświetla alert
+     */
+
     private boolean isValidInstrumentData() {
         String errorMessage = "";
         if (getName(instrumentNameComboBox.getValue()) == null) {
@@ -370,6 +387,11 @@ public class newInstrumentViewController {
             return false;
         }
     }
+
+    /**
+     * Metoda służy do uzupełniania danych wprowadzanego przyrządu, jeśli był on już wcześniej w magazynie. Wyszukiwanie odbywa
+     * się po numerze fabrycznym
+     */
     @FXML
     private void checkBySerialNumber(){ //metody do przyspieszania wprowadzania nowych przyrządów na stan magazynu
         if(!serialNumberTextField.getText().isEmpty()){
@@ -400,10 +422,14 @@ public class newInstrumentViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
+    /**
+     * Metoda służy do uzupełniania danych wprowadzanego przyrządu, jeśli był on już wcześniej w magazynie. Wyszukiwanie odbywa
+     * się po numerze identyfikacyjnym
+     */
     @FXML
     private void checkByIdentificationNumber(){
         if(!identificationNumberTextField.getText().isEmpty()){
@@ -434,7 +460,7 @@ public class newInstrumentViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }

@@ -1,7 +1,9 @@
 package model.fxModel;
 
-import java.util.Date;
 
+/**
+ * Obiekty klasy storehouseFxModel są wyświetlane w kontrolerze TableView w zakładce Storehouse
+ */
 public class storehouseFxModel {
     private Integer indexOfStorehouseModelList;
     private Integer idInstrument; //To trzeba zmienić na idStorehouse ale poki co musi byc

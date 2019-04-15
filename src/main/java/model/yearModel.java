@@ -3,6 +3,9 @@ package model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * Klasa implementująca model danych w tabeli YEARS
+ */
 @DatabaseTable(tableName = "YEARS")
 public class yearModel {
     @DatabaseField(generatedId = true)

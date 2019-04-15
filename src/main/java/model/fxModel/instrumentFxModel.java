@@ -1,9 +1,9 @@
 package model.fxModel;
 
 
-import com.j256.ormlite.field.DatabaseField;
-import model.*;
-
+/**
+ * Obiekty klasy instrumentFxModel są wyświetlane w kontrolerze TableView w zakładce Przyrządy
+ */
 public class instrumentFxModel {
     private Integer indexOfInstrumentModelList;
     private Integer idInstrument;

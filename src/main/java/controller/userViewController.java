@@ -15,11 +15,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.userModel;
+import util.showAlert;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna Użytkownicy
+ */
 public class userViewController {
     public userViewController() {}
 
@@ -72,7 +76,7 @@ public class userViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     @FXML
@@ -93,7 +97,7 @@ public class userViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -107,7 +111,7 @@ public class userViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     private void initializeTableView(){

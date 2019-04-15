@@ -10,9 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.registerModel;
 import util.Close;
+import util.showAlert;
 
 import java.sql.SQLException;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna edycji numery świadectwa wzorcowania editCertificateNumberView.fxml
+ */
 public class editCertificateNumberViewController {
     public editCertificateNumberViewController() {}
 
@@ -56,7 +60,7 @@ public class editCertificateNumberViewController {
                 Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
                 registerDao.update(editedRegisterElement);
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
             Close.closeVBoxWindow(mainVBox);
         }else{

@@ -13,11 +13,15 @@ import model.registerModel;
 import model.storehouseModel;
 import util.Close;
 import util.Converter;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna edycji daty wzorcowania editCalibrationView.fxml
+ */
 public class editCalibrationDateViewController {
     public editCalibrationDateViewController(){}
 
@@ -63,7 +67,7 @@ public class editCalibrationDateViewController {
                 storehouseDao.update(editedStorehouseElement);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
             Close.closeVBoxWindow(mainVBox);
         }else{
@@ -74,6 +78,12 @@ public class editCalibrationDateViewController {
     public void cancelSaveCalibrationDate(){
         Close.closeVBoxWindow(mainVBox);
     }
+
+    /**
+     * Metoda służy do sprawdzania czy wprowadzona data wzorcowania nie stoi w sprzeczności z innymi datami.
+     * @param CalibrationDate
+     * @return Boolean
+     */
     public Boolean checkCalibrationDate(LocalDate CalibrationDate){
         LocalDate next=null;
         LocalDate previous=null;
@@ -121,7 +131,7 @@ public class editCalibrationDateViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         if((!CalibrationDate.isBefore(previous)) &&(!CalibrationDate.isAfter(next))&&(!CalibrationDate.isBefore(addDate))&&(!CalibrationDate.isAfter(leftDate))){
             return true;

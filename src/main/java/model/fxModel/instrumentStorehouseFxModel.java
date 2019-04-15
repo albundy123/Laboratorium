@@ -1,5 +1,7 @@
 package model.fxModel;
-
+/**
+ * Obiekty klasy instrumentStorehouseFxModel są wyświetlane w kontrolerze TableView w zakładce Przyrządy, w szczegółach dotyczących przyrządów
+ */
 public class instrumentStorehouseFxModel {
 
     private Integer idStorehouse;

@@ -7,11 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import util.showAlert;
 
 import java.io.IOException;
 
 
-
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę głównego okna Administratora
+ */
 public class mainAdminViewController {
     public  mainAdminViewController() {}
 
@@ -34,7 +37,7 @@ public class mainAdminViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     @FXML
@@ -91,7 +94,7 @@ public class mainAdminViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
 }

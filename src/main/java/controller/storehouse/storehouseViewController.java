@@ -33,8 +33,11 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import util.showAlert;
 
-
+/**
+ * Klasa kontrolera do obsługi okna Magazyn
+ */
 public class storehouseViewController {
     public  storehouseViewController() {}
 
@@ -150,8 +153,11 @@ public class storehouseViewController {
         initializeTableView();
         addFilter();
     }
-    //Pobiera listę obiektów storehouseModel z tabeli "STOREHOUSE" wypełnia jednocześnie listę obiektów storehouseFxObservableList
-    //Oczywiscie możemy wybrać co chcemy pobrać z super wielkiej tabeli tak przyszłościowo :)
+
+    /**
+     * Pobiera listę obiektów storehouseModel z tabeli "STOREHOUSE" wypełnia jednocześnie listę obiektów storehouseFxObservableList
+     */
+
     public void getStorehouseList(){
         try {
             storehouseFxObservableList.clear();
@@ -180,10 +186,10 @@ public class storehouseViewController {
             }
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
-    //Przypisywanie pól storehouseFxObservableList do storehouseTableView
+    /**Metoda do konfiguracji kontrolera TableView. Przypisywanie pól storehouseFxObservableList do storehouseTableView */
     private void initializeTableView(){
         idInstrumentColumn.setCellValueFactory(new PropertyValueFactory<>("indexOfStorehouseModelList"));
         instrumentNameColumn.setCellValueFactory(new PropertyValueFactory<>("instrumentName"));
@@ -207,7 +213,7 @@ public class storehouseViewController {
         });
         storehouseTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.56));
     }
-    @FXML   //Uruchamia okno edycji przyrządu
+    @FXML   /**Uruchamia okno edycji przyrządu*/
     private void editInstrument(){
         if(storehouseFxElementFromList!=null) {
             try {
@@ -227,11 +233,12 @@ public class storehouseViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
-    private void setEditedInstrumentValues(){       //Wypełnia pola w oknie do edycji przyrządu
+    /**Wypełnia pola w oknie do edycji przyrządu*/
+    private void setEditedInstrumentValues(){
         editedInstrumentController.setInstrumentNameComboBox(storehouseFxElementFromList.getInstrumentName());
         editedInstrumentController.setInstrumentTypeComboBox(storehouseFxElementFromList.getInstrumentType());
         editedInstrumentController.setInstrumentProducerComboBox(storehouseFxElementFromList.getInstrumentProducer());
@@ -240,7 +247,8 @@ public class storehouseViewController {
         editedInstrumentController.setInstrumentRangeComboBox(storehouseFxElementFromList.getInstrumentRange());
         editedInstrumentController.setInstrumentClientComboBox2(storehouseFxElementFromList.getClient());
     }
-    private void setCalibratedInstrumentLabels(){   //Wypełnia labele w oknie przenoszenia przyrządu do wzorcowania
+    /**Wypełnia labele w oknie przenoszenia przyrządu do wzorcowania*/
+    private void setCalibratedInstrumentLabels(){   /**Wypełnia labele w oknie przenoszenia przyrządu do wzorcowania*/
         calibratedInstrumentController.setInstrumentNameLabel(storehouseFxElementFromList.getInstrumentName());
         calibratedInstrumentController.setInstrumentTypeLabel(storehouseFxElementFromList.getInstrumentType());
         calibratedInstrumentController.setInstrumentProducerLabel(storehouseFxElementFromList.getInstrumentProducer());
@@ -249,7 +257,8 @@ public class storehouseViewController {
         calibratedInstrumentController.setInstrumentRangeLabel(storehouseFxElementFromList.getInstrumentRange());
         calibratedInstrumentController.setClientLabel(storehouseFxElementFromList.getClient());
     }
-    private void setLeftInstrumentLabels(){         //Wypełnia labele w oknie wydawania przyrządu
+    /**Wypełnia labele w oknie wydawania przyrządu*/
+    private void setLeftInstrumentLabels(){
         leftInstrumentController.setInstrumentNameLabel(storehouseFxElementFromList.getInstrumentName());
         leftInstrumentController.setInstrumentTypeLabel(storehouseFxElementFromList.getInstrumentType());
         leftInstrumentController.setInstrumentProducerLabel(storehouseFxElementFromList.getInstrumentProducer());
@@ -258,8 +267,9 @@ public class storehouseViewController {
         leftInstrumentController.setInstrumentRangeLabel(storehouseFxElementFromList.getInstrumentRange());
         leftInstrumentController.setClientLabel(storehouseFxElementFromList.getClient());
     }
+    /**Uruchamia okno dodawania nowego przyrządu do magazynu*/
     @FXML
-    private void addNewInstrument(){    //Uruchamia okno dodawania nowego przyrządu do magazynu
+    private void addNewInstrument(){
             try {
                 setUser(mainWindowController.getUser());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/storehouse/newInstrumentView.fxml"));
@@ -268,8 +278,7 @@ public class storehouseViewController {
                 if (newInstrumentController != null){
                     newInstrumentController.setStorehouseMainController(this);
                     newInstrumentController.setUser(user);
-                 //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
-                }
+                   }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
                 window.setTitle("Dodaj przyrząd do magazynu");
@@ -277,11 +286,12 @@ public class storehouseViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
     }
+    /**Uruchamia okno przenoszenia przyrządu do wzorcowania*/
     @FXML
-    public void calibrateInstrument1(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
+    public void calibrateInstrument1(){
         if(storehouseFxElementFromList!=null && storehouseFxElementFromList.getLeftDate().equals("")) {
             if(!storehouseFxElementFromList.getCalibrationDate().equals("")){
                 if(ConfirmBox.display("Ponowne wzorcowanie!", "Czy chcesz wzorcować ten przyrząd ponownie ?")){
@@ -292,8 +302,9 @@ public class storehouseViewController {
             }
         }
     }
+    /**Uruchamia okno przenoszenia przyrządu do wzorcowania*/
     @FXML
-    public void calibrateInstrument2(){  //Uruchamia okno przenoszenia przyrządu do wzorcowania
+    public void calibrateInstrument2(){
         if(storehouseFxElementFromList!=null && storehouseFxElementFromList.getLeftDate().equals("")) {
             if(!storehouseFxElementFromList.getCalibrationDate().equals("")){
                 if(ConfirmBox.display("Ponowne wzorcowanie!", "Czy chcesz wzorcować ten przyrząd ponownie ?")){
@@ -321,8 +332,7 @@ public class storehouseViewController {
                 calibratedInstrumentController.setWhichRegister(whichRegister);
                 calibratedInstrumentController.setRegisterLabel(label);
                 setCalibratedInstrumentLabels();
-                //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
-            }
+                }
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle("Dodaj przyrząd do wzorcowania");
@@ -330,11 +340,12 @@ public class storehouseViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+    /**Uruchamia okno wydawania przyrządu*/
     @FXML
-    public void leftInstrument(){   //Uruchamia okno wydawania przyrządu
+    public void leftInstrument(){
         if(storehouseFxElementFromList!=null && storehouseFxElementFromList.getLeftDate().equals("")) {
             if(storehouseFxElementFromList.getCalibrationDate().equals("")){
                 if(ConfirmBox.display("Przyrząd  nie był wzorcowany !", "Czy na pewno chcesz go wydać bez wzorcowania ?")){
@@ -358,18 +369,21 @@ public class storehouseViewController {
                 leftInstrumentController.setLeftInstrument(storehouseElement);
                 leftInstrumentController.setUser(user);
                 setLeftInstrumentLabels();
-                //   newInstrumentController.setNewInstrumentModel(storehouseModelList.get(editedStorehouseElementFromList.getIndexOfStorehouseModelList()).getInstrument());
             }
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
-            window.setTitle("Dodaj przyrząd do wzorcowania");
+            window.setTitle("Wydaj przyrząd z magazynu");
             Scene scene = new Scene(vBox);
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
+
+    /**
+     * Metoda dodaje filtrowanie do tabeli w Magazynie
+     */
     private void addFilter(){
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{
             filteredStorehouseFxObservableList.setPredicate(item -> {
@@ -403,7 +417,7 @@ public class storehouseViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -426,7 +440,7 @@ public class storehouseViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -485,7 +499,7 @@ public class storehouseViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
         return yearObservableList;
     }

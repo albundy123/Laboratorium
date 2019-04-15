@@ -9,10 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Główna klasa. Odpowiedzialna za załadowanie okna logowania.
+ */
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //dbSqlite.initDatabase();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
         AnchorPane anchorPane = loader.load();
         Scene scene = new Scene(anchorPane);

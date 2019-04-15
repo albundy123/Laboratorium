@@ -12,10 +12,14 @@ import javafx.scene.layout.VBox;
 import model.yearModel;
 import util.Close;
 import util.ConfirmBox;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna z wyswietlanymi latami
+ */
 public class yearViewController {
     public yearViewController() {}
 
@@ -45,6 +49,9 @@ public class yearViewController {
     @FXML
     private void initialize() {}
 
+    /**
+     * Metoda służy do dodawania nowego roku do tabeli z latami. Na początku każdego roku administrator musi dodawać kolejny rok.
+     */
     @FXML
     private void addNewYear(){
         if(!yearTextField.getText().equals("")) {
@@ -82,7 +89,7 @@ public class yearViewController {
                 }
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }else{
             yearLabel.setText("Wprowadź prawidłowy rok !");

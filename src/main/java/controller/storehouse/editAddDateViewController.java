@@ -10,10 +10,14 @@ import javafx.scene.layout.VBox;
 import model.storehouseModel;
 import util.Close;
 import util.Converter;
+import util.showAlert;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna służącego do edycji Daty przyjęcia.
+ */
 public class editAddDateViewController {
     public editAddDateViewController() {}
 
@@ -51,7 +55,7 @@ public class editAddDateViewController {
                 storehouseDao.update(editedStorehouseElement);
                 dbSqlite.closeConnection();
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
             Close.closeVBoxWindow(mainVBox);
             storehouseMainController.getStorehouseList();
@@ -59,6 +63,11 @@ public class editAddDateViewController {
             addDateInformationLabel.setText("Nieprawidłowa data przyjęcia !");
         }
     }
+
+    /**
+     * Metoda służy do sprawdzenia czy podana data jest prawidłowa i nie stoi w sprzeczności z powiązanymi z nią datami
+     * @return
+     */
     private Boolean checkAddDate() {
         LocalDate calibrationDate;
         LocalDate leftDate;

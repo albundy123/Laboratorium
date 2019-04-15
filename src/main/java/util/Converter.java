@@ -5,12 +5,16 @@ import javafx.util.StringConverter;
 import model.fxModel.instrumentStorehouseFxModel;
 import model.fxModel.storehouseFxModel;
 import model.storehouseModel;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Klasa zawiera 3 metody służące do konwersji.
+ */
 public class Converter {
-
+    /**
+     * Metoda do konwersji daty na format ISO. Wykorzystywana w kontrolerach DatePicker
+     */
     public static StringConverter<LocalDate> converter;
     public static StringConverter<LocalDate> getConverter(){
         converter = new StringConverter<LocalDate>() {
@@ -35,6 +39,11 @@ public class Converter {
         };
         return converter;
     }
+    /**
+     * Metoda konwertuje obiekt typu storehouseModel na obiekt typu storehouseFxModel
+     * @param model
+     * @return obiekt typu storehouseFxModel
+     */
     public static storehouseFxModel convertToStorehouseFx(storehouseModel model){
         storehouseFxModel modelFx=new storehouseFxModel();
         modelFx.setIndexOfStorehouseModelList(0);
@@ -51,6 +60,11 @@ public class Converter {
         modelFx.setLeftDate(model.getLeftDate());
         return modelFx;
     }
+    /**
+     * Metoda konwertuje obiekt typu storehouseModel na obiekt typu instrumentStorehouseFxModel
+     * @param model
+     * @return obiekt typu storehouseFxModel
+     */
     public static instrumentStorehouseFxModel convertToInstrumentStorehouseFx(storehouseModel model){
         instrumentStorehouseFxModel modelFx=new instrumentStorehouseFxModel();
         if(model.getUserWhoAdd()!=null) {

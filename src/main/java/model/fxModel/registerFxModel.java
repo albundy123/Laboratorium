@@ -1,5 +1,7 @@
 package model.fxModel;
-
+/**
+ * Obiekty klasy registerFxModel są wyświetlane w kontrolerze TableView w zakładce Rejestr w zakresie AP i Rejest poza zakresem AP
+ */
 public class registerFxModel {
     private Integer indexOfRegisterModelList;
     private Integer idRegisterByYear;

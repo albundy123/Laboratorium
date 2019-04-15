@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import util.showAlert;
 
 
 import java.io.FileOutputStream;
@@ -29,6 +30,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Klasa kontrolera odpowiedzialnego za obsługę okna Zleceniodawcy
+ */
 public class clientViewController {
     public clientViewController() {}
 
@@ -115,7 +119,7 @@ public class clientViewController {
             window.setScene(scene);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     @FXML
@@ -138,7 +142,7 @@ public class clientViewController {
                 window.setScene(scene);
                 window.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                showAlert.display(e.getMessage());
             }
         }
     }
@@ -171,7 +175,7 @@ public class clientViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
     public void getActiveClients(){
@@ -186,10 +190,10 @@ public class clientViewController {
             });
             dbSqlite.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert.display(e.getMessage());
         }
     }
-
+    /** Metoda do konfiguracji TableView */
     private void initializeTableView(){
         idClientColumn.setCellValueFactory(new PropertyValueFactory<>("idClient"));
         shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortName"));
@@ -230,6 +234,7 @@ public class clientViewController {
         editedClientController.setIdEditedClient(client.getIdClient());
         editedClientController.setClientLabel("Klient");
     }
+    /** Metoda wyświetla informacje o kliencie */
     private void showInformation(clientModel client){
         if(client != null){
             shortNameLabel.setText(client.getShortName());
