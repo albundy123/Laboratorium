@@ -9,7 +9,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.showAlert;
 
-import java.io.IOException;
+import java.io.*;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -81,6 +84,31 @@ public class mainAdminViewController {
         commonMainController.getYears();
         commonMainController.setValueColumn("Lata");
         commonMainController.setParameter(6);
+    }
+    @FXML
+    private void copyDataBase() throws IOException {
+        File source = new File("C:/db/baza1.db");
+
+
+        Format formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String fileName = formatter.format(new Date());
+        fileName+=".db";
+
+        File dest = new File("C:/KOPIE CM/KOPIE/Bazy danych/"+fileName);
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
     }
     private void openCommonWindow(String title){
         try {

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="186.0" minWidth="-Infinity" prefHeight="186.0" prefWidth="283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.editCertificateNumberViewController">
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="186.0" minWidth="-Infinity" prefHeight="236.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.editCertificateNumberViewController">
     <children>
         <Label text="Nr Świadectwa Wzorcowania / Protokołu odmowy">
             <VBox.margin>
@@ -29,10 +29,16 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </ComboBox>
-        <Label fx:id="certificateNumberInformationLabel" minHeight="17.0" textFill="RED">
-            <VBox.margin>
-                <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
-            </VBox.margin></Label>
+      <Label text="Numer umowy">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="agreementNumberTextField" alignment="CENTER" promptText="wprowadź numer umowy">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </TextField>
         <HBox alignment="CENTER" minHeight="35.0" prefHeight="48.0" prefWidth="290.0">
             <children>
                 <Button fx:id="saveCertificateNumberButton" mnemonicParsing="false" onAction="#saveCertificateNumber" text="Zapisz" textAlignment="CENTER">
@@ -50,5 +56,9 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </VBox.margin>
         </HBox>
+        <Label fx:id="certificateNumberInformationLabel" minHeight="17.0" textFill="RED">
+            <VBox.margin>
+                <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+            </VBox.margin></Label>
     </children>
 </VBox>

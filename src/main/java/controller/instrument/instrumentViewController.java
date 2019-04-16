@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -113,6 +114,8 @@ public class instrumentViewController {
     private Button editClientButton;
     @FXML
     private Button editInstrumentButton;
+    @FXML
+    private SplitPane instrumentSplitPane;
 
     //Różne listy służądo obsługi TableView itd
     private List<instrumentModel> instrumentModelList = new ArrayList<instrumentModel>(); //Lista instrumentModel z elementami z bazy danych
@@ -183,7 +186,8 @@ public class instrumentViewController {
                 getRegisterList();
             }
         });
-        instrumentTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.7));
+        instrumentTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.6));
+        instrumentSplitPane.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.3));
         idRegisterByYearColumn.setCellValueFactory(new PropertyValueFactory<>("idRegisterByYear"));
         cardNumberColumn.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
         calibrationDateRegisterColumn.setCellValueFactory(new PropertyValueFactory<>("calibrationDate"));
@@ -353,7 +357,7 @@ public class instrumentViewController {
                 registerFxObservableList.add(new registerFxModel(indeks,indeks,registerElement.getCardNumber(),
                         registerElement.getCalibrationDate(), "","","", "",
                         registerElement.getUserWhoCalibrate().getLogin(), registerElement.getCertificateNumber(),
-                        registerElement.getDocumentKind(),registerElement.getState()));
+                        registerElement.getDocumentKind(),registerElement.getAgreementNumber(),registerElement.getState()));
                 indeks++;
             }
             Dao<register2Model, Integer> register2Dao = DaoManager.createDao(dbSqlite.getConnectionSource(),register2Model.class);
@@ -366,7 +370,7 @@ public class instrumentViewController {
                 registerFxObservableList.add(new registerFxModel(indeks,indeks,registerElement.getCardNumber(),
                         registerElement.getCalibrationDate(), "","","", "",
                         registerElement.getUserWhoCalibrate().getLogin(), registerElement.getCertificateNumber(),
-                        registerElement.getDocumentKind(),registerElement.getState()));
+                        registerElement.getDocumentKind(),"",registerElement.getState()));
                 indeks++;
             }
             dbSqlite.closeConnection();

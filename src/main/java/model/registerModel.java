@@ -26,11 +26,13 @@ public class registerModel {
     @DatabaseField
     private String documentKind;
     @DatabaseField
+    private String agreementNumber;
+    @DatabaseField
     private String state;
     public registerModel() {
     }
 
-    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, userModel userWhoCalibrate, String certificateNumber, String documentKind, String state) {
+    public registerModel(Integer idRegister, Integer idRegisterByYear, Integer idStorehouse, String cardNumber, String calibrationDate, instrumentModel instrument, userModel userWhoCalibrate, String certificateNumber, String documentKind, String agreementNumber, String state) {
         this.idRegister = idRegister;
         this.idRegisterByYear = idRegisterByYear;
         this.idStorehouse = idStorehouse;
@@ -40,6 +42,7 @@ public class registerModel {
         this.userWhoCalibrate = userWhoCalibrate;
         this.certificateNumber = certificateNumber;
         this.documentKind = documentKind;
+        this.agreementNumber = agreementNumber;
         this.state = state;
     }
 
@@ -113,6 +116,14 @@ public class registerModel {
 
     public void setDocumentKind(String documentKind) {
         this.documentKind = documentKind;
+    }
+
+    public String getAgreementNumber() {
+        return agreementNumber;
+    }
+
+    public void setAgreementNumber(String agreementNumber) {
+        this.agreementNumber = agreementNumber;
     }
 
     public String getState() {

@@ -172,15 +172,17 @@ public class calibratedInstrumentViewController {
                     if (result.get(0).getCardNumber().contains(year.getYear())) {
                         calibratedInstrument.setIdRegisterByYear(result.get(0).getIdRegisterByYear() + 1);
                         calibratedInstrument.setCardNumber(result.get(0).getIdRegisterByYear() + 1 + "-" + year.getYear());
+                        calibratedInstrument.setCertificateNumber(calibratedInstrument.getCardNumber()+"-P");
                         if(calibratedInstrument.getInstrument().getClient().getFullName().contains("ENERGOPOMIAR")){
-                            calibratedInstrument.setCertificateNumber("EP-"+calibratedInstrument.getCardNumber()+"-P");
+                            calibratedInstrument.setAgreementNumber("EP");
                         }
                         registerDao.update(calibratedInstrument);
                     } else {
                         calibratedInstrument.setIdRegisterByYear(1);
                         calibratedInstrument.setCardNumber("1-" + year.getYear());
+                        calibratedInstrument.setCertificateNumber(calibratedInstrument.getCardNumber()+"-P");
                         if(calibratedInstrument.getInstrument().getClient().getFullName().contains("ENERGOPOMIAR")){
-                            calibratedInstrument.setCertificateNumber("EP-"+calibratedInstrument.getCardNumber()+"-P");
+                            calibratedInstrument.setAgreementNumber("EP");
                         }
                         registerDao.update(calibratedInstrument);
                     }

@@ -55,7 +55,7 @@
         </HBox>
         <TableView fx:id="registerTableView" prefHeight="460.0" prefWidth="1000.0">
             <placeholder>
-                <Label text="Brak wyników. Proszę wczytać dane."/>
+                <Label text="Brak wyników. Proszę wczytać dane." />
             </placeholder>
             <columns>
                 <TableColumn fx:id="idRegisterByYearColumn" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="Lp." />
@@ -70,6 +70,7 @@
                <columns>
                   <TableColumn fx:id="certificateNumberColumn" prefWidth="138.0" text="Nr Świadectwa" />
                   <TableColumn fx:id="documentKindColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ŚW/PO" />
+                  <TableColumn fx:id="agreementNumberColumn" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Umowa" />
                </columns></TableColumn>
             <TableColumn fx:id="stateColumn" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" text="Stan" />
             </columns>

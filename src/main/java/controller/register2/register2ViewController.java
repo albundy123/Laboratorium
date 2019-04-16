@@ -146,7 +146,7 @@ public class register2ViewController {
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
                         registerElement.getInstrument().getClient().getShortName(),registerElement.getUserWhoCalibrate().getLogin(),
-                        registerElement.getCertificateNumber(),registerElement.getDocumentKind(),registerElement.getState()));
+                        registerElement.getCertificateNumber(),registerElement.getDocumentKind(),"",registerElement.getState()));
                 indeks++;
             }
             dbSqlite.closeConnection();

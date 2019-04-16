@@ -68,6 +68,8 @@ public class registerViewController {
     @FXML
     private TableColumn<registerFxModel, String> documentKindColumn;
     @FXML
+    private TableColumn<registerFxModel, String> agreementNumberColumn;
+    @FXML
     private TableColumn<registerFxModel, String> stateColumn;
     //Labele do wyświetlania szczegułów może dam to do innego fxmla jak mi się będzie chciało kiedyś
     @FXML
@@ -154,7 +156,7 @@ public class registerViewController {
                         registerElement.getCalibrationDate(), registerElement.getInstrument().getInstrumentName().getInstrumentName(),
                         registerElement.getInstrument().getSerialNumber(),registerElement.getInstrument().getIdentificationNumber(),
                         registerElement.getInstrument().getClient().getShortName(),registerElement.getUserWhoCalibrate().getLogin(),
-                        registerElement.getCertificateNumber(),registerElement.getDocumentKind(),registerElement.getState()));
+                        registerElement.getCertificateNumber(),registerElement.getDocumentKind(),registerElement.getAgreementNumber(),registerElement.getState()));
                 indeks++;
             }
             dbSqlite.closeConnection();
@@ -173,6 +175,7 @@ public class registerViewController {
         userWhoCalibrateColumn.setCellValueFactory(new PropertyValueFactory<>("calibratePerson"));
         certificateNumberColumn.setCellValueFactory(new PropertyValueFactory<>("certificateNumber"));
         documentKindColumn.setCellValueFactory(new PropertyValueFactory<>("documentKind"));
+        agreementNumberColumn.setCellValueFactory(new PropertyValueFactory<>("agreementNumber"));
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
         registerTableView.setItems(filteredRegisterFxObservableList);
         registerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -224,6 +227,7 @@ public class registerViewController {
                     editCertificateNumberMainController.setRegisterMainController(this);
                     editCertificateNumberMainController.setEditedRegisterElement(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()));
                     editCertificateNumberMainController.setCertificateNumberTextField(editedRegisterElementFromList.getCertificateNumber());
+                    editCertificateNumberMainController.setAgreementNumberTextField(editedRegisterElementFromList.getAgreementNumber());
                 }
                 Stage window = new Stage();
                 window.initModality(Modality.APPLICATION_MODAL);
@@ -356,7 +360,8 @@ public class registerViewController {
         row.createCell(7).setCellValue("Wzorcujący");
         row.createCell(8).setCellValue("Nr Świadectwa/Protokołu");
         row.createCell(9).setCellValue("ŚW/PO");
-        row.createCell(10).setCellValue("Stan");
+        row.createCell(10).setCellValue("Numer umowy");
+        row.createCell(11).setCellValue("Stan");
 
         int i = 0;
         for (registerFxModel registerElement : filteredRegisterFxObservableList) {
@@ -371,10 +376,11 @@ public class registerViewController {
             row.createCell(7).setCellValue(registerElement.getCalibratePerson());
             row.createCell(8).setCellValue(registerElement.getCertificateNumber());
             row.createCell(9).setCellValue(registerElement.getDocumentKind());
-            row.createCell(10).setCellValue(registerElement.getState());
+            row.createCell(10).setCellValue(registerElement.getAgreementNumber());
+            row.createCell(11).setCellValue(registerElement.getState());
             i++;
         }
-        for (int j = 0; j < 11; j++) {
+        for (int j = 0; j < 12; j++) {
             spreadsheet.autoSizeColumn(j);
         }
         FileOutputStream fileOut = new FileOutputStream("RejestrAP.xlsx");

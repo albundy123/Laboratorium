@@ -24,6 +24,11 @@ public class editCertificateNumberViewController {
     private VBox mainVBox;
     @FXML
     private TextField certificateNumberTextField;
+
+
+
+    @FXML
+    private TextField agreementNumberTextField;
     @FXML
     private ComboBox<String> documentKindComboBox;
     @FXML
@@ -31,6 +36,9 @@ public class editCertificateNumberViewController {
 
     public void setCertificateNumberTextField(String certificateNumber) {
         this.certificateNumberTextField.setText(certificateNumber);
+    }
+    public void setAgreementNumberTextField(String agreementNumberTextField) {
+        this.agreementNumberTextField.setText(agreementNumberTextField);
     }
 
     @FXML
@@ -56,6 +64,7 @@ public class editCertificateNumberViewController {
             }else{
                 editedRegisterElement.setDocumentKind("PO");
             }
+            editedRegisterElement.setAgreementNumber(agreementNumberTextField.getText());
             try {
                 Dao<registerModel, Integer> registerDao = DaoManager.createDao(dbSqlite.getConnectionSource(),registerModel.class);
                 registerDao.update(editedRegisterElement);

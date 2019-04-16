@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //dbSqlite.initDatabase();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login/loginView.fxml"));
         AnchorPane anchorPane = loader.load();
         Scene scene = new Scene(anchorPane);
