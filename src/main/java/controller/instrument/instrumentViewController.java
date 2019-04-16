@@ -183,7 +183,7 @@ public class instrumentViewController {
                 getRegisterList();
             }
         });
-        instrumentTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.56));
+        instrumentTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.7));
         idRegisterByYearColumn.setCellValueFactory(new PropertyValueFactory<>("idRegisterByYear"));
         cardNumberColumn.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
         calibrationDateRegisterColumn.setCellValueFactory(new PropertyValueFactory<>("calibrationDate"));

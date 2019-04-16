@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * Klasa zawiera metody do obsługi bazy danych.
  */
 public class dbSqlite {
-    private final static String DATABASE_URL = "jdbc:sqlite:baza.db";
+    private final static String DATABASE_URL = "jdbc:sqlite:C:/db/baza1.db";
     private static ConnectionSource connectionSource;
     private static Dao<userModel, Integer> userModelDao;
 

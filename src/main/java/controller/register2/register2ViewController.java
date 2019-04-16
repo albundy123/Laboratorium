@@ -174,7 +174,7 @@ public class register2ViewController {
                 showInformationAboutHistory(registerModelList.get(editedRegisterElementFromList.getIndexOfRegisterModelList()).getIdStorehouse());
             }
         });
-        registerTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.68));
+        registerTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.7));
     }
     private void addFilter(){
         searchTextField.textProperty().addListener((value,oldValue, newValue) ->{

@@ -209,7 +209,7 @@ public class clientViewController {
             setEditedClientFromList(newValue);
             showInformation(newValue);
         });
-        clientTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.58));
+        clientTableView.prefHeightProperty().bind(mainVBox.heightProperty().multiply(0.7));
     }
     private void addFilter(){
         fullNameSearchTextField.textProperty().addListener((value,oldValue, newValue) ->{
