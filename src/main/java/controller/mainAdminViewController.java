@@ -88,12 +88,9 @@ public class mainAdminViewController {
     @FXML
     private void copyDataBase() throws IOException {
         File source = new File("C:/db/baza1.db");
-
-
         Format formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String fileName = formatter.format(new Date());
         fileName+=".db";
-
         File dest = new File("C:/KOPIE CM/KOPIE/Bazy danych/"+fileName);
         InputStream is = null;
         OutputStream os = null;
