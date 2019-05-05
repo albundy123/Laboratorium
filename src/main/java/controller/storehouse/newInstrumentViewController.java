@@ -290,11 +290,11 @@ public class newInstrumentViewController {
             Dao<instrumentModel, Integer> instrumentDao= DaoManager.createDao(dbSqlite.getConnectionSource(), instrumentModel.class);
             QueryBuilder<instrumentModel, Integer> instrumentQueryBuilder = instrumentDao.queryBuilder();
             if(!serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()) {
-                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).or().eq("identificationNumber", identificationNumberTextField.getText());
+                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).or().eq("identificationNumber", identificationNumberTextField.getText()).and().eq("client_id", clientInstrument.getIdClient());
             }else if(!serialNumberTextField.getText().isEmpty() && identificationNumberTextField.getText().isEmpty()){
-                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText());
+                instrumentQueryBuilder.where().eq("serialNumber", serialNumberTextField.getText()).and().eq("client_id", clientInstrument.getIdClient());
             }else if(serialNumberTextField.getText().isEmpty() && !identificationNumberTextField.getText().isEmpty()){
-                instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText());
+                instrumentQueryBuilder.where().eq("identificationNumber", identificationNumberTextField.getText()).and().eq("client_id", clientInstrument.getIdClient());
             }
             instrumentModel instrument = new instrumentModel(0, getName(instrumentNameComboBox.getValue()), getType(instrumentTypeComboBox.getValue()), getProducer(instrumentProducerComboBox.getValue()), (serialNumberTextField.getText().trim()).replaceAll("\\s+",""), (identificationNumberTextField.getText().trim()).replaceAll("\\s+",""), getRange(instrumentRangeComboBox.getValue()), clientInstrument);
             PreparedQuery<instrumentModel> prepare = instrumentQueryBuilder.prepare();
@@ -403,13 +403,13 @@ public class newInstrumentViewController {
                 List<instrumentModel> result = instrumentDao.query(prepare);
                 if(result.isEmpty()) {
                     serialNumberCheckResultLabel.setText("Nie znaleziono");
-                    instrumentNameComboBox.setValue(null);
-                    instrumentTypeComboBox.setValue(null);
-                    instrumentProducerComboBox.setValue(null);
-                    identificationNumberTextField.setText("");
-                    instrumentRangeComboBox.setValue(null);
-                    instrumentClientComboBox.setValue(null);
-                    setClientInstrument(null);
+                    //instrumentNameComboBox.setValue(null);
+                    //instrumentTypeComboBox.setValue(null);
+                    //instrumentProducerComboBox.setValue(null);
+                    //identificationNumberTextField.setText("");
+                    //instrumentRangeComboBox.setValue(null);
+                    //instrumentClientComboBox.setValue(null);
+                    //setClientInstrument(null);
                 }
                 else{
                     instrumentNameComboBox.setValue(result.get(0).getInstrumentName().getInstrumentName());
@@ -441,12 +441,12 @@ public class newInstrumentViewController {
                 List<instrumentModel> result = instrumentDao.query(prepare);
                 if(result.isEmpty()) {
                     identificationNumberCheckResultLabel.setText("Nie znaleziono");
-                    instrumentNameComboBox.setValue(null);
-                    instrumentTypeComboBox.setValue(null);
-                    instrumentProducerComboBox.setValue(null);
-                    serialNumberTextField.setText("");
-                    instrumentRangeComboBox.setValue(null);
-                    instrumentClientComboBox.setValue(null);
+                    //instrumentNameComboBox.setValue(null);
+                    //instrumentTypeComboBox.setValue(null);
+                    //instrumentProducerComboBox.setValue(null);
+                   //serialNumberTextField.setText("");
+                    //instrumentRangeComboBox.setValue(null);
+                    //instrumentClientComboBox.setValue(null);
                     setClientInstrument(null);
                 }
                 else{
